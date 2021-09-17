@@ -33,7 +33,7 @@ module.exports = {
     }, {
       uniqueKeys: {
         tagjoins_unique: {
-          attributes: ['storyId', 'tagId']
+          fields: ['storyId', 'tagId']
         }
       }
     });
