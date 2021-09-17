@@ -1,40 +1,58 @@
 'use strict';
-const faker = require('faker');
-const bcrypt = require('bcryptjs');
+const bcrypt = require('bcryptjs')
+const faker = require('faker')
 
 module.exports = {
-  up: async (queryInterface, Sequelize) => {
-    return queryInterface.bulkInsert(
-      'Users',
-      [
-        {
-          email: 'demo@user.io',
-          username: 'Demo-lition',
-          hashedPassword: bcrypt.hashSync('password')
-        },
-        {
-          email: faker.internet.email(),
-          username: 'FakeUser1',
-          hashedPassword: bcrypt.hashSync(faker.internet.password())
-        },
-        {
-          email: faker.internet.email(),
-          username: 'FakeUser2',
-          hashedPassword: bcrypt.hashSync(faker.internet.password())
-        }
-      ],
-      {}
-    );
+  up: (queryInterface, Sequelize) => {
+    /*
+      Add altering commands here.
+      Return a promise to correctly handle asynchronicity.
+
+      Example:
+      */
+    
+    const otherUsers = []
+
+    for (let i = 4; i <= 20; i++){
+      let newUser = {
+        username: faker.name.findName(),
+        email: faker.internet.email(),
+        hashedPassword: bcrypt.hashSync(`password${i}`, 10),
+        demo: false,
+      }
+      otherUsers.push(newUser);
+    }
+
+    return queryInterface.bulkInsert('Users', [
+      {
+        username: 'Main_Character',
+        email: 'demo@demo.com',
+        hashedPassword: bcrypt.hashSync('hunter12'),
+        demo: false,
+      },
+      {
+        username: 'Chris',
+        email: 'chris@chris.com',
+        hashedPassword: bcrypt.hashSync('hunter12'),
+        demo: false,
+      },
+      {
+        username: 'Matt',
+        email: 'matt@matt.com',
+        hashedPassword: bcrypt.hashSync('hunter12'),
+        demo: false,
+      },
+      ...otherUsers
+    ], {});
   },
 
-  down: async (queryInterface, Sequelize) => {
-    const Op = Sequelize.Op;
-    return queryInterface.bulkDelete(
-      'Users',
-      {
-        username: { [Op.in]: ['Demo-lition', 'FakeUser1', 'FakeUser2'] }
-      },
-      {}
-    );
+  down: (queryInterface, Sequelize) => {
+    /*
+      Add reverting commands here.
+      Return a promise to correctly handle asynchronicity.
+
+      Example:
+      */
+   return queryInterface.bulkDelete('Users', null, {truncate: true, cascade: true, restartIdentity: true});
   }
 };
