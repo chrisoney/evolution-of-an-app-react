@@ -11,7 +11,23 @@ module.exports = (sequelize, DataTypes) => {
     status: DataTypes.STRING
   }, {});
   Story.associate = function(models) {
-    // associations can be defined here
+    Story.hasMany(models.Placement, { foreignKey: 'storyId', onDelete: 'CASCADE', hooks: true })
+    
+    Story.hasMany(models.Review, { foreignKey: 'storyId', onDelete: 'CASCADE', hooks: true })
+    
+    const columnMapping = {
+      through: 'Placement',
+      foreignKey: 'storyId',
+      otherKey: 'bookshelfId'
+    }
+    Story.belongsToMany(models.Bookshelf, columnMapping);
+
+    const columnMapping2 = {
+      through: 'TagJoin',
+      foreignKey: 'storyId',
+      otherKey: 'tagId'
+    }
+    Story.belongsToMany(models.Tag, columnMapping2);
   };
   return Story;
 };
