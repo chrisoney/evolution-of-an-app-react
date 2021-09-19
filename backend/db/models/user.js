@@ -33,8 +33,9 @@ module.exports = (sequelize, DataTypes) => {
         }
       },
       demo: {
-        type: DataTypes.BOOLEAN,
         allowNull: false,
+        type: DataTypes.BOOLEAN,
+        defaultValue: true,
       }
     },
     {
@@ -54,7 +55,14 @@ module.exports = (sequelize, DataTypes) => {
     }
   );
   User.associate = function (models) {
-    // associations can be defined here
+    User.hasMany(models.Bookshelf, { foreignKey: 'userId', onDelete: 'CASCADE', hooks: true });
+    User.hasMany(models.Review, { foreignKey: 'userId', onDelete: 'CASCADE', hooks: true })
+    const columnMapping = {
+      through: 'Review',
+      foreignKey: 'userId',
+      otherKey: 'storyId'
+    }
+    User.belongsToMany(models.Story, columnMapping)
   };
   User.prototype.toSafeObject = function () {
     // remember, this cannot be an arrow function
