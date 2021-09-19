@@ -12,13 +12,22 @@ function SignupFormPage() {
     if (e.target.value === currentStage) return;
     dispatch(setStage(parseInt(e.target.value, 10)))
   }
+
+  const handleBurgerClick = (e) => {
+    document.getElementById("box").style.animationPlayState = 'running';
+  }
+
   return (
     <>
-      <div className={`${styles.stage_button_container} ${revealed ? styles.slide_out : styles.slide_in}`}>
+      <div
+        id="box"
+        className={`${styles.stage_button_container}`}
+        onAnimationIteration={(e) => { e.target.style.animationPlayState = 'paused'}}
+      >
         <div className={styles.stage_button_reveal}>
           <i
             className={`fas fa-bars ${styles.burger}`}
-            onClick={() => setRevealed(!revealed)}
+            onClick={handleBurgerClick}
             draggable={true}
             title='Switch version'
           />

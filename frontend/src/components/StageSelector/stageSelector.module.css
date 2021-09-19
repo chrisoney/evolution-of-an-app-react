@@ -5,15 +5,16 @@
   left: -135px;
   transform: translateY(-50%);
   z-index: 5;
+  animation: slide-out-effect 1s ease-in-out 0s infinite alternate both paused;
 }
 
-.stage_button_container.slide_in {
-  animation: slide-in-effect 1s ease-in-out forwards;
+/* .stage_button_container.slide_in {
+  animation: slide-in-effect 1s ease-in-out;
 }
 
 .stage_button_container.slide_out {
   animation: slide-out-effect 1s ease-in-out forwards;
-}
+} */
 
 
 
