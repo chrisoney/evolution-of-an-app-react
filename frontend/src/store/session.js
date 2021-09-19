@@ -42,6 +42,15 @@ export const signup = (user) => async (dispatch) => {
   return response;
 };
 
+export const demo = () => async (dispatch) => {
+  const response = await fetch('/api/users/demo', {
+    method: 'POST',
+  });
+
+  dispatch(setUser(response.data.user));
+  return response;
+};
+
 export const logout = () => async (dispatch) => {
   const response = await fetch('/api/session', {
     method: 'DELETE'

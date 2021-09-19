@@ -1,6 +1,4 @@
 'use strict';
-const { RoyalRoadAPI } = require('@l1lly/royalroadl-api');
-const api = new RoyalRoadAPI();
 module.exports = {
   up: async (queryInterface, Sequelize) => {
     /*
