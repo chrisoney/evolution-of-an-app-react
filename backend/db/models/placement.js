@@ -5,7 +5,8 @@ module.exports = (sequelize, DataTypes) => {
     storyId: DataTypes.INTEGER
   }, {});
   Placement.associate = function(models) {
-    // associations can be defined here
+    Placement.belongsTo(models.Story, { foreignKey: 'storyId' })
+    Placement.belongsTo(models.Bookshelf, { foreignKey: 'bookshelfId' })
   };
   return Placement;
 };
