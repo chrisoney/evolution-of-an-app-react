@@ -5,6 +5,7 @@ import SignupFormPage from "./components/SignupFormPage";
 import LoginFormPage from "./components/LoginFormPage";
 import * as sessionActions from "./store/session";
 import Navigation from "./components/Navigation";
+import StageSelector from "./components/StageSelector";
 
 function App() {
   const dispatch = useDispatch();
@@ -16,6 +17,7 @@ function App() {
   return (
     <>
       <Navigation isLoaded={isLoaded} />
+      <StageSelector />
       {isLoaded && (
         <Switch>
           <Route path="/login" >

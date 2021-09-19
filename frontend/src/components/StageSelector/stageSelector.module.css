@@ -1,0 +1,80 @@
+
+.stage_button_container {
+  position: fixed;
+  top: 50%;
+  left: -135px;
+  transform: translateY(-50%);
+  z-index: 5;
+}
+
+.stage_button_container.slide_in {
+  animation: slide-in-effect 1s ease-in-out forwards;
+}
+
+.stage_button_container.slide_out {
+  animation: slide-out-effect 1s ease-in-out forwards;
+}
+
+
+
+@keyframes slide-in-effect {
+  0% {
+    left: 0;
+  }
+  100% {
+    left: -135px;
+  }
+}
+@keyframes slide-out-effect {
+  0% {
+    left: -135px;
+  }
+  100% {
+    left: 0;
+  }
+}
+
+.stage_button_reveal {
+  padding: 10px;
+  color: white;
+  position: relative;
+  display: flex;
+  flex-direction: row-reverse;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  cursor: pointer;
+}
+.burger {
+  height: 50px;
+  width: 50px;
+  background-color: black;
+  color: white;
+  font-size: 20px;
+  line-height: 50px;
+  border-top-right-radius: 5px;
+  border-bottom-right-radius: 5px;
+}
+
+.buttons {
+  display: flex;
+  top: 100%;
+  flex-direction: column;
+}
+
+.switch_stage {
+  cursor: pointer;
+  color: #333333;
+  border-radius: 3px;
+  border: 1px solid #D6D0C4;
+  font-family: "Lato", "Helvetica Neue", "Helvetica", sans-serif;
+  font-size: 14px;
+  cursor: pointer;
+  background-color: #F4F1EA;
+  line-height: 1;
+  padding: 8px 12px;
+}
+
+.switch_stage:hover {
+  background-color: #EDE6D6;
+}

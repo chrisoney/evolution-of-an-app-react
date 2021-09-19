@@ -1,5 +1,6 @@
 const express = require('express');
 const faker = require('faker')
+const bcrypt = require('bcryptjs')
 
 const { check } = require('express-validator');
 const asyncHandler = require('express-async-handler');
@@ -47,7 +48,7 @@ router.post(
 router.post(
   '/demo',
   asyncHandler(async (req, res) => {
-    const user = await User.create({
+    let user = await User.create({
       username: faker.name.findName(),
       email: faker.internet.email(),
       hashedPassword: bcrypt.hashSync('hunter12', 10)
@@ -65,7 +66,7 @@ router.post(
     
     await addStories(bookshelves)
     await alterFeed()
-
+    user = await User.scope('currentUser').findByPk(user.id);
     await setTokenCookie(res, user);
 
     return res.json({
