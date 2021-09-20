@@ -47,7 +47,8 @@ function Navigation({ isLoaded }) {
       </ul>
     );
   } else {
-    if (!sessionUser) return;
+    console.log('HERE')
+    if (!sessionUser) return null;
     return (
       <>
         <div className={styles.navbar}>
@@ -92,7 +93,7 @@ function Navigation({ isLoaded }) {
           </div>
         </div>
         {stage >= 2 && (<div className={styles.navbar_lower}>
-          <a href='/' class={styles.navbar_text_link}>Home</a>
+          <a href='/' className={styles.navbar_text_link}>Home</a>
           <a href={`/users/${sessionUser.id}/bookshelves`} className={styles.navbar_text_link}>My Books</a>
           {stage >= 3 && <a href='/stories' className={styles.navbar_text_link}>Browse</a>}
         </div>)}

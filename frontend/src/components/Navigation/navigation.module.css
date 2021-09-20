@@ -1,3 +1,153 @@
 .profile_dropdown {
   position: absolute;
 }
+
+/* My navbar stuff */
+
+.navbar, .navbar_lower {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #F4F1EA;
+  z-index: 2;
+  box-shadow: 0 1px 2px rgb(0 0 0 / 15%);
+}
+
+.nav_logo {
+  margin: 5px 16px 5px 15px;
+  height: 40px;
+  width: auto;
+}
+
+.nav_icon_container {
+  display: flex;
+  margin-right: 8px;
+}
+
+.icon_background {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  height: 53px;
+  width: 53px;
+  position: relative;
+}
+
+.icon_background:hover {
+  color: #FFFFFF;
+  background-color: #382110;
+}
+
+.nav_right_icon {
+  background-color: #F9F7F4;
+  color: #DBD3BF;
+  border: 1px solid #DBD3BF;
+  font-size: 24px;
+  line-height: 32px;
+  height: 34px;
+  width: 34px;
+  border-radius: 50%;
+  cursor: pointer;
+}
+
+.user_options {
+  position: absolute;
+  top: 100%;
+  right: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  background-color: white;
+  width: 250px;
+  padding: 8px 0;
+  box-shadow: 0 5px 10px rgb(0 0 0 / 15%);
+  font-family: "Lato", "Helvetica Neue", "Helvetica", sans-serif;
+  z-index: 10;
+}
+
+.hidden {
+  display: none;
+}
+
+.dropdown_username{
+  color: #333333;
+  display: block;
+  font-size: 14px;
+  line-height: 32px;
+  padding: 0 16px;
+  margin: 12px 0;
+  text-transform: uppercase;
+  -webkit-text-size-adjust: 100%;
+}
+
+.user_menu_option {
+  color: #333333;
+  display: block;
+  font-size: 14px;
+  line-height: 32px;
+  padding: 0 16px;
+  background-color: transparent;
+  cursor: pointer;
+  border: none;
+}
+
+.user_menu_option:hover {
+  text-decoration: underline;
+}
+
+.user_menu_bottom_section {
+  width: 100%;
+  border-top: 1px solid #D8D8D8;
+}
+
+.navbar_lower {
+  border-top: 2px solid rgb(0 0 0 / 15%);;
+  justify-content: center;
+  z-index: 1;
+}
+
+.navbar_text_link {
+  display: inline-block;
+  color: #382110;
+  font-family: "Lato", "Helvetica Neue", "Helvetica", sans-serif;
+  font-size: 16px;
+  line-height: 50px;
+  padding: 0 30px;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.navbar_text_link:hover {
+  color: #FFFFFF;
+  background-color: #382110;
+}
+
+/* Search Styling */
+
+.search_form {
+  background: #FFFFFF;
+  border-radius: 3px;
+  border: #DCD6CC 1px solid;
+  color: #333333;
+  font-family: "Lato", "Helvetica Neue", "Helvetica", sans-serif;
+  display: flex;
+  height: 32px;
+  width: 70%;
+}
+
+.search_input, .search_submit {
+  border: none;
+  background-color: transparent;
+}
+
+.search_input {
+  flex: 1;
+  padding: 4px 8px;
+}
+
+.search-_ubmit {
+  cursor: pointer;
+  color: #999;
+  font-size: 16px;
+}
