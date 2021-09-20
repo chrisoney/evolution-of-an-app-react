@@ -3,6 +3,8 @@ import { NavLink } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import ProfileButton from './ProfileButton';
 import LoginFormModal from '../LoginFormModal';
+import { useLocation } from "react-router-dom";
+
 
 import * as sessionActions from '../../store/session';
 import styles from  './navigation.module.css';
@@ -11,6 +13,9 @@ function Navigation({ isLoaded }) {
   const dispatch = useDispatch();
   const sessionUser = useSelector(state => state.session.user);
   const stage = useSelector(state => state.ui.stage);
+
+  const location = useLocation()
+
   const [term, setTerm] = useState('');
   const [revealDropdown, setRevealDropdown] = useState(false);
   let sessionLinks;
@@ -47,8 +52,7 @@ function Navigation({ isLoaded }) {
       </ul>
     );
   } else {
-    console.log('HERE')
-    if (!sessionUser) return null;
+    if (!sessionUser || (location.pathname === '/four-oh-four')) return null;
     return (
       <>
         <div className={styles.navbar}>
