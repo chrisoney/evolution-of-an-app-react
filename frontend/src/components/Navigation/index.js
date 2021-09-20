@@ -42,6 +42,7 @@ function Navigation({ isLoaded }) {
       </>
     );
   }
+  if (location.pathname === '/four-oh-four') return null;
   if (stage === 0) {
     return (
       <ul>
@@ -52,7 +53,7 @@ function Navigation({ isLoaded }) {
       </ul>
     );
   } else {
-    if (!sessionUser || (location.pathname === '/four-oh-four')) return null;
+    if (!sessionUser) return null;
     return (
       <>
         <div className={styles.navbar}>
@@ -86,7 +87,7 @@ function Navigation({ isLoaded }) {
                 <div className={styles.dropdown_username}>{sessionUser.username}</div>
                 <div className={styles.user_menu_bottom_section}>
                   <button
-                    className={styles.logout_button_user_menu_option}
+                    className={`${styles.logout_button} ${styles.user_menu_option}`}
                     onClick={handleSignOut}
                   >
                     Sign Out

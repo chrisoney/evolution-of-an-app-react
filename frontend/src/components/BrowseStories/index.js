@@ -2,7 +2,7 @@ import React from 'react';
 // import { useSelector } from "react-redux";
 // import { Redirect, useLocation } from "react-router-dom";
 
-function BrowseStories() {
+const  BrowseStories = () => {
   // const stage = useSelector(state => state.ui.stage);
   // let currentLocation = useLocation();
   // if (stage < 3) {

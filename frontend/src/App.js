@@ -11,6 +11,7 @@ import StageSelector from "./components/StageSelector";
 import Home from "./components/Home";
 import BrowseStories from './components/BrowseStories';
 import PageNotMade from './components/PageNotMade';
+import Footer from './components/Footer';
 
 import ProtectedRoute from "./components/utils/ProtectedRoute";
 
@@ -47,6 +48,7 @@ function App() {
           </Route>
         </Switch>
       )}
+      {stage > 0 && <Footer />}
     </>
   );
 }
