@@ -45,10 +45,12 @@ router.post(
 );
 
 // Log out
-router.delete('/', (_req, res) => {
+router.delete('/', asyncHandler(async (_req, res) => {
+  const user = await User.findByPk(req.session.auth.userId)
+  if(user.demo) await user.destroy();
   res.clearCookie('token');
   return res.json({ message: 'success' });
-});
+}));
 
 // Restore session user
 router.get('/', restoreUser, (req, res) => {
