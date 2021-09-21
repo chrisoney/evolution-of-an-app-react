@@ -6,8 +6,6 @@ const ProtectedRoute = props => {
   const user = useSelector(state => state.session.user);
   const sessionLoaded = useSelector(state => state.session.loaded);
   const stage = useSelector(state => state.ui.stage);
-  console.log(stage, props)
-  console.log(stage < props.min)
   let currentLocation = useLocation();
   return (
     <Route {...props}>

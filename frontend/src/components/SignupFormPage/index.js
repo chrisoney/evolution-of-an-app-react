@@ -29,7 +29,6 @@ function SignupFormPage() {
 
   const handleDemo = async (e) => {
     e.preventDefault()
-    console.log('ello')
     await dispatch(sessionActions.demo())
   }
 

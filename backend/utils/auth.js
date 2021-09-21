@@ -1,6 +1,6 @@
 const jwt = require('jsonwebtoken');
 const { jwtConfig } = require('../config');
-const { User } = require('../db/models');
+const { User, Bookshelf, Story } = require('../db/models');
 
 const { secret, expiresIn } = jwtConfig;
 
@@ -13,7 +13,7 @@ const setTokenCookie = (res, user) => {
     { expiresIn: parseInt(expiresIn) } // 604,800 seconds = 1 week
   );
 
-  console.log(token);
+  // console.log(token);
 
   const isProduction = process.env.NODE_ENV === 'production';
 
@@ -39,7 +39,13 @@ const restoreUser = (req, res, next) => {
 
     try {
       const { id } = jwtPayload.data;
-      req.user = await User.scope('currentUser').findByPk(id);
+      req.user = await User.scope('currentUser').findByPk(id, {
+        include: {
+          model: Bookshelf,
+          include: Story,
+        }
+      });
+      console.log(req.user.toJSON())
     } catch (e) {
       res.clearCookie('token');
       return next();
