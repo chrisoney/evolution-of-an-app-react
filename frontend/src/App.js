@@ -14,6 +14,7 @@ import PageNotMade from './components/PageNotMade';
 import Footer from './components/Footer';
 
 import ProtectedRoute from "./components/utils/ProtectedRoute";
+import Helmet from 'react-helmet'
 
 function App() {
   const location = useLocation();
@@ -27,6 +28,10 @@ function App() {
 
   return (
     <>
+      <Helmet>
+        <link rel="icon" type="image/ico" href="favicon.ico" sizes="16x16" />
+        {stage === 1 && <link rel="icon" type="image/ico" href="favicon2.ico" sizes="16x16" />}
+      </Helmet>
       <Navigation isLoaded={isLoaded} />
       <StageSelector />
       {isLoaded && (
