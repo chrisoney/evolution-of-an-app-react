@@ -29,8 +29,7 @@ function App() {
   return (
     <>
       <Helmet>
-        <link rel="icon" type="image/ico" href="favicon.ico" sizes="16x16" />
-        {stage === 1 && <link rel="icon" type="image/ico" href="favicon2.ico" sizes="16x16" />}
+        {stage === 0 ? <link rel="icon" type="image/ico" href="favicon.ico" sizes="16x16" /> : <link rel="icon" type="image/ico" href="favicon2.ico" sizes="16x16" />}
       </Helmet>
       <Navigation isLoaded={isLoaded} />
       <StageSelector />
