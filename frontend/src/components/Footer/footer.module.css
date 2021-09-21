@@ -3,9 +3,10 @@
   position: fixed;
   background-color: #F9F8F4;
   bottom: 0;
+  left: 3vw;
   display: flex;
   justify-content: space-between;
-  width: 100%;
+  width: 95vw;
   font-family: "Lato", "Helvetica Neue", "Helvetica", sans-serif;
   padding: 10px 8px;
 }

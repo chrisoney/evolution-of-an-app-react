@@ -1,7 +1,7 @@
 /* .navbar, .footer_container {
   display: none;
 } */
-body, #root {
+body {
   display: flex;
   justify-content: center;
 }
