@@ -55,7 +55,7 @@ function Navigation({ isLoaded }) {
   } else {
     if (!sessionUser) return null;
     return (
-      <>
+      <div className={styles.total_navbar_container}>
         <div className={styles.navbar}>
           <div className={styles.nav_logo_container}>
             <a href='/' className={styles.nav_logo_link}>
@@ -102,7 +102,7 @@ function Navigation({ isLoaded }) {
           <a href={`/users/${sessionUser.id}/bookshelves`} className={styles.navbar_text_link}>My Books</a>
           {stage >= 3 && <a href='/stories' className={styles.navbar_text_link}>Browse</a>}
         </div>)}
-      </>
+      </div>
     )
   }
 }

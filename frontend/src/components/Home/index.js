@@ -19,7 +19,7 @@ function Home() {
     return null
   } else {
     return (
-      <>
+      <div className={styles.home_top_container}>
         <div className={styles.logo_container}>
           <a href='/' className={styles.logo_link}>
             <img src='/images/logo.png' className={styles.auth_logo} alt='auth logo'/>
@@ -45,7 +45,7 @@ function Home() {
             </div>
           </div>
         </div>
-      </>
+      </div>
     )
   }
 }
