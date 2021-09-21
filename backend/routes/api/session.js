@@ -47,8 +47,7 @@ router.post(
 // Log out
 router.delete('/', restoreUser, asyncHandler(async (req, res) => {
   const { user } = req;
-  const userToDelete = await User.findByPk(user.id)
-  if(userToDelete.demo) await userToDelete.destroy();
+  if(user.demo) await user.destroy();
   res.clearCookie('token');
   return res.json({ message: 'success' });
 }));

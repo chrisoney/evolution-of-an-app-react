@@ -36,6 +36,12 @@ router.post(
   asyncHandler(async (req, res) => {
     const { email, password, username } = req.body;
     const user = await User.signup({ email, username, password });
+    const choices = ['Read', 'Currently Reading', 'Want To Read']
+
+    for (let i = 0; i < choices.length; i++){
+      const name = choices[i];
+      await Bookshelf.create({ name, userId: user.id, deleteAllowed: false })
+    }
 
     await setTokenCookie(res, user);
 
