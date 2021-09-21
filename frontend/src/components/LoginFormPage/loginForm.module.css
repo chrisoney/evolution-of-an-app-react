@@ -1,0 +1,117 @@
+/* .navbar, .footer_container {
+  display: none;
+} */
+body {
+  display: flex;
+  justify-content: center;
+}
+.logo_container{
+  margin-left: auto;
+  margin-right: 10px;
+  margin-top: 20px;
+}
+.auth_logo {
+  height: 30px;
+  width: auto;
+}
+
+.form_container {
+  margin-top: 20px;
+  margin-right: auto;
+  /* top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%); */
+  width: 600px;
+  height: fit-content;
+
+  background: white;
+  padding: 28px 10px 34px 10px;
+  border: 1px solid #d0d0c8;
+  border-radius: 4px;
+  box-shadow: 0px 1px 1px #d0d0c8;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  font-family: "Lato", "Helvetica Neue", Helvetica, Arial, sans-serif;
+}
+
+.auth_title {
+  font-size: 20px;
+  font-weight: bold;
+  font-family: "Merriweather", Georgia, "Times New Roman", serif;
+}
+
+.form_group {
+  display: flex;
+  flex-direction: column;
+  /* font-family: "Lato", "Helvetica Neue", Helvetica, Arial, sans-serif; */
+  padding-top: 8px;
+}
+
+.form_label {
+  color: #333;
+  font-size: 12px;
+  font-weight: bold;
+}
+
+.form_control {
+  font-size: 15px;
+  padding: 10px 4px;
+  border: 1px solid #ccc;
+  border-radius: 3px;
+  font-weight: bold;
+  /* font-family: "Lato", "Helvetica Neue", Helvetica, Arial, sans-serif; */
+  width: 300px;
+  color: #333;
+  box-sizing: border-box;
+}
+
+.form_buttons {
+  margin-top: 10px;
+}
+
+.positive_button {
+  border-radius: 3px;
+  border: 1px solid #D6D0C4;
+  font-family: "Lato", "Helvetica Neue", "Helvetica", sans-serif;
+  font-size: 16px;
+  -moz-appearance: none;
+  -o-appearance: none;
+  -webkit-appearance: none;
+  appearance: none;
+  cursor: pointer;
+  display: inline-block;
+  text-decoration: none;
+  color: #333333;
+  background-color: #F4F1EA;
+  line-height: 1;
+  padding: 12px 24px;
+  margin-right: 10px;
+}
+
+.positive_button:hover {
+  background-color: #ede6d6;
+}
+
+.neutral_link {
+  text-decoration: none;
+  color: #00635d;
+  font-size: 13px;
+}
+.neutral_link:hover {
+  text-decoration: underline;
+}
+
+.auth_bottom_nav {
+  text-align: center;
+  margin-top: 24px;
+}
+
+.auth_bottom_nav > span {
+  font-size: 12px;
+}
+
+.auth_bottom_nav > .neutral_link {
+  font-size: 11px;
+}
