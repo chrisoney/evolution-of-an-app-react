@@ -13,6 +13,7 @@ import Home from "./components/Home";
 import Bookshelves from "./components/Bookshelves";
 import BrowseStories from './components/BrowseStories';
 import PageNotMade from './components/AlternativePages/PageNotMade';
+import FourOhFour from './components/AlternativePages/FourOhFour';
 import Footer from './components/Footer';
 
 import ProtectedRoute from "./components/utils/ProtectedRoute";
@@ -55,6 +56,9 @@ function App() {
           </ProtectedRoute>
           <Route path='/page-not-made'>
             <PageNotMade location={location} />
+          </Route>
+          <Route path='/four-oh-four'>
+            <FourOhFour />
           </Route>
         </Switch>
       )}
