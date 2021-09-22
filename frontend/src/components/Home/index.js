@@ -96,19 +96,30 @@ function Home() {
             <div className={styles.homepage_right}>
               <div className={styles.list_container}>
                 <div className={styles.homepage_list_section_title}>Love Lists?</div>
-                {/* each user in customBookshelfUsers
-                  -var bookshelf = user.Bookshelves[0]
-                  div(class='homepage-list-container')
-                    div(class='homepage-list-left')
-                      -const queryVar = bookshelf.name.split(' ').join('-');
-                      a(href=`/users/${user.id}/bookshelves?selected=${queryVar}` class="shelf-link")
-                        div(class='list-section-list-title')= bookshelf.name
-                      a(href=`/users/${user.id}/bookshelves` class="shelf-link")
-                        div(class='list-section-author')= user.username
-                    div(class='homepage-list-right')
-                      each story in bookshelf.Stories.slice(0, 6)
-                        a(href=`/stories/${story.id}`)
-                          img(class='homepage-list-right-image' src=story.imageUrl) */}
+                {customBookshelfIds.map(id => {
+                  const shelf = bookshelves[id];
+                  return (
+                    <div className={styles.homepage_list_container}>
+                      <div className={styles.homepage_list_left}>
+                        <a href={`/users/${shelf.userId}/bookshelves?selected=${shelf.name.split(' ').join('-')}`} className={styles.shelf_link}>
+                          <div className={styles.list_section_list_title}>{shelf.name}</div>
+                        </a>
+                        <a href={`/users/${shelf.userID}/bookshelves`} className={styles.shelf_link}>
+                          <div className={styles.list_section_author}>{shelf.User.username}</div>
+                        </a>
+                      </div>
+                      <div className={styles.homepage_list_right}>
+                        {shelf.Stories.slice(0,6).map(story => {
+                          return (
+                            <a href={`/stories/${story.id}`}>
+                              <img src={story.imageUrl} className={styles.homepage_list_right_image} alt={story.title}/>
+                            </a>
+                          )
+                        })}
+                      </div>
+                    </div>
+                  )
+                })}
               </div>
             </div>
           </div>
