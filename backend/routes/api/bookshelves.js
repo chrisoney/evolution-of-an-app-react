@@ -2,11 +2,17 @@ const express = require('express')
 const router = express.Router()
 
 const asyncHandler = require('express-async-handler');
-const { Bookshelf } = require('../../db/models')
+const { Bookshelf, User, Story } = require('../../db/models')
 
 router.get('/', asyncHandler(async (req, res) => {
-  console.log('HERE WE GOT HERE WE GOT HERE')
-  const bookshelves = await Bookshelf.findAll()
+  const bookshelves = await Bookshelf.findAll({
+    include: [{
+      model: User,
+      attributes: ['id','username']
+    }, {
+      model: Story,
+    }]
+  })
   res.json({ bookshelves })
 }))
 module.exports = router;

@@ -4,7 +4,6 @@ import { Route, Switch, useLocation, Redirect } from "react-router-dom";
 import SignupFormPage from "./components/SignupFormPage";
 import LoginFormPage from "./components/LoginFormPage";
 import * as sessionActions from "./store/session";
-import { fetchAllBookshelves } from "./store/bookshelves";
 import { getStage } from './store/ui';
 
 import Navigation from "./components/Navigation";
@@ -26,7 +25,6 @@ function App() {
   const stage = useSelector(state =>  state.ui.stage)
   useEffect(() => {
     dispatch(getStage())
-    dispatch(fetchAllBookshelves())
     dispatch(sessionActions.restoreUser()).then(() => setIsLoaded(true));
   }, [dispatch]);
 
