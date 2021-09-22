@@ -1,5 +1,5 @@
 .background_container {
-  background-image: url('/images/construction.jpg');
+  background-image: url('./construction.jpg');
   height: 100vh;
   width: 100vw;
   display: flex;
@@ -8,7 +8,7 @@
 }
 
 .four_oh_four {
-  background-image: url('/images/lost.jpg');
+  background-image: url('./lost.jpg');
   height: 80vh;
 }
 

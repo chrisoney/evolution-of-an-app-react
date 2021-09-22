@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Route, Switch, useLocation } from "react-router-dom";
+import { Route, Switch, useLocation, Redirect } from "react-router-dom";
 import SignupFormPage from "./components/SignupFormPage";
 import LoginFormPage from "./components/LoginFormPage";
 import * as sessionActions from "./store/session";
@@ -59,6 +59,9 @@ function App() {
           </Route>
           <Route path='/four-oh-four'>
             <FourOhFour />
+          </Route>
+          <Route path='/'>
+            <Redirect to='/four-oh-four' />
           </Route>
         </Switch>
       )}

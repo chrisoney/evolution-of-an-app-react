@@ -3,7 +3,7 @@ import styles from './pageNotMade.module.css'
 
 const FourOhFour = () => {
   return (
-    <div className={styles.background_container.four_oh_four}>
+    <div className={`${styles.background_container} ${styles.four_oh_four}`}>
       <div className={styles.info_container}>
         <div className={styles.top_section}>
           <div className={styles.pnf_title}>This page doesn't exist.</div>

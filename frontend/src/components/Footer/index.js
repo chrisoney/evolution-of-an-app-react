@@ -4,7 +4,7 @@ import styles from './footer.module.css';
 
 const Footer = () => {
   const location = useLocation()
-  if (location.pathname === 'page-not-made') return null;
+  if (location.pathname === '/page-not-made' || location.pathname === '/four-oh-four') return null;
 
   return (
     <div className={styles.footer_container}>
