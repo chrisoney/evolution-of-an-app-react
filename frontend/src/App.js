@@ -10,8 +10,9 @@ import { getStage } from './store/ui';
 import Navigation from "./components/Navigation";
 import StageSelector from "./components/StageSelector";
 import Home from "./components/Home";
+import Bookshelves from "./components/Bookshelves";
 import BrowseStories from './components/BrowseStories';
-import PageNotMade from './components/PageNotMade';
+import PageNotMade from './components/AlternativePages/PageNotMade';
 import Footer from './components/Footer';
 
 import ProtectedRoute from "./components/utils/ProtectedRoute";
@@ -49,7 +50,10 @@ function App() {
           <ProtectedRoute path="/stories" min={3}>
             <BrowseStories />
           </ProtectedRoute>
-          <Route path='/four-oh-four'>
+          <ProtectedRoute path="/users/:id/bookshelves" min={2}>
+            <Bookshelves />
+          </ProtectedRoute>
+          <Route path='/page-not-made'>
             <PageNotMade location={location} />
           </Route>
         </Switch>

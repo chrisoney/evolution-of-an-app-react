@@ -13,7 +13,7 @@ const ProtectedRoute = props => {
         ? (stage < props.min)
           ? <Redirect push
             to={{
-              pathname: "/four-oh-four",
+              pathname: "/page-not-made",
               state: {
                 referrer: currentLocation.pathname,
                 requiredStage: props.min

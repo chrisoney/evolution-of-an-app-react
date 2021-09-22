@@ -42,7 +42,7 @@ function Navigation({ isLoaded }) {
       </>
     );
   }
-  if (location.pathname === '/four-oh-four') return null;
+  if (location.pathname === '/page-not-made') return null;
   if (stage === 0) {
     return (
       <ul>
