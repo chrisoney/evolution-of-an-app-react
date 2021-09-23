@@ -92,53 +92,32 @@ function Home() {
                   </a>
                 )
               })}
-                {/* each story in want_read_stories
-                  a(href=`/stories/${story.id}`): img(src=story.imageUrl class='want-to-read-story-image') */}
             </div>
             <div className={styles.want_to_read_example_button_section}>
               <a href={`/users/${sessionUser.id}/bookshelves?selected=Want-To-Read`} className={styles.want_to_read_section_button}>View all books</a>
             </div>
           </div>
+          <div className={styles.bookshelves_listing_section_container}>
+            <div className={styles.bookshelves_listing_title}>Bookshelves</div>
+            <div className={styles.bookshelves_listing_shelves_container}>
+              {sessionUser.Bookshelves.map(shelf => {
+                return (
+                  <a href={`/users/${sessionUser.id}/bookshelves?selected=${shelf.name.split(' ').join('-')}`} className={styles.bookshelves_listing_shelf_container}>
+                    <div className={styles.shelf_count}>{shelf.Stories.length}</div>
+                    <div className={styles.shelf_name}>{shelf.name}</div>
+                  </a>
+                )
+              })}
+            </div>
+          </div>
         </div>
-        <div className={styles.homepage_right}></div>
+        <div className={`${styles.homepage_right} ${styles.logged_in}`}>
+          <div className={styles.social_feed_section_container}>
+            
+          </div>
+        </div>
       </div>
     )
-    // .homepage-content.beige
-    //   .homepage-left
-    //     -const curr_reading = userInfo.Bookshelves.filter(shelf => shelf.name === 'Currently Reading')[0]
-    //     -const curr_reading_story = curr_reading.Stories[0]
-    //     .currently-reading-example-section-container
-    //       .currently-reading-example-title= curr_reading.name
-    //       if curr_reading_story
-    //         .currently-reading-example-body-container
-    //           a(href=`/stories/${curr_reading_story.id}`)
-    //             img(src=curr_reading_story.imageUrl class='currently-reading-example-image')
-    //           .currently-reading-example-details-container
-    //             .currently-reading-example-story-title= curr_reading_story.title
-    //             .currently-reading-example-story-author By #{curr_reading_story.author}
-    //       else
-    //         .currently-reading-example-body-container
-    //           .no-stories-yet No stories in shelf yet
-    //       .currently-reading-example-button-section
-    //         a(href=`/users/${user.id}/bookshelves?selected=Currently-Reading` class='currently-reading-section-button') View all books
-    // check
-    //     -const want_read = userInfo.Bookshelves.filter(shelf => shelf.name === 'Want To Read')[0]
-    //     -const want_read_stories = want_read.Stories.slice(0,3)
-    //     .want-to-read-examples-section-container
-          // .want-to-read-examples-title= want_read.name
-          // .want-to-read-story-images-container
-          //   each story in want_read_stories
-          //     a(href=`/stories/${story.id}`): img(src=story.imageUrl class='want-to-read-story-image')
-          // .want-to-read-example-button-section
-          //   a(href=`/users/${user.id}/bookshelves?selected=Want-To-Read` class='want-to-read-section-button') View all books
-    //     .bookshelves-listing-section-container
-    //       .bookshelves-listing-title Bookshelves
-    //       .bookshelves-listing-shelves-container
-    //         each shelf in userInfo.Bookshelves
-    //           -const queryVar = shelf.name.split(' ').join('-');
-    //           a(href=`/users/${user.id}/bookshelves?selected=${queryVar}` class='bookshelves-listing-shelf-container')
-    //             .shelf-count= shelf.Stories.length
-    //             .shelf-name= shelf.name
     //   .homepage-right.logged-in
     //     .social-feed-section-container
     //       each placement in feed
