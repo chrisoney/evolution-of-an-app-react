@@ -3,12 +3,14 @@ import thunk from 'redux-thunk';
 import session from './session';
 import bookshelves from './bookshelves'
 import stories from './stories'
+import placements from './placements'
 import ui from './ui';
 
 const rootReducer = combineReducers({
   session,
   bookshelves,
   stories,
+  placements,
   ui
 });
 

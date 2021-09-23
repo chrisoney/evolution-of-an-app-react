@@ -1,8 +1,8 @@
 import { fetch } from './csrf.js';
 
-const GET_STORY = 'bookshelves/getStory';
-const GET_ALL_STORIES = 'bookshelves/getAllStories';
-// const REMOVE_STORY = 'bookshelves/removeStory';
+const GET_STORY = 'stories/getStory';
+const GET_ALL_STORIES = 'stories/getAllStories';
+// const REMOVE_STORY = 'stories/removeStory';
 
 export const getStory = (story) => ({
   type: GET_STORY,
