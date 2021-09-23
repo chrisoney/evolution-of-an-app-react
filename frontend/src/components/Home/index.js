@@ -13,6 +13,19 @@ function Home() {
 
   const [currentlyReadingIds, setCurrentlyReadingIds] = useState([])
   const [customBookshelfIds, setCustomBookshelfIds] = useState([])
+
+
+  // Fisher-Yates
+  const shuffleArray = array => {
+    const newArray = [...array]
+    for (let i = newArray.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      const temp = newArray[i];
+      newArray[i] = newArray[j];
+      newArray[j] = temp;
+    }
+    return newArray;
+  }
   
   useEffect(() => {
     dispatch(fetchAllBookshelves())
@@ -20,12 +33,14 @@ function Home() {
 
   useEffect(() => {
     // Need to refactor to include randomized content
-    const tempCurrentIds = Object.values(bookshelves).filter(shelf => shelf.name === 'Currently Reading').map(shelf => shelf.id).slice(0,2);
+    const tempCurrentIds = shuffleArray(Object.values(bookshelves)).filter(shelf => shelf.name === 'Currently Reading').map(shelf => shelf.id).slice(0,2);
     setCurrentlyReadingIds([...tempCurrentIds])
-    const tempCustomIds = Object.values(bookshelves).filter(shelf => shelf.deleteAllowed === true).map(shelf => shelf.id).slice(0,7);
+    const tempCustomIds = shuffleArray(Object.values(bookshelves)).filter(shelf => shelf.deleteAllowed === true).map(shelf => shelf.id).slice(0,7);
     setCustomBookshelfIds([...tempCustomIds])
   }, [dispatch, bookshelves])
   
+
+
   const handleDemo = async (e) => {
     e.preventDefault()
     await dispatch(sessionActions.demo())
