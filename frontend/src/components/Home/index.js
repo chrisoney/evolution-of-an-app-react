@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { fetchAllBookshelves } from "../../store/bookshelves";
+import { fetchAllStories } from "../../store/stories";
+import { fetchAllPlacements } from "../../store/placements";
 import * as sessionActions from '../../store/session';
 import styles from './home.module.css'
 
@@ -10,11 +12,14 @@ function Home() {
   const stage = useSelector(state => state.ui.stage)
   const sessionUser = useSelector(state => state.session.user)
   const bookshelves = useSelector(state => state.bookshelves.bookshelves)
+  const stories = useSelector(state => state.stories.stories)
+  const placements = useSelector(state => state.placements.placements)
 
   const [currentlyReadingIds, setCurrentlyReadingIds] = useState([])
   const [customBookshelfIds, setCustomBookshelfIds] = useState([])
   const [currReadingStory, setCurrReadingStory] = useState(null)
   const [wantReadStories, setWantReadStories] = useState([])
+  const [feed, setFeed] = useState([])
 
 
   // Fisher-Yates
@@ -31,6 +36,8 @@ function Home() {
   
   useEffect(() => {
     dispatch(fetchAllBookshelves())
+    dispatch(fetchAllStories())
+    dispatch(fetchAllPlacements())
   }, [dispatch])
 
   useEffect(() => {
@@ -44,11 +51,13 @@ function Home() {
   useEffect(() => {
     if (sessionUser) {
       setCurrReadingStory(sessionUser.Bookshelves.filter(shelf => shelf.name === 'Currently Reading')[0].Stories[0])
-      setWantReadStories(sessionUser.Bookshelves.filter(shelf => shelf.name === 'Want To Read')[0].Stories.slice(0,3))
+      setWantReadStories(sessionUser.Bookshelves.filter(shelf => shelf.name === 'Want To Read')[0].Stories.slice(0, 3))
+      setFeed(Object.values(placements).filter(placement => {
+        const names = ['Want To Read', 'Currently Reading', 'Read']
+        return placement.userId !== sessionUser.id && names.includes(bookshelves[placement.bookshelfId].name)
+      }).slice(0,10))
     }
-  }, [sessionUser])
-  
-
+  }, [sessionUser, bookshelves, placements])
 
   const handleDemo = async (e) => {
     e.preventDefault()
@@ -85,9 +94,9 @@ function Home() {
           <div className={styles.want_to_read_examples_section_container}>
             <div className={styles.want_to_read_examples_title}>Want To Read</div>
             <div className={styles.want_to_read_story_images_container}>
-              {wantReadStories.map(story => {
+              {wantReadStories.map((story, idx) => {
                 return (
-                  <a href={`/stories/${story.id}`}>
+                  <a href={`/stories/${story.id}`} key={`want-to-read-story-${idx}`}>
                     <img src={story.imageUrl} className={styles.want_to_read_story_image} alt={story.title} />
                   </a>
                 )
@@ -100,9 +109,9 @@ function Home() {
           <div className={styles.bookshelves_listing_section_container}>
             <div className={styles.bookshelves_listing_title}>Bookshelves</div>
             <div className={styles.bookshelves_listing_shelves_container}>
-              {sessionUser.Bookshelves.map(shelf => {
+              {sessionUser.Bookshelves.map((shelf, idx) => {
                 return (
-                  <a href={`/users/${sessionUser.id}/bookshelves?selected=${shelf.name.split(' ').join('-')}`} className={styles.bookshelves_listing_shelf_container}>
+                  <a href={`/users/${sessionUser.id}/bookshelves?selected=${shelf.name.split(' ').join('-')}`} className={styles.bookshelves_listing_shelf_container} key={`shelf-link-${idx}`}>
                     <div className={styles.shelf_count}>{shelf.Stories.length}</div>
                     <div className={styles.shelf_name}>{shelf.name}</div>
                   </a>
@@ -113,7 +122,7 @@ function Home() {
         </div>
         <div className={`${styles.homepage_right} ${styles.logged_in}`}>
           <div className={styles.social_feed_section_container}>
-            
+            <p>{feed.length}</p>
           </div>
         </div>
       </div>

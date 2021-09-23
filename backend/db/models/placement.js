@@ -1,6 +1,12 @@
 'use strict';
 module.exports = (sequelize, DataTypes) => {
   const Placement = sequelize.define('Placement', {
+    id: {
+      allowNull: false,
+      autoIncrement: true,
+      primaryKey: true,
+      type: DataTypes.INTEGER
+    },
     bookshelfId: DataTypes.INTEGER,
     storyId: DataTypes.INTEGER
   }, {});
