@@ -131,6 +131,7 @@ function Home() {
             {feed.map((feedEle, idx) => {
               let shelf;
               const date = new Date(feedEle.updatedAt).toString().slice(4, 16)
+              const story = stories[feedEle.storyId];
               if (feedEle.bookshelfId) shelf = bookshelves[feedEle.bookshelfId]
               return (
                 <div className={styles.feed_instance_container} key={`feed-instance-${idx}`}>
@@ -151,10 +152,15 @@ function Home() {
                   </div>
                   <div className={styles.feed_instance_main_content_section}>
                     <a href={`/stories/${feedEle.storyId}`}>
-                      <img src={stories[feedEle.storyId].imageUrl} className={styles.feed_instance_image} alt={stories[feedEle.storyId].title} />
+                      <img src={story.imageUrl} className={styles.feed_instance_image} alt={story.title} />
                     </a>
                     <div className={styles.feed_instance_details_section}>
-                      {/* here */}
+                      <div className={styles.feed_instance_title}>{story.title}</div>
+                      <div className={styles.feed_instance_author}>By {story.author}</div>
+                      <div className={styles.feed_instance_description}>{story.description || 'No description provided'}</div>
+                      <div className={styles.feed_instance_link_container}>
+                        <a href={`/stories/${story.id}`} className={styles.feed_instance_link}>Continue Reading</a>
+                      </div>
                     </div>
                   </div>
                 </div>
