@@ -8,7 +8,15 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.INTEGER
     },
     bookshelfId: DataTypes.INTEGER,
-    storyId: DataTypes.INTEGER
+    storyId: DataTypes.INTEGER,
+    // createdAt: {
+    //   allowNull: false,
+    //   type: DataTypes.DATE,
+    // },
+    // updatedAt: {
+    //   allowNull: false,
+    //   type: DataTypes.DATE,
+    // }
   }, {});
   Placement.associate = function(models) {
     Placement.belongsTo(models.Story, { foreignKey: 'storyId' })

@@ -19,6 +19,7 @@ function Home() {
   const [customBookshelfIds, setCustomBookshelfIds] = useState([])
   const [currReadingStory, setCurrReadingStory] = useState(null)
   const [wantReadStories, setWantReadStories] = useState([])
+  const [loaded, setLoaded] = useState(false)
   const [feed, setFeed] = useState([])
 
 
@@ -33,12 +34,17 @@ function Home() {
     }
     return newArray;
   }
-  
+
   useEffect(() => {
-    dispatch(fetchAllBookshelves())
-    dispatch(fetchAllStories())
-    dispatch(fetchAllPlacements())
-  }, [dispatch])
+    console.log(loaded)
+    dispatch(fetchAllBookshelves()).then(() => {
+      dispatch(fetchAllStories()).then(() => {
+        dispatch(fetchAllPlacements()).then(() => {
+          setLoaded(true)
+        })
+      })
+    })
+  }, [dispatch, sessionUser])
 
   useEffect(() => {
     // Need to refactor to include randomized content
@@ -49,7 +55,7 @@ function Home() {
   }, [dispatch, bookshelves])
 
   useEffect(() => {
-    if (sessionUser) {
+    if (sessionUser && sessionUser.Bookshelves && Object.values(bookshelves).length > 0) {
       setCurrReadingStory(sessionUser.Bookshelves.filter(shelf => shelf.name === 'Currently Reading')[0].Stories[0])
       setWantReadStories(sessionUser.Bookshelves.filter(shelf => shelf.name === 'Want To Read')[0].Stories.slice(0, 3))
       setFeed(Object.values(placements).filter(placement => {
@@ -60,12 +66,14 @@ function Home() {
   }, [sessionUser, bookshelves, placements])
 
   const handleDemo = async (e) => {
+    setLoaded(false)
     e.preventDefault()
     await dispatch(sessionActions.demo())
   }
   
-  if (stage === 0) return null;
-  if (sessionUser && stage >= 3) {
+  if (stage === 0 || !loaded) return null;
+  if (sessionUser) {
+    if (stage < 3) return null;
     return (
       <div className={`${styles.homepage_content} ${styles.beige}`}>
         <div className={styles.homepage_left}>
@@ -109,7 +117,7 @@ function Home() {
           <div className={styles.bookshelves_listing_section_container}>
             <div className={styles.bookshelves_listing_title}>Bookshelves</div>
             <div className={styles.bookshelves_listing_shelves_container}>
-              {sessionUser.Bookshelves.map((shelf, idx) => {
+              {sessionUser.Bookshelves && sessionUser.Bookshelves.map((shelf, idx) => {
                 return (
                   <a href={`/users/${sessionUser.id}/bookshelves?selected=${shelf.name.split(' ').join('-')}`} className={styles.bookshelves_listing_shelf_container} key={`shelf-link-${idx}`}>
                     <div className={styles.shelf_count}>{shelf.Stories.length}</div>
@@ -122,7 +130,27 @@ function Home() {
         </div>
         <div className={`${styles.homepage_right} ${styles.logged_in}`}>
           <div className={styles.social_feed_section_container}>
-            <p>{feed.length}</p>
+            {feed.map((feedEle, idx) => {
+              let shelf;
+              if (feedEle.bookshelfId) shelf = bookshelves[feedEle.bookshelfId]
+              return (
+                <div className={styles.feed_instance_container} key={`feed-instance-${idx}`}>
+                  <div className={styles.feed_instance_top_section}>
+                    <div className={styles.feed_instance_username_section}>
+                      {feedEle.bookshelfId ? (
+                        <a href={`/users/${shelf.User.id}/bookshelves`} className={styles.username_link}>
+                          <div className={styles.feed_instance_username}>{shelf.User.username}</div>
+                          <div className={styles.feed_action}>{shelf.name === 'Want To Read' ? 'wants to read' : shelf.name === 'Currently Reading' ? 'is reading' : shelf.name === 'Read' ? 'has read' : 'is breaking my app'}</div>
+                        </a>
+                      ) : (
+                          null
+                      )}
+                    </div>
+                  </div>
+                  <div className={styles.feed_instance_main_content_section}></div>
+                </div>
+              )
+            })}
           </div>
         </div>
       </div>
@@ -230,7 +258,7 @@ function Home() {
                 {currentlyReadingIds.map(id => {
                   const shelf = bookshelves[id];
                   return (
-                    <div className={styles.individual_user_container}>
+                    <div className={styles.individual_user_container} key={`indv-user-container-${id}`}>
                       <div className={styles.individual_user_top_section}>
                         <a href={`/users/${shelf.userId}/bookshelves`} className={styles.shelf_link}>
                           <div className={styles.individual_user_container_title}>{shelf.User.username}</div>
@@ -240,7 +268,7 @@ function Home() {
                       <div className={styles.individual_user_images_container}>
                         {shelf.Stories.map(story => {
                           return (
-                            <a href={`/stories/${story.id}`}>
+                            <a href={`/stories/${story.id}`} key={`story-${story.id}`}>
                               <img src={story.imageUrl} className={styles.individual_user_story_image} title={story.title} alt={story.title} />
                             </a>
                           )
@@ -257,7 +285,7 @@ function Home() {
                 {customBookshelfIds.map(id => {
                   const shelf = bookshelves[id];
                   return (
-                    <div className={styles.homepage_list_container}>
+                    <div className={styles.homepage_list_container} key={`homepage-list-${id}`}>
                       <div className={styles.homepage_list_left}>
                         <a href={`/users/${shelf.userId}/bookshelves?selected=${shelf.name.split(' ').join('-')}`} className={styles.shelf_link}>
                           <div className={styles.list_section_list_title}>{shelf.name}</div>
@@ -267,9 +295,9 @@ function Home() {
                         </a>
                       </div>
                       <div className={styles.homepage_list_right}>
-                        {shelf.Stories.slice(0,6).map(story => {
+                        {shelf.Stories.slice(0, 6).map(story => {
                           return (
-                            <a href={`/stories/${story.id}`}>
+                            <a href={`/stories/${story.id}`} key={`${story.id}`}>
                               <img src={story.imageUrl} className={styles.homepage_list_right_image} alt={story.title}/>
                             </a>
                           )

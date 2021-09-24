@@ -45,7 +45,6 @@ const restoreUser = (req, res, next) => {
           include: Story,
         }
       });
-      console.log(req.user.toJSON())
     } catch (e) {
       res.clearCookie('token');
       return next();
