@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React, { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useParams } from 'react-router-dom';
 import { fetchAllBookshelves } from '../../store/bookshelves';
@@ -8,15 +8,35 @@ import styles from './bookshelves.module.css';
 const Bookshelves = () => {
   const { id } = useParams()
   const dispatch = useDispatch()
+  const stage = useSelector(state => state.ui.stage);
   const sessionUser = useSelector(state => state.session.user);
-  const users = useSelector(state => state.users.users)
-  const bookshelves = useSelector(state => state.bookshelves.bookshelves)
+  const users = useSelector(state => state.users.users);
+  const bookshelves = useSelector(state => state.bookshelves.bookshelves);
+
+  const [selected, setSelected] = useState('');
+  const [loaded, setLoaded] = useState(false)
+  const [pageUser, setPageUser] = useState(null)
+  const [allCount, setAllCount] = useState(null)
 
   useEffect(() => {
-    dispatch(fetchAllBookshelves())
-    dispatch(fetchAllUsers())
-  }, [dispatch])
+    dispatch(fetchAllUsers()).then(() => {
+      dispatch(fetchAllBookshelves()).then(() => {
+        let total = 0
+        for (let i = 0; i < users[id].Bookshelves.length; i++){
+          const shelf = users[id].Bookshelves[i];
+          total += shelf.Stories.length
+        }
+        setLoaded(true)
+        setAllCount(total)
+      })
 
+    })
+  }, [dispatch, id])
+
+  useEffect(() => {
+    setPageUser(users[id])
+  }, [users, id])
+  if (!loaded) return null;
   return (
     <div className={styles.page_container}>
       <div className={styles.bookshelf_header}>
@@ -29,7 +49,23 @@ const Bookshelves = () => {
             {parseInt(id, 10) === sessionUser.id ? <a href='/bookshelves/edit' className={styles.bookshelf_edit_link}>(edit)</a> : null}
           </h6>
           <div className={styles.bookshelves_container}>
-            {/* Here */}
+            <div className={`${styles.bookshelf_selector} ${selected === '' ? styles.selected : ''}`} id={0}>
+              All
+              {stage >= 3 ? ` (${allCount})` : null}
+            </div>
+            {pageUser.Bookshelves.map(shelf => {
+              return (
+                <div className={`${styles.bookshelf_selector} ${selected === shelf.name ? styles.selected : ''}`} id={shelf.id}>
+                  {shelf.name}
+                  {stage >= 3 ? ` (${shelf.Stories.length})` : null}
+                </div>
+              )
+            })}
+              {/*
+            each bookshelf in bookshelfUser.Bookshelves
+              div(class=`bookshelf-selector ${selected === bookshelf.name ? 'selected' : ''}` id=bookshelf.id) #{bookshelf.name} 
+                if parseInt(mode) >= 3
+              |(#{bookshelf.Stories.length}) */}
           </div>
         </div>
       </div>
@@ -47,13 +83,13 @@ export default Bookshelves;
 //       if bookshelfUser.id === user.id
 //         a(href='/bookshelves/edit' class='bookshelf-edit-link') (edit)
 //     div(class='bookshelves-container')
-//       div(class=`bookshelf-selector ${selected === '' ? 'selected' : ''}` id=0 data-user-id=bookshelfUser.id) All 
-//         if parseInt(mode) >= 3
-//           |(#{allCount})
-//       each bookshelf in bookshelfUser.Bookshelves
-//         div(class=`bookshelf-selector ${selected === bookshelf.name ? 'selected' : ''}` id=bookshelf.id) #{bookshelf.name} 
-//           if parseInt(mode) >= 3
-//             |(#{bookshelf.Stories.length})
+      // div(class=`bookshelf-selector ${selected === '' ? 'selected' : ''}` id=0 data-user-id=bookshelfUser.id) All 
+      //   if parseInt(mode) >= 3
+      //     |(#{allCount})
+      // each bookshelf in bookshelfUser.Bookshelves
+      //   div(class=`bookshelf-selector ${selected === bookshelf.name ? 'selected' : ''}` id=bookshelf.id) #{bookshelf.name} 
+      //     if parseInt(mode) >= 3
+      //       |(#{bookshelf.Stories.length})
 //     button(class="add-new-bookshelf-button") Add shelf
 //     div(class='add-new-bookshelf-form-container hidden')
 //       div(class='add-new-bookshelf-title') Add a Shelf:

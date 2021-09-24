@@ -1,6 +1,7 @@
 import { createStore, combineReducers, applyMiddleware, compose } from 'redux';
 import thunk from 'redux-thunk';
 import session from './session';
+import users from './users'
 import bookshelves from './bookshelves'
 import stories from './stories'
 import placements from './placements'
@@ -8,6 +9,7 @@ import ui from './ui';
 
 const rootReducer = combineReducers({
   session,
+  users,
   bookshelves,
   stories,
   placements,
