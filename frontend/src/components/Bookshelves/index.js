@@ -18,6 +18,25 @@ const Bookshelves = () => {
   const [pageUser, setPageUser] = useState(null)
   const [allCount, setAllCount] = useState(null)
   const [addShelfReveal, setAddShelfReveal] = useState(false)
+  const [loadedStories, setLoadedStories] = useState([])
+
+  useEffect(() => {
+    if (selected === '') {
+      const temp = []
+      for (let i = 0; i < pageUser.Bookshelves.length; i++){
+        const shelf = pageUser.Bookshelves[i];
+        for (let j = 0; j < shelf.Stories.length; j++){
+          const story = shelf.Stories[j]
+          if (!temp.map(story => story.name).includes(story.name)) {
+            temp.push(story)
+          }
+        }
+      }
+      setLoadedStories(...temp)
+    } else {
+      setLoadedStories(...pageUser.Bookshelves.filter(shelf => shelf.name === selected)[0].Stories)
+    }
+  }, [selected, pageUser])
 
   useEffect(() => {
     dispatch(fetchAllUsers()).then(() => {
@@ -79,6 +98,71 @@ const Bookshelves = () => {
             </div>
           </div>)}
         </div>
+        <div className={styles.main_content}>
+          {stage >= 3 && (
+            <table className={styles.stories_llist_table}>
+              <thead>
+                <tr>
+                  <th>cover</th>
+                  <th className={styles.title_header}>title</th>
+                  <th>author</th>
+                  {stage >= 4 && (
+                    <>
+                      <th>avg rating</th>
+                      <th className={styles.user_rating_header}>rating</th>
+                    </>
+                  )}
+                  <th>shelves</th>
+                  <th>date read</th>
+                  <th>date added</th>
+                </tr>
+              </thead>
+              <tbody>
+                {loadedStories.map((story, idx) => {
+                  return (
+                    <tr className={styles.story_row} key={`story-row-${idx}`}>
+                      <td>
+                        <img src={story.imageUrl} className={styles.image_preview} alt={story.title}/>
+                      </td>
+                      <td className={styles.story_title}>
+                        <a href={`/stories/${story.id}`}>{story.title}</a>
+                      </td>
+                      <td className={styles.story_author}>{story.author}</td>
+                      {stage >= 4 ? () => {
+                        const userReview = story.Reviews.filter(review => review.userId === pageUser.id && review.rating >= 0)[0]
+                        const allReviews = story.Reviews.map(review => review.rating);
+                        if (userReview && userReview.rating) {
+                          // One thing
+                        } else {
+                          // No review yet, empty stars
+                        }
+                        return (
+                          <>
+                            <td className={styles.avg_rating}>{Math.round(allReviews.reduce((a, b) => { return a + b }, 0) / allReviews.length * 100) / 100 || 0}</td>
+                            <td>
+                              {userReview && userReview.rating ? (
+                                null
+                              ): (
+                                null
+                              )}
+                            </td>
+                          </>
+                        )
+                      } : null}
+                      <td className={styles.story_shelf_list}>{story.Bookshelves.map(shelf => shelf.name).join(', ')}</td>
+                      {story.Bookshelves.filter(shelf => shelf.name === 'Read').length > 0 ? (
+                        <td className={styles.story_date_added}>{new Date(story.Bookshelves.filter(shelf => shelf.name === 'Read')[0]).updatedAt.toString().slice(4, 16)}</td>
+                        ): (
+                          <td className={styles.story_date_read}>Not set</td>
+                      )}
+                      <td className={styles.story_date_added}>{new Date(story.createdAt).toString().slice(4, 16).slice(0,6) + ',' + new Date(story.createdAt).toString().slice(4, 16).slice(6)}</td>
+                    </tr>
+                  )
+                })}
+              </tbody>
+            </table>
+          )}
+        </div>
       </div>
     </div>
   );
@@ -86,28 +170,6 @@ const Bookshelves = () => {
 
 export default Bookshelves;
 
-// .bookshelf-header
-//   h3 #{user.id === bookshelfUser.id ? 'My Stories' : `${user.username}'s Stories`}
-// .page-content
-//   .sidebar
-//     h6 Bookshelves
-//       if bookshelfUser.id === user.id
-//         a(href='/bookshelves/edit' class='bookshelf-edit-link') (edit)
-//     div(class='bookshelves-container')
-      // div(class=`bookshelf-selector ${selected === '' ? 'selected' : ''}` id=0 data-user-id=bookshelfUser.id) All 
-      //   if parseInt(mode) >= 3
-      //     |(#{allCount})
-      // each bookshelf in bookshelfUser.Bookshelves
-      //   div(class=`bookshelf-selector ${selected === bookshelf.name ? 'selected' : ''}` id=bookshelf.id) #{bookshelf.name} 
-      //     if parseInt(mode) >= 3
-      //       |(#{bookshelf.Stories.length})
-
-    // button(class="add-new-bookshelf-button") Add shelf
-    // div(class='add-new-bookshelf-form-container hidden')
-    //   div(class='add-new-bookshelf-title') Add a Shelf:
-    //   div(class='add-new-bookshelf-input-section')
-    //     input(type='text' class='add-new-bookshelf-input')
-    //     button(class='add-new-bookshelf-submit-button') add
 //   .main-content
 //     if parseInt(mode) >= 3
 //       table(class='stories-list-table')
@@ -149,11 +211,11 @@ export default Bookshelves;
 //                       while i < 5
 //                         span(data-score=(i+1) class=`far fa-star ${bookshelfUser.id === user.id ? 'user-rating': ''}`)
 //                         - i++
-//               td.story-shelf-list=story.Bookshelves.map(shelf => shelf.name).join(', ')
-//               - const readShelf = story.Bookshelves.filter(shelf => shelf.name === 'Read')
-//               if (readShelf.length > 0)
-//                 td.story-date-added #{readShelf[0].updatedAt.toString().slice(4, 16)}
-//               else
-//                 td.story-date-read Not set
-//               - var date = story.Placements[0].createdAt.toString().slice(4, 16)
-//               td.story-date-added #{date.slice(0,6) + ',' + date.slice(6)}
+              // td.story-shelf-list=story.Bookshelves.map(shelf => shelf.name).join(', ')
+              // - const readShelf = story.Bookshelves.filter(shelf => shelf.name === 'Read')
+              // if (readShelf.length > 0)
+              //   td.story-date-added #{readShelf[0].updatedAt.toString().slice(4, 16)}
+              // else
+              //   td.story-date-read Not set
+              // - var date = story.Placements[0].createdAt.toString().slice(4, 16)
+              // td.story-date-added #{date.slice(0,6) + ',' + date.slice(6)}
