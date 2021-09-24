@@ -2,22 +2,36 @@ import React, {useEffect} from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useParams } from 'react-router-dom';
 import { fetchAllBookshelves } from '../../store/bookshelves';
+import { fetchAllUsers } from '../../store/users';
 import styles from './bookshelves.module.css';
 
 const Bookshelves = () => {
   const { id } = useParams()
   const dispatch = useDispatch()
   const sessionUser = useSelector(state => state.session.user);
+  const users = useSelector(state => state.users.users)
   const bookshelves = useSelector(state => state.bookshelves.bookshelves)
 
   useEffect(() => {
     dispatch(fetchAllBookshelves())
+    dispatch(fetchAllUsers())
   }, [dispatch])
 
   return (
     <div className={styles.page_container}>
       <div className={styles.bookshelf_header}>
-        <h3>{parseInt(id, 10) === sessionUser.id ? 'My Stories' : 'Someone else'}</h3>
+        <h3>{parseInt(id, 10) === sessionUser.id ? 'My Stories' : `${users[parseInt(id, 10)].username}'s Stories`}</h3>
+      </div>
+      <div className={styles.page_content}>
+        <div className={styles.sidebar}>
+          <h6>
+            Bookshelves
+            {parseInt(id, 10) === sessionUser.id ? <a href='/bookshelves/edit' className={styles.bookshelf_edit_link}>(edit)</a> : null}
+          </h6>
+          <div className={styles.bookshelves_container}>
+            {/* Here */}
+          </div>
+        </div>
       </div>
     </div>
   );
