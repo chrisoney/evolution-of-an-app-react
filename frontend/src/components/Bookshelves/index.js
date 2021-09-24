@@ -17,21 +17,25 @@ const Bookshelves = () => {
   const [loaded, setLoaded] = useState(false)
   const [pageUser, setPageUser] = useState(null)
   const [allCount, setAllCount] = useState(null)
+  const [addShelfReveal, setAddShelfReveal] = useState(false)
 
   useEffect(() => {
     dispatch(fetchAllUsers()).then(() => {
       dispatch(fetchAllBookshelves()).then(() => {
-        let total = 0
-        for (let i = 0; i < users[id].Bookshelves.length; i++){
-          const shelf = users[id].Bookshelves[i];
-          total += shelf.Stories.length
-        }
-        setLoaded(true)
-        setAllCount(total)
+        setLoaded(true)  
       })
 
     })
   }, [dispatch, id])
+
+  useEffect(() => {
+    let total = 0
+    for (let i = 0; i < users[parseInt(id, 10)]?.Bookshelves.length; i++){
+      const shelf = users[id].Bookshelves[i];
+      total += shelf.Stories.length
+    }
+    setAllCount(total)
+  }, [users, id])
 
   useEffect(() => {
     setPageUser(users[id])
@@ -55,18 +59,25 @@ const Bookshelves = () => {
             </div>
             {pageUser.Bookshelves.map(shelf => {
               return (
-                <div className={`${styles.bookshelf_selector} ${selected === shelf.name ? styles.selected : ''}`} id={shelf.id}>
+                <div className={`${styles.bookshelf_selector} ${selected === shelf.name ? styles.selected : ''}`} id={shelf.id} key={`bookshelf-sidebar-${shelf.id}`}>
                   {shelf.name}
                   {stage >= 3 ? ` (${shelf.Stories.length})` : null}
                 </div>
               )
             })}
-              {/*
-            each bookshelf in bookshelfUser.Bookshelves
-              div(class=`bookshelf-selector ${selected === bookshelf.name ? 'selected' : ''}` id=bookshelf.id) #{bookshelf.name} 
-                if parseInt(mode) >= 3
-              |(#{bookshelf.Stories.length}) */}
           </div>
+          {!addShelfReveal &&
+            <button
+              className={styles.add_new_bookshelf_button}
+              onClick={() => setAddShelfReveal(true)}
+            >Add shelf</button>}
+          {addShelfReveal && (<div className={`${styles.add_new_bookshelf_form_container}`}>
+            <div className={styles.add_new_bookshelf_title}>Add a Shelf:</div>
+            <div className={styles.add_new_bookshelf_input_section}>
+              <input type='text' className={styles.add_new_bookshelf_input} />
+              <button className={styles.add_new_bookshelf_submit_button}>add</button>
+            </div>
+          </div>)}
         </div>
       </div>
     </div>
@@ -90,12 +101,13 @@ export default Bookshelves;
       //   div(class=`bookshelf-selector ${selected === bookshelf.name ? 'selected' : ''}` id=bookshelf.id) #{bookshelf.name} 
       //     if parseInt(mode) >= 3
       //       |(#{bookshelf.Stories.length})
-//     button(class="add-new-bookshelf-button") Add shelf
-//     div(class='add-new-bookshelf-form-container hidden')
-//       div(class='add-new-bookshelf-title') Add a Shelf:
-//       div(class='add-new-bookshelf-input-section')
-//         input(type='text' class='add-new-bookshelf-input')
-//         button(class='add-new-bookshelf-submit-button') add
+
+    // button(class="add-new-bookshelf-button") Add shelf
+    // div(class='add-new-bookshelf-form-container hidden')
+    //   div(class='add-new-bookshelf-title') Add a Shelf:
+    //   div(class='add-new-bookshelf-input-section')
+    //     input(type='text' class='add-new-bookshelf-input')
+    //     button(class='add-new-bookshelf-submit-button') add
 //   .main-content
 //     if parseInt(mode) >= 3
 //       table(class='stories-list-table')
