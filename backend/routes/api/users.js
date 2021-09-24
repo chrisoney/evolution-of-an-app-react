@@ -86,4 +86,15 @@ router.post(
   })
 );
 
+router.get('/', asyncHandler(async (req, res) => {
+  const users = await User.findAll({
+    include: {
+      model: Bookshelf,
+      include: Story
+    }
+  })
+
+  res.json({users})
+}))
+
 module.exports = router;
