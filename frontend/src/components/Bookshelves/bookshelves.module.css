@@ -196,7 +196,7 @@
   text-align: center;
 }
 
-.ratings_container {
+/* .ratings_container {
   min-width: 90px;
 }
 
@@ -209,7 +209,7 @@
 
 .far.fa-star {
   color: #D6D6D6;
-}
+} */
 
 .story_title > a {
   text-decoration: none;

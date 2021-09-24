@@ -1,0 +1,14 @@
+.ratings_container {
+  min-width: 90px;
+}
+
+.fa-star {
+  color: #F6A623;
+}
+.user_rating {
+  cursor: pointer;
+}
+
+.far.fa-star {
+  color: #D6D6D6;
+}

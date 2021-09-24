@@ -3,7 +3,10 @@ import { useSelector, useDispatch } from 'react-redux';
 import { useParams } from 'react-router-dom';
 import { fetchAllBookshelves } from '../../store/bookshelves';
 import { fetchAllUsers } from '../../store/users';
+import { fetchAllStories } from '../../store/stories';
 import styles from './bookshelves.module.css';
+
+import Ratings from '../Ratings';
 
 const Bookshelves = () => {
   const { id } = useParams()
@@ -12,6 +15,7 @@ const Bookshelves = () => {
   const sessionUser = useSelector(state => state.session.user);
   const users = useSelector(state => state.users.users);
   const bookshelves = useSelector(state => state.bookshelves.bookshelves);
+  const stories = useSelector(state => state.stories.stories);
 
   const [selected, setSelected] = useState('');
   const [loaded, setLoaded] = useState(false)
@@ -20,28 +24,38 @@ const Bookshelves = () => {
   const [addShelfReveal, setAddShelfReveal] = useState(false)
   const [loadedStories, setLoadedStories] = useState([])
 
+  // useEffect(() => {
+  //   console.log(loadedStories)
+  // }, [loadedStories])
+
   useEffect(() => {
-    if (selected === '') {
-      const temp = []
-      for (let i = 0; i < pageUser.Bookshelves.length; i++){
-        const shelf = pageUser.Bookshelves[i];
-        for (let j = 0; j < shelf.Stories.length; j++){
-          const story = shelf.Stories[j]
-          if (!temp.map(story => story.name).includes(story.name)) {
-            temp.push(story)
+    if (pageUser) {
+      if (selected === '') {
+        const tempArray = []
+        const shelves = Object.values(pageUser.Bookshelves)
+        for (let i = 0; i < shelves.length; i++){
+          const shelf = shelves[i];
+          for (let j = 0; j < shelf.Stories.length; j++){
+            const story = shelf.Stories[j]
+            if (!tempArray.map(story => story.title).includes(story.title)) {
+              tempArray.push(story)
+            }
           }
         }
+        setLoadedStories([...tempArray])
+      } else {
+        const temp = Object.values(pageUser.Bookshelves).filter(shelf => shelf.name === selected)[0].Stories;
+        setLoadedStories([...temp])
       }
-      setLoadedStories(...temp)
-    } else {
-      setLoadedStories(...pageUser.Bookshelves.filter(shelf => shelf.name === selected)[0].Stories)
     }
   }, [selected, pageUser])
 
   useEffect(() => {
     dispatch(fetchAllUsers()).then(() => {
       dispatch(fetchAllBookshelves()).then(() => {
-        setLoaded(true)  
+        dispatch(fetchAllStories()).then(() => {
+          setLoaded(true)
+        })
       })
 
     })
@@ -119,6 +133,7 @@ const Bookshelves = () => {
               </thead>
               <tbody>
                 {loadedStories.map((story, idx) => {
+                  const newStory = stories[story.id]
                   return (
                     <tr className={styles.story_row} key={`story-row-${idx}`}>
                       <td>
@@ -129,29 +144,29 @@ const Bookshelves = () => {
                       </td>
                       <td className={styles.story_author}>{story.author}</td>
                       {stage >= 4 ? () => {
+                        let rating;
+                        let userId;
                         const userReview = story.Reviews.filter(review => review.userId === pageUser.id && review.rating >= 0)[0]
                         const allReviews = story.Reviews.map(review => review.rating);
                         if (userReview && userReview.rating) {
-                          // One thing
+                          rating = userReview.rating;
+                          userId = userReview.userId;
                         } else {
-                          // No review yet, empty stars
+                          rating = 0;
+                          userId = parseInt(id, 10)
                         }
                         return (
                           <>
                             <td className={styles.avg_rating}>{Math.round(allReviews.reduce((a, b) => { return a + b }, 0) / allReviews.length * 100) / 100 || 0}</td>
                             <td>
-                              {userReview && userReview.rating ? (
-                                null
-                              ): (
-                                null
-                              )}
+                              <Ratings rating={rating} userId={userId} />
                             </td>
                           </>
                         )
                       } : null}
-                      <td className={styles.story_shelf_list}>{story.Bookshelves.map(shelf => shelf.name).join(', ')}</td>
-                      {story.Bookshelves.filter(shelf => shelf.name === 'Read').length > 0 ? (
-                        <td className={styles.story_date_added}>{new Date(story.Bookshelves.filter(shelf => shelf.name === 'Read')[0]).updatedAt.toString().slice(4, 16)}</td>
+                      <td className={styles.story_shelf_list}>{newStory.Bookshelves.filter(shelf=> shelf.userId === pageUser.id).map(shelf => shelf.name).join(', ')}</td>
+                      {newStory.Bookshelves.filter(shelf => shelf.name === 'Read').length > 0 ? (
+                        <td className={styles.story_date_added}>{new Date(newStory.Bookshelves.filter(shelf => shelf.name === 'Read')[0].updatedAt).toString().slice(4, 16)}</td>
                         ): (
                           <td className={styles.story_date_read}>Not set</td>
                       )}
