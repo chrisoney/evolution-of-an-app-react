@@ -4,15 +4,16 @@ import styles from './ratings.module.css'
 
 const Ratings = ({ rating, userId, storyId }) => {
   const [content, setContent] = useState([])
+  const [shownRating, setShownRating] = useState(rating)
   const sessionUser = useSelector(state => state.session.user)
 
   useEffect(() => {
     const temp = [];
-    if (rating > 0) {
-      for (let i = 0; i < rating; i++){
+    if (shownRating > 0) {
+      for (let i = 0; i < shownRating; i++){
         temp.push('fas')
       }
-      for (let j = rating; j < 5; j++){
+      for (let j = shownRating; j < 5; j++){
         temp.push('far')
       }
     } else {
@@ -21,23 +22,36 @@ const Ratings = ({ rating, userId, storyId }) => {
       }
     }
     setContent([...temp])
-  }, [rating, userId, sessionUser])
+  }, [shownRating, userId, sessionUser])
 
   const handleRatingsClick = (e) => {
-    console.log(e.target.testing)
+    console.log(parseInt(e.target.attributes.value.value))
+  }
+
+  const handleRatingsHover = (e) => {
+    setShownRating(e.target.attributes.value.value)
+    // console.log(parseInt(e.target.attributes.value.value))
+
+  }
+
+  const handleMouseLeave = (e) => {
+    setShownRating(rating)
   }
 
   return (
-    <div className={styles.ratings_container}>
+    <div
+      className={styles.ratings_container}
+      onMouseLeave={sessionUser.id === userId ? (e) => handleMouseLeave(e) : null}
+    >
       {content.map((ele, idx) => {
         const val = idx + 1;
         return (
           <span
             value={val}
-            testing={val}
             key={`user-${userId}-story-${storyId}-rating-${idx}`}
-            className={`${ele === 'fas' ? 'fas' : 'far'} fa-star ${sessionUser.id === userId ? styles.user_rating : ''}`}
-            onClick={(e) => handleRatingsClick(e)}
+            className={`${ele === 'fas' ? 'fas' : 'far'} fa-star ${ele === 'fas' ? styles.fa_star_on : styles.fa_star_off} ${sessionUser.id === userId ? styles.user_rating : ''}`}
+            onClick={sessionUser.id === userId ? (e) => handleRatingsClick(e) : null}
+            onMouseOver={sessionUser.id === userId ? (e) => handleRatingsHover(e) : null}
           />
         )
       })}
