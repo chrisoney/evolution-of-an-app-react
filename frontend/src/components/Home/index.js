@@ -149,7 +149,14 @@ function Home() {
                     </div>
                     <div className={styles.feed_instance_update_date}>{date.slice(0,6) + ',' + date.slice(6)}</div>
                   </div>
-                  <div className={styles.feed_instance_main_content_section}></div>
+                  <div className={styles.feed_instance_main_content_section}>
+                    <a href={`/stories/${feedEle.storyId}`}>
+                      <img src={stories[feedEle.storyId].imageUrl} className={styles.feed_instance_image} alt={stories[feedEle.storyId].title} />
+                    </a>
+                    <div className={styles.feed_instance_details_section}>
+                      {/* here */}
+                    </div>
+                  </div>
                 </div>
               )
             })}
@@ -185,9 +192,9 @@ function Home() {
     //             .feed-instance-update-date #{date.slice(0,6) + ',' + date.slice(6)}
     //           -const story = placement.Story
     //           .feed-instance-main-content-section
-    //             a(href=`/stories/${story.id}`)
-    //               img(src=story.imageUrl class='feed-instance-image')
-    //             .feed-instance-details-section
+                // a(href=`/stories/${story.id}`)
+                //   img(src=story.imageUrl class='feed-instance-image')
+                // .feed-instance-details-section
     //               .feed-instance-title= story.title
     //               .feed-instance-author By #{story.author}
     //               - let shelf_name, shelf_id
