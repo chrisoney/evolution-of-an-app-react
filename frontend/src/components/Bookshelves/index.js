@@ -14,7 +14,7 @@ const Bookshelves = () => {
   const stage = useSelector(state => state.ui.stage);
   const sessionUser = useSelector(state => state.session.user);
   const users = useSelector(state => state.users.users);
-  const bookshelves = useSelector(state => state.bookshelves.bookshelves);
+  // const bookshelves = useSelector(state => state.bookshelves.bookshelves);
   const stories = useSelector(state => state.stories.stories);
 
   const [selected, setSelected] = useState('');
@@ -134,6 +134,7 @@ const Bookshelves = () => {
               <tbody>
                 {loadedStories.map((story, idx) => {
                   const newStory = stories[story.id]
+                  const userReview = newStory.Reviews.filter(review => review.userId === pageUser.id && review.rating >= 0)[0]
                   return (
                     <tr className={styles.story_row} key={`story-row-${idx}`}>
                       <td>
@@ -143,7 +144,7 @@ const Bookshelves = () => {
                         <a href={`/stories/${story.id}`}>{story.title}</a>
                       </td>
                       <td className={styles.story_author}>{story.author}</td>
-                      {stage >= 4 ? () => {
+                      {/* {stage >= 4 ? () => {
                         let rating;
                         let userId;
                         const userReview = story.Reviews.filter(review => review.userId === pageUser.id && review.rating >= 0)[0]
@@ -157,13 +158,21 @@ const Bookshelves = () => {
                         }
                         return (
                           <>
-                            <td className={styles.avg_rating}>{Math.round(allReviews.reduce((a, b) => { return a + b }, 0) / allReviews.length * 100) / 100 || 0}</td>
+                            <td className={styles.avg_rating}>{Math.round(newStory.Reviews.map(review => review.rating).reduce((a, b) => { return a + b }, 0) / allReviews.length * 100) / 100 || 0}</td>
                             <td>
                               <Ratings rating={rating} userId={userId} />
                             </td>
                           </>
                         )
-                      } : null}
+                      } : null} */}
+                      {stage >= 4 && (
+                         <>
+                          <td className={styles.avg_rating}>{Math.round(newStory.Reviews.map(review => review.rating).reduce((a, b) => { return a + b }, 0) / newStory.Reviews.length * 100) / 100 || 0}</td>
+                          <td>
+                            <Ratings rating={userReview ? userReview.rating : 0} userId={pageUser.id} storyId={newStory.id} />
+                          </td>
+                        </>
+                      )}
                       <td className={styles.story_shelf_list}>{newStory.Bookshelves.filter(shelf=> shelf.userId === pageUser.id).map(shelf => shelf.name).join(', ')}</td>
                       {newStory.Bookshelves.filter(shelf => shelf.name === 'Read').length > 0 ? (
                         <td className={styles.story_date_added}>{new Date(newStory.Bookshelves.filter(shelf => shelf.name === 'Read')[0].updatedAt).toString().slice(4, 16)}</td>

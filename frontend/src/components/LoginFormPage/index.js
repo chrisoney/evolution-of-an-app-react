@@ -61,7 +61,7 @@ function LoginFormPage() {
   ) : (
       <>
         <a href='/' className={styles.logo_container}>
-          <img src='/images/logo.png' className={styles.auth_logo} />
+          <img src='/images/logo.png' className={styles.auth_logo} alt='logo img'/>
         </a>
         <div className={styles.form_container}>
           <h1 className={styles.auth_title}>Sign in to RoyalReads</h1>
