@@ -24,6 +24,7 @@ router.get(
 // GET /api/restore-user
 const { restoreUser } = require('../../utils/auth.js');
 router.get('/restore-user', restoreUser, (req, res) => {
+  console.log(req.user.toJSON())
   return res.json(req.user);
 });
 

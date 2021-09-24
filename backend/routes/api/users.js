@@ -8,7 +8,7 @@ const asyncHandler = require('express-async-handler');
 const { handleValidationErrors } = require('../../utils/validation');
 const { setTokenCookie, requireAuth } = require('../../utils/auth');
 const { addStories, alterFeed } = require('../../utils/demo');
-const { User, Bookshelf } = require('../../db/models');
+const { User, Bookshelf, Story } = require('../../db/models');
 
 const router = express.Router();
 
@@ -72,7 +72,12 @@ router.post(
     
     await addStories(bookshelves)
     await alterFeed()
-    user = await User.scope('currentUser').findByPk(user.id);
+    user = await User.scope('currentUser').findByPk(user.id, {
+      include: {
+        model: Bookshelf,
+        include: Story
+      }
+    });
     await setTokenCookie(res, user);
 
     return res.json({

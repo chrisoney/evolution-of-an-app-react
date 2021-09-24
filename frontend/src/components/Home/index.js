@@ -22,7 +22,6 @@ function Home() {
   const [loaded, setLoaded] = useState(false)
   const [feed, setFeed] = useState([])
 
-
   // Fisher-Yates
   const shuffleArray = array => {
     const newArray = [...array]
@@ -36,7 +35,6 @@ function Home() {
   }
 
   useEffect(() => {
-    console.log(loaded)
     dispatch(fetchAllBookshelves()).then(() => {
       dispatch(fetchAllStories()).then(() => {
         dispatch(fetchAllPlacements()).then(() => {
