@@ -56,7 +56,7 @@ function Home() {
     if (sessionUser && sessionUser.Bookshelves && Object.values(bookshelves).length > 0) {
       setCurrReadingStory(sessionUser.Bookshelves.filter(shelf => shelf.name === 'Currently Reading')[0].Stories[0])
       setWantReadStories(sessionUser.Bookshelves.filter(shelf => shelf.name === 'Want To Read')[0].Stories.slice(0, 3))
-      setFeed(Object.values(placements).filter(placement => {
+      setFeed(shuffleArray(Object.values(placements)).filter(placement => {
         const names = ['Want To Read', 'Currently Reading', 'Read']
         return placement.userId !== sessionUser.id && names.includes(bookshelves[placement.bookshelfId].name)
       }).slice(0,10))
@@ -130,20 +130,24 @@ function Home() {
           <div className={styles.social_feed_section_container}>
             {feed.map((feedEle, idx) => {
               let shelf;
+              const date = new Date(feedEle.updatedAt).toString().slice(4, 16)
               if (feedEle.bookshelfId) shelf = bookshelves[feedEle.bookshelfId]
               return (
                 <div className={styles.feed_instance_container} key={`feed-instance-${idx}`}>
                   <div className={styles.feed_instance_top_section}>
                     <div className={styles.feed_instance_username_section}>
                       {feedEle.bookshelfId ? (
-                        <a href={`/users/${shelf.User.id}/bookshelves`} className={styles.username_link}>
-                          <div className={styles.feed_instance_username}>{shelf.User.username}</div>
+                        <>
+                          <a href={`/users/${shelf.User.id}/bookshelves`} className={styles.username_link}>
+                            <div className={styles.feed_instance_username}>{shelf.User.username}</div>
+                          </a>
                           <div className={styles.feed_action}>{shelf.name === 'Want To Read' ? 'wants to read' : shelf.name === 'Currently Reading' ? 'is reading' : shelf.name === 'Read' ? 'has read' : 'is breaking my app'}</div>
-                        </a>
+                        </>
                       ) : (
-                          null
+                          null // Return to later once we've started on reviews
                       )}
                     </div>
+                    <div className={styles.feed_instance_update_date}>{date.slice(0,6) + ',' + date.slice(6)}</div>
                   </div>
                   <div className={styles.feed_instance_main_content_section}></div>
                 </div>
