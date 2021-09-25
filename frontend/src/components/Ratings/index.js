@@ -1,10 +1,14 @@
 import React, { useState, useEffect } from 'react';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
+
+import { createOrUpdateReview } from '../../store/reviews';
 import styles from './ratings.module.css'
 
 const Ratings = ({ rating, userId, storyId }) => {
+  const dispatch = useDispatch()
   const [content, setContent] = useState([])
   const [shownRating, setShownRating] = useState(rating)
+  const [holdRating, setHoldRating] = useState(rating)
   const sessionUser = useSelector(state => state.session.user)
 
   useEffect(() => {
@@ -25,17 +29,23 @@ const Ratings = ({ rating, userId, storyId }) => {
   }, [shownRating, userId, sessionUser])
 
   const handleRatingsClick = (e) => {
-    console.log(parseInt(e.target.attributes.value.value))
+    // const ratingVal = e.target.attributes.value.value;
+    const ratingVal = e.target.dataset.rating;
+    // console.log(parseInt(ratingVal))
+    dispatch(createOrUpdateReview({
+      userId,
+      storyId,
+      rating: ratingVal
+    }))
+    setHoldRating(ratingVal)
   }
 
   const handleRatingsHover = (e) => {
     setShownRating(e.target.attributes.value.value)
-    // console.log(parseInt(e.target.attributes.value.value))
-
   }
 
   const handleMouseLeave = (e) => {
-    setShownRating(rating)
+    setShownRating(holdRating)
   }
 
   return (
@@ -48,6 +58,7 @@ const Ratings = ({ rating, userId, storyId }) => {
         return (
           <span
             value={val}
+            data-rating={val}
             key={`user-${userId}-story-${storyId}-rating-${idx}`}
             className={`${ele === 'fas' ? 'fas' : 'far'} fa-star ${ele === 'fas' ? styles.fa_star_on : styles.fa_star_off} ${sessionUser.id === userId ? styles.user_rating : ''}`}
             onClick={sessionUser.id === userId ? (e) => handleRatingsClick(e) : null}
