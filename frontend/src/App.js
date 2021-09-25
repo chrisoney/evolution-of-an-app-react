@@ -7,14 +7,17 @@ import * as sessionActions from "./store/session";
 import { getStage } from './store/ui';
 
 import Navigation from "./components/Navigation";
+import PageNotMade from './components/AlternativePages/PageNotMade';
+import FourOhFour from './components/AlternativePages/FourOhFour';
+import Footer from './components/Footer';
 import StageSelector from "./components/StageSelector";
+
 import Home from "./components/Home";
 import Bookshelves from "./components/Bookshelves";
 import EditBookshelves from "./components/Bookshelves/EditBookshelves";
 import BrowseStories from './components/BrowseStories';
-import PageNotMade from './components/AlternativePages/PageNotMade';
-import FourOhFour from './components/AlternativePages/FourOhFour';
-import Footer from './components/Footer';
+import StoryPage from './components/StoryPage';
+
 
 import ProtectedRoute from "./components/utils/ProtectedRoute";
 import { Helmet } from 'react-helmet-async'
@@ -47,7 +50,7 @@ function App() {
           <Route path="/signup">
             <SignupFormPage />
           </Route>
-          <ProtectedRoute path="/stories" min={3}>
+          <ProtectedRoute path="/stories" min={4}>
             <BrowseStories />
           </ProtectedRoute>
           <ProtectedRoute path="/users/:id/bookshelves" min={2}>
@@ -55,6 +58,9 @@ function App() {
           </ProtectedRoute>
           <ProtectedRoute path="/bookshelves/edit" min={2}>
             <EditBookshelves />
+          </ProtectedRoute>
+          <ProtectedRoute path="/stories/:id" min={3}>
+            <StoryPage />
           </ProtectedRoute>
           <Route path='/page-not-made'>
             <PageNotMade location={location} />

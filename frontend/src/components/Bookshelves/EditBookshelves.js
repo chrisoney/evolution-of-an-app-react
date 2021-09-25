@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useSelector } from 'react-redux';
 import styles from './editBookshelves.module.css';
 
@@ -88,6 +88,7 @@ const EditBookshelves = () => {
 
 const BookshelfEditRow = ({ shelf, queryVar }) => {
   const stage = useSelector(state => state.ui.stage);
+  const [reveal, setReveal] = useState()
   return (
     <tr className={styles.shelf_row} data-editable={`${shelf.deleteAllowed ? true : false}`} data-shelf-id={shelf.id}>
       <td className={styles.delete_shelf_container}>
@@ -99,17 +100,22 @@ const BookshelfEditRow = ({ shelf, queryVar }) => {
           // Onclick should be the reveal
           className={styles.shelf_link}
         >
-          <div>{shelf.name}</div>
-          {/* Need to hide here */}
-          {/* <div className={styles.shelf_name_update_container}>
+          {!reveal && <div>{shelf.name}</div>}
+          {reveal && <div className={styles.shelf_name_update_container}>
             <input type='text' className={styles.shelf_name_update_input} value={shelf.name} />
             <button className={styles.shelf_name_update_submit} id={shelf.id}>Save</button>
-            <button className={styles.shelf_name_update_cancel}>Cancel</button>
-          </div> */}
+            <button
+              className={styles.shelf_name_update_cancel}
+              onClick={() => setReveal(!reveal)}
+            >Cancel</button>
+          </div>}
         </div>
       </td>
       <td className={styles.editable_container}>
-        <i className={`${styles.editable} fas ${shelf.deleteAllowed ? `fa-check ${styles.fa_check}` : `fa-times ${styles.fa_times}`}`} />
+        <i
+          className={`${styles.editable} fas ${shelf.deleteAllowed ? `fa-check ${styles.fa_check}` : `fa-times ${styles.fa_times}`}`}
+          onClick={shelf.deleteAllowed ? () => setReveal(!reveal) : null}
+        />
       </td>
       {stage >= 3 && (
         <td className={styles.story_count_container}>
