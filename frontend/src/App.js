@@ -10,6 +10,7 @@ import Navigation from "./components/Navigation";
 import StageSelector from "./components/StageSelector";
 import Home from "./components/Home";
 import Bookshelves from "./components/Bookshelves";
+import EditBookshelves from "./components/Bookshelves/EditBookshelves";
 import BrowseStories from './components/BrowseStories';
 import PageNotMade from './components/AlternativePages/PageNotMade';
 import FourOhFour from './components/AlternativePages/FourOhFour';
@@ -51,6 +52,9 @@ function App() {
           </ProtectedRoute>
           <ProtectedRoute path="/users/:id/bookshelves" min={2}>
             <Bookshelves />
+          </ProtectedRoute>
+          <ProtectedRoute path="/bookshelves/edit" min={2}>
+            <EditBookshelves />
           </ProtectedRoute>
           <Route path='/page-not-made'>
             <PageNotMade location={location} />
