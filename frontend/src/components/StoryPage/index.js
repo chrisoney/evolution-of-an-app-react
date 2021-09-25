@@ -14,12 +14,13 @@ const StoryPage = () => {
   const sessionUser = useSelector(state => state.session.user);
   const stories = useSelector(state => state.stories.stories);
   const [story, setStory] = useState(null)
-  const [userReview, setUserReview]
+  const [userReview, setUserReview] = useState(null)
+  const [otherReviews, setOtherReviews] = useState([])
   const [revealTags, setRevealTags] = useState(false)
   const [revealWarnings, setRevealWarnings] = useState(false)
 
   useEffect(() => {
-    dispatch(fetchAllStories)
+    dispatch(fetchAllStories())
   }, [dispatch])
 
   useEffect(() => {
@@ -27,14 +28,24 @@ const StoryPage = () => {
   }, [stories, id])
 
   useEffect(() => {
-    setUserReview(story.Reviews.filter(review => review.userId === sessionUser.id)[0])
-  }, [story])
+    if (story && story.Reviews) {
+      setUserReview(story.Reviews.filter(review => review.userId === sessionUser.id)[0])
+      setOtherReviews([...story.Reviews.filter((review) => review.userId !== sessionUser.id)])
+    }
+  }, [story, sessionUser])
 
+  // useEffect(() => {
+  // }, [story, sessionUser])
+
+  useEffect(() => {
+
+  })
+  if (!story) return null;
   return (
     <div className={styles.page_container}>
       <div className={styles.story_page_left_side}>
         <div className={styles.story_stick_section}>
-          <img src={story.imagUrl} className={styles.story_image} alt={story.title} />
+          <img src={story.imageUrl} className={styles.story_image} alt={story.title} />
           {/* This is where the component to change bookshelves will be. I'll work on that in a bit */}
         </div>
       </div>
@@ -78,7 +89,7 @@ const StoryPage = () => {
               </div>
             </div>
           )}
-          <div classNames={styles.story_warnings_section}>
+          <div className={styles.story_warnings_section}>
             {story.warnings.warnings.length === 0 ? (
                 <div className={styles.warnings_none}>No Warnings</div>
             ) : (
@@ -129,12 +140,36 @@ const StoryPage = () => {
                 <button className={styles.submit_review_content_button} data-story-id={story.id}>Submit</button>
               </div>
             </div>
-
-            .user-review-form-section.hidden
-              textarea(class='new-review-content-input')
-              .user-review-form-button-section
-                button(class='cancel-review-content-button') Cancel
-                button(class='submit-review-content-button' data-story-id=story.id) Submit
+            <div className={styles.other_reviews_section}>
+              <div className={styles.other_reviews_title_section}>
+                <div className={styles.other_review_title}>Community Reviews</div>
+                <div className={styles.other_reviews_numbers}>{otherReviews.length > 0 ? `Showing 1 - ${otherReviews.length}` : 'Showing 0 - 0'}</div>
+              </div>
+              <div className={styles.other_reviews_general_info_section}>
+                <div className={styles.avg_star_section}>
+                  {story.Ratings === 0
+                    ? <div className={styles.no_ratings}>No ratings yet</div>
+                    : <Ratings
+                      rating={otherReviews
+                        .map(review => review.rating)
+                        .filter(rating => rating !== null)
+                        .reduce((a, b) => { return a + b }, 0) / otherReviews
+                          .map(review => review.rating)
+                          .filter(rating => rating !== null)
+                          .length}
+                      userId={0}
+                      storyId={story.id} />}
+                </div>
+                <div className={styles.dot}>&#183;</div>
+                <div className={styles.num_review_parts}>{otherReviews
+                  .map(review => review.content)
+                  .filter(content => content !== null && content !== '').length} Reviews</div>
+                <div className={styles.dot}>&#183;</div>
+                <div className={styles.num_review_parts}>{otherReviews
+                  .map(review => review.rating)
+                  .filter(rating => rating !== null).length} Ratings</div>
+              </div>
+            </div>
           </div>
         </div>}
       </div>
@@ -236,36 +271,36 @@ export default StoryPage;
   //             .user-review-form-button-section
   //               button(class='cancel-review-content-button') Cancel
   //               button(class='submit-review-content-button' data-story-id=story.id) Submit
-  //         .other-reviews-section
-  //           -const otherReviews = reviews.filter(review => review.userId !== user.id)
-  //           .other-reviews-title-section
-  //             .other-reviews-title Community Reviews
-  //             if otherReviews.length > 0
-  //               .other-reviews-numbers Showing 1 - #{otherReviews.length}
-  //             else
-  //               .other-reviews-numbers Showing 0 - 0
+          // .other-reviews-section
+          //   -const otherReviews = reviews.filter(review => review.userId !== user.id)
+          //   .other-reviews-title-section
+          //     .other-reviews-title Community Reviews
+          //     if otherReviews.length > 0
+          //       .other-reviews-numbers Showing 1 - #{otherReviews.length}
+          //     else
+          //       .other-reviews-numbers Showing 0 - 0
 
-  //           .other-reviews-general-info-section
-  //             -const ratings = otherReviews.map(review => review.rating).filter(rating => rating !== null)
-  //             -const reviewContents = otherReviews.map(review => review.content).filter(content => content !== null && content !== '')
-  //             -const avgRating = ratings.reduce((a,b) => {return a + b}, 0) / ratings.length
-  //             .avg-star-section
-  //               if ratings.length === 0
-  //                 .no-ratings No ratings yet
-  //               //- +ratingsSection(avgRating, story.id, false)
-  //               else
-  //                 div(class='ratings-container' data-story-id=story.id data-current-rating=avgRating)
-  //                       - let i = 0, j = avgRating + 1
-  //                       while i < avgRating
-  //                         span(data-score=(i+1) class='fas fa-star')
-  //                         - i++
-  //                       while j <= 5
-  //                         span(data-score=j class='far fa-star')
-  //                         - j++
-  //             .dot &#183;
-  //             .num-review-parts #{reviewContents.length} Reviews
-  //             .dot &#183;
-  //             .num-review-parts #{ratings.length} Ratings
+          //   .other-reviews-general-info-section
+          //     -const ratings = otherReviews.map(review => review.rating).filter(rating => rating !== null)
+          //     -const reviewContents = otherReviews.map(review => review.content).filter(content => content !== null && content !== '')
+          //     -const avgRating = ratings.reduce((a,b) => {return a + b}, 0) / ratings.length
+          //     .avg-star-section
+          //       if ratings.length === 0
+          //         .no-ratings No ratings yet
+          //       //- +ratingsSection(avgRating, story.id, false)
+          //       else
+          //         div(class='ratings-container' data-story-id=story.id data-current-rating=avgRating)
+          //               - let i = 0, j = avgRating + 1
+          //               while i < avgRating
+          //                 span(data-score=(i+1) class='fas fa-star')
+          //                 - i++
+          //               while j <= 5
+          //                 span(data-score=j class='far fa-star')
+          //                 - j++
+          //     .dot &#183;
+          //     .num-review-parts #{reviewContents.length} Reviews
+          //     .dot &#183;
+          //     .num-review-parts #{ratings.length} Ratings
   //           .other-reviews-social-container
   //             //- -const otherReviews = reviews.filter(review => review.userId !== user.id)
   //             each review in otherReviews

@@ -50,7 +50,7 @@ function App() {
           <Route path="/signup">
             <SignupFormPage />
           </Route>
-          <ProtectedRoute path="/stories" min={4}>
+          <ProtectedRoute path="/stories" exact min={4}>
             <BrowseStories />
           </ProtectedRoute>
           <ProtectedRoute path="/users/:id/bookshelves" min={2}>
