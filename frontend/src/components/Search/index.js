@@ -27,6 +27,7 @@ const Search = () => {
                 name='filter'
                 id='all'
                 value='all'
+                className={styles.radio_input}
                 checked={filter === 'all'}
                 onChange={(e) => setFilter(e.target.value)}
               />
@@ -38,6 +39,7 @@ const Search = () => {
                 name='filter'
                 id='title'
                 value='title'
+                className={styles.radio_input}
                 checked={filter === 'title'}
                 onChange={(e) => setFilter(e.target.value)}
               />
@@ -49,6 +51,7 @@ const Search = () => {
                 name='filter'
                 id='author'
                 value='author'
+                className={styles.radio_input}
                 checked={filter === 'author'}
                 onChange={(e) => setFilter(e.target.value)}
               />
@@ -60,6 +63,7 @@ const Search = () => {
                 name='filter'
                 id='description'
                 value='description'
+                className={styles.radio_input}
                 checked={filter === 'description'}
                 onChange={(e) => setFilter(e.target.value)}
               />
