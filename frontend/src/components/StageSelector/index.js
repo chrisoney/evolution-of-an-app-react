@@ -6,7 +6,6 @@ import './StageContainer.css'
 
 function SignupFormPage() {
   const dispatch = useDispatch();
-  const container = useRef(null);
   const currentStage = useSelector((state) => state.ui.stage);
 
   const handleStageSelect = (e) => {
@@ -28,7 +27,6 @@ function SignupFormPage() {
     <>
       <div
         id="box"
-        ref={container}
         className='stage-button-container'
         onAnimationIteration={(e) => { e.target.style.animationPlayState = 'paused'}}
       >
