@@ -57,4 +57,19 @@ router.delete('/:id(\\d+)', asyncHandler(async (req, res) => {
   res.json({ bookshelfId })
 }))
 
+router.delete('/custom', asyncHandler(async (req, res) => {
+  const { userId } = req.body
+  const bookshelves = await Bookshelf.findAll({
+    where: {
+      userId,
+      deleteAllowed: true
+    }
+  })
+  const bookshelfIds = bookshelf.map(shelf => shelf.id);
+  for (let i = 0; i < bookshelves.length; i++){
+    await bookshelf.destroy()
+  }
+  res.json({ bookshelfIds })
+}))
+
 module.exports = router;
