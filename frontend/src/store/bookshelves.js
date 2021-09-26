@@ -34,6 +34,17 @@ export const createNewBookshelf = (userId, name) => async (dispatch) => {
   dispatch(getBookshelf(res.data.bookshelf));
   return res.data.bookshelf
 };
+export const updateBookshelf = (bookshelfId, name) => async (dispatch) => {
+  const res = await fetch(`/api/bookshelves/${bookshelfId}`, {
+    method: 'PATCH',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({ name })
+  });
+  dispatch(getBookshelf(res.data.bookshelf));
+  return res.data.bookshelf
+};
 
 const initialState = { bookshelves: {} };
 

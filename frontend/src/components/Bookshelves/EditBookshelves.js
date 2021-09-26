@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import styles from './editBookshelves.module.css';
+
+import { updateBookshelf } from '../../store/bookshelves';
 
 const EditBookshelves = () => {
   const stage = useSelector(state => state.ui.stage)
@@ -30,9 +32,8 @@ const EditBookshelves = () => {
           </thead>
           <tbody>
             {sessionUser.Bookshelves.map((shelf, idx) => {
-              const queryVar = shelf.name.split(' ').join('-');
               return (
-                <BookshelfEditRow shelf={shelf} queryVar={queryVar} key={`bookshelf-edit-row-${idx}`}/>
+                <BookshelfEditRow shelf={shelf} key={`bookshelf-edit-row-${idx}`}/>
                 // <tr className={styles.shelf_row} data-editable={`${shelf.deleteAllowed ? true : false}`} data-shelf-id={shelf.id}>
                 //   <td className={styles.delete_shelf_container}>
                 //     <i class={`fas fa-times ${styles.delete_shelf} ${shelf.deleteAllowed ? styles.allow : ''}`} id={shelf.id} />
@@ -86,9 +87,21 @@ const EditBookshelves = () => {
   )
 }
 
-const BookshelfEditRow = ({ shelf, queryVar }) => {
+const BookshelfEditRow = ({ shelf }) => {
+  const dispatch = useDispatch()
   const stage = useSelector(state => state.ui.stage);
   const [reveal, setReveal] = useState()
+  const [name, setName] = useState(shelf.name)
+
+  const handleSubmit = (e) => {
+    dispatch(updateBookshelf(shelf.id, name))
+    setReveal(!reveal)
+  }
+
+  const handleCancel = (e) => {
+    setName(shelf.name);
+    setReveal(!reveal);
+  }
   return (
     <tr className={styles.shelf_row} data-editable={`${shelf.deleteAllowed ? true : false}`} data-shelf-id={shelf.id}>
       <td className={styles.delete_shelf_container}>
@@ -97,16 +110,24 @@ const BookshelfEditRow = ({ shelf, queryVar }) => {
       <td className={styles.shelf_name}>
         <div
           // href={`/users/${sessionUser.id}/bookshelves?selected=${queryVar}`}
-          // Onclick should be the reveal
           className={styles.shelf_link}
         >
-          {!reveal && <div>{shelf.name}</div>}
+          {!reveal && <div>{name}</div>}
           {reveal && <div className={styles.shelf_name_update_container}>
-            <input type='text' className={styles.shelf_name_update_input} value={shelf.name} />
-            <button className={styles.shelf_name_update_submit} id={shelf.id}>Save</button>
+            <input
+              type='text'
+              className={styles.shelf_name_update_input}
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+            />
+            <button
+              className={styles.shelf_name_update_submit}
+              onClick={handleSubmit}
+              id={shelf.id}
+            >Save</button>
             <button
               className={styles.shelf_name_update_cancel}
-              onClick={() => setReveal(!reveal)}
+              onClick={handleCancel}
             >Cancel</button>
           </div>}
         </div>
@@ -127,57 +148,3 @@ const BookshelfEditRow = ({ shelf, queryVar }) => {
 }
 
 export default EditBookshelves;
-
-// div(class='bookshelf-edit-page-container')
-//     div(class='bookshelf-edit-page-left')
-      // div(class='bookshelf-edit-path')
-      //   div(class='path-no-link') My Profile
-      //   div(class='path-no-link') >
-      //   a(href=`/users/${user.id}/bookshelves` class='path-link') My Books
-      //   div(class='path-no-link') >
-      //   div(class='path-no-link') Edit Shelves
-      // div(class='new-shelf-section')
-      //   input(type='text' class='new-shelf-input' placeholder='Add a Shelf')
-      //   button(class='new-shelf-submit') Add
-//       table(class="shelf-table")
-//         thead
-//           tr
-//             th
-//             th shelf
-//             th editable
-//             if parseInt(mode) > 2
-//               th stories
-//         tbody
-//           each shelf in bookshelves
-//             tr(class='shelf-row' data-editable=`${shelf.deleteAllowed ? true : false}` data-shelf-id=shelf.id)
-//               td(class='delete-shelf-container')
-//                 i(class=`fas fa-times delete-shelf ${shelf.deleteAllowed ? 'allow' : ''}` id=shelf.id)
-//               td(class='shelf-name')
-//                 -const queryVar = shelf.name.split(' ').join('-');
-//                 a(href=`/users/${user.id}/bookshelves?selected=${queryVar}` class="shelf-link")
-//                   div=shelf.name
-//                 div(class='shelf-name-update-container hidden')
-//                   input(type='text' class='shelf-name-update-input' value=shelf.name)
-//                   button(class='shelf-name-update-submit' id=shelf.id) Save
-//                   button(class='shelf-name-update-cancel') Cancel
-//               td(class="editable-container")
-//                 i(class=`editable fas ${shelf.deleteAllowed ? 'fa-check' : 'fa-times'}`)
-//               if parseInt(mode) > 2
-//                 td(class='story-count-container')
-//                   div(class='story-count')= shelf.Stories.length
-      // div(class='lower-bookshelf-buttons')
-      //   div(class='delete-all') delete all my shelves
-      //   a(href=`/users/${user.id}/bookshelves` class='backtrack') I'm Done
-
-//     div(class='bookshelf-edit-page-right')
-      // div(class='bookshelf-tips-title') Bookshelf Tips
-      // ul(class='bookshelf-tips-list')
-      //   li(class='bookshelf-tips-list-item')
-      //     span.bolded editable:
-      //     | You may edit this bookshelf's name. You may choose any name that is less than or equal to 30 characters and not already taken by another of your shelves. To start the editing process, click on the
-      //     i(class='fas fa-check example')
-      //     | icon. This icon can also be used to cancel the editing process.
-      //   if parseInt(mode) > 2
-      //     li(class='bookshelf-tips-list-item')
-      //       span.bolded stories:
-      //       | The number of stories that are currently in each shelf. Clicking this does nothing

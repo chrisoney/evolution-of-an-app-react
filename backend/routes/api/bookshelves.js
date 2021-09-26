@@ -32,4 +32,21 @@ router.post('/', asyncHandler(async(req, res) => {
   })
   res.json({ bookshelf: loadedBookshelf })
 }))
+
+router.patch('/:id(\\d+)', asyncHandler(async (req, res) => {
+  const { name } = req.body
+  const bookshelf = await Bookshelf.findByPk(req.params.id, {
+    include: [{
+      model: User,
+      attributes: ['id','username']
+    }, {
+      model: Story,
+    }]
+  })
+  if (bookshelf) bookshelf.name = name;
+  await bookshelf.save()
+
+  res.json({ bookshelf })
+}))
+
 module.exports = router;
