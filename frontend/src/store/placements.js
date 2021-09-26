@@ -24,6 +24,17 @@ export const fetchAllPlacements = () => async (dispatch) => {
   dispatch(getAllPlacements(res.data.placements));
 };
 
+export const addOrUpdatePlacement = ({ bookshelfId, storyId }) => async (dispatch) => {
+  const res = await fetch('/api/placements', {
+    method: 'POST',
+    headers: {
+      'Content-type': 'application/json'
+    },
+    body: JSON.stringify({ bookshelfId, storyId })
+  })
+  dispatch(getPlacement(res.data.placement));
+}
+
 const initialState = { placements: {} };
 
 function reducer(state = initialState, action) {

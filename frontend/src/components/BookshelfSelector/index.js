@@ -1,13 +1,20 @@
 import React, { useState, useEffect } from 'react';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
+
+import { fetchAllPlacements, addOrUpdatePlacement } from '../../store/placements';
 
 import styles from './bookshelfSelector.module.css'
 
 const BookshelfSelector = ({ storyId }) => {
+  const dispatch = useDispatch()
   const sessionUser = useSelector(state => state.session.user);
 
   const [shelf, setShelf] = useState(null)
   const [wtrId, setWtrId] = useState(null)
+
+  useEffect(() => {
+    dispatch(fetchAllPlacements())
+  }, [dispatch])
 
   useEffect(() => {
     if (sessionUser && sessionUser.Bookshelves) {
@@ -21,9 +28,13 @@ const BookshelfSelector = ({ storyId }) => {
     }
   }, [sessionUser, storyId])
 
-  const handleShelfClick = (e) => {
-
+  const handleShelfAdd = (e, bookshelfId) => {
+    e.preventDefault();
+    dispatch(addOrUpdatePlacement({ bookshelfId, storyId }));
   }
+  // const handleShelfRemove = (e) => {
+
+  // }
 
 
   return (
@@ -50,7 +61,7 @@ const BookshelfSelector = ({ storyId }) => {
                         type='checkbox'
                         className={styles.nonstandard_shelf_checkbox}
                         checked={shelf.Stories.map(story => story.id).includes(storyId)}
-                        onChange={handleShelfClick}
+                        onChange={(e) => handleShelfAdd(e, shelf.id)}
                       />
                       <div className={styles.standard_shelf} id={shelf.id}>{shelf.name}</div>
                     </div>
@@ -78,7 +89,7 @@ const BookshelfSelector = ({ storyId }) => {
                         type='checkbox'
                         className={styles.nonstandard_shelf_checkbox}
                         checked={shelf.Stories.map(story => story.id).includes(storyId)}
-                        onChange={handleShelfClick}
+                        onChange={(e) => handleShelfAdd(e, shelf.id)}
                       />
                       <div className={styles.standard_shelf} id={shelf.id}>{shelf.name}</div>
                     </div>
