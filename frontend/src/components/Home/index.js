@@ -5,7 +5,9 @@ import { fetchAllBookshelves } from "../../store/bookshelves";
 import { fetchAllStories } from "../../store/stories";
 import { fetchAllPlacements } from "../../store/placements";
 import * as sessionActions from '../../store/session';
+
 import styles from './home.module.css'
+import BookshelfSelector from '../BookshelfSelector';
 
 function Home() {
   const dispatch = useDispatch()
@@ -157,6 +159,7 @@ function Home() {
                     <div className={styles.feed_instance_details_section}>
                       <div className={styles.feed_instance_title}>{story.title}</div>
                       <div className={styles.feed_instance_author}>By {story.author}</div>
+                      <BookshelfSelector storyId={story.id}/>
                       <div className={styles.feed_instance_description}>{story.description || 'No description provided'}</div>
                       <div className={styles.feed_instance_link_container}>
                         <a href={`/stories/${story.id}`} className={styles.feed_instance_link}>Continue Reading</a>

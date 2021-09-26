@@ -1,0 +1,124 @@
+
+.feed_bookshelf_selector_container {
+	display: flex;
+	border-radius: 3px;
+	display: inline-block;
+	margin: 4px 4px 8px 0;
+	padding: 0px;
+	max-width: 180px;
+	vertical-align: middle;
+	font-size: 14px;
+	font-family: "Lato", "Helvetica Neue", "Helvetica", sans-serif;
+}
+
+.feed_bookshelf_wtr_button, .feed_bookshelf_selected {
+	border-bottom-left-radius: 3px;
+	border-top-left-radius: 3px;
+	float: left;
+	height: 30px;
+	max-width: 110px;
+	line-height: 1.15;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+	box-sizing: content-box;
+	padding-left: 8px;
+	padding-right: 8px;
+	display: flex;
+	align-items: center;
+}
+
+.feed_bookshelf_wtr_button {
+	background: #409D69;
+	color: #FFFFFF;
+	cursor: pointer;
+}
+
+.feed_bookshelf_selected{
+	background: #F2F2F2;
+	color: #000000;
+}
+
+.feed_bookshelf_selected_name {
+	display: inline-block;
+	max-width: 90px;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+
+.feed_modal_container {
+	position: relative;
+	display: inline-block;
+	width: 30px;
+}
+
+.feed_modal_button {
+	cursor: pointer;
+	height: 30px;
+	line-height: 20px;
+	color: white;
+	background-color: #409D69;
+	border-bottom-right-radius: 3px;
+	border-top-right-radius: 3px;
+	border-left: 1px solid #38883d;
+	/* float: left; */
+	padding: 6px 8px;
+}
+
+.feed_modal {
+	display: none;
+	background: #FFFFFF;
+	border: 1px #767676 solid;
+	font-family: "Lato", "Helvetica Neue", "Helvetica", sans-serif;
+	max-width: 220px;
+	min-width: 140px;
+	position: absolute;
+	right: 0px;
+	top: 30px;
+	z-index: 5;
+}
+
+.feed_modal_container:hover .feed_modal {
+	display: block;
+}
+
+.standard_shelf {
+	cursor: pointer;
+	font-size: 12px;
+	font-family: "Lato", "Helvetica Neue", "Helvetica", sans-serif;
+	list-style-type: none;
+	text-align: left;
+	white-space: nowrap;
+	padding: 2px 16px 2px 8px;
+}
+
+.standard_shelf.bold_shelf {
+	font-weight: bold;
+}
+
+.nonstandard_shelf_container {
+	display: flex;
+}
+
+.standard_shelf:hover, .nonstandard_shelf_container:hover {
+	background-color: #D8D8D8;
+}
+
+
+.feed_modal_button:hover, .feed_bookshelf_wtr_button:hover {
+	background-color: #3d9363;
+}
+
+.feed_check {
+	color: green;
+	line-height: 20px;
+	margin-right: 5px;
+}
+
+.nonstandard_shelf_container {
+	cursor: pointer;
+}
+
+.no_ratings {
+  margin-right: 5px;
+}
