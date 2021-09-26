@@ -1,34 +1,78 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
-const Search = () => {
-  return (
-    <div className={}>
+import styles from './search.module.css';
 
+const Search = () => {
+  const [searchPageInput, setSearchPageInput] = useState('');
+  const [filter, setFilter] = useState('')
+  return (
+    <div className={styles.search_page_parent_container}>
+      <div className={styles.search_page_container}>
+        <div className={styles.search_page_title}>Search</div>
+        <form className={styles.search_page_form}>
+          <div className={styles.search_form_top_bar}>
+            <input type='text'
+              className={styles.search_page_input}
+              value={searchPageInput}
+              placeholder="Search by Story Title, Author, or Description"
+              onChange={(e) => setSearchPageInput(e.target.value)}
+            />
+            <button type='submit' className={styles.search_page_submit}>Search</button>
+          </div>
+          <div className={styles.search_page_options}>
+            <div className={styles.radio_container}>
+              <input
+                type='radio'
+                name='filter'
+                id='all'
+                value='all'
+                checked={filter === 'all'}
+                onChange={(e) => setFilter(e.target.value)}
+              />
+              <label htmlFor='all'>all</label>
+            </div>
+            <div className={styles.radio_container}>
+              <input
+                type='radio'
+                name='filter'
+                id='title'
+                value='title'
+                checked={filter === 'title'}
+                onChange={(e) => setFilter(e.target.value)}
+              />
+              <label htmlFor='title'>title</label>
+            </div>
+            <div className={styles.radio_container}>
+              <input
+                type='radio'
+                name='filter'
+                id='author'
+                value='author'
+                checked={filter === 'author'}
+                onChange={(e) => setFilter(e.target.value)}
+              />
+              <label htmlFor='author'>author</label>
+            </div>
+            <div className={styles.radio_container}>
+              <input
+                type='radio'
+                name='filter'
+                id='description'
+                value='description'
+                checked={filter === 'description'}
+                onChange={(e) => setFilter(e.target.value)}
+              />
+              <label htmlFor='description'>description</label>
+            </div>
+          </div>
+        </form>
+        <div className={styles.search_page_story_section}>
+
+        </div>
+      </div>
     </div>
   )
 }
 
 export default Search;
-
-// .search-page-parent-container
-//     .search-page-container
-//       .search-page-title Search
-//       form(method='GET' action='/search' class='search-page-form')
-//         .search-form-top-bar
-//           input(type='text' name='term' class='search-page-input' placeholder="Search by Story Title, Author, or Description")
-//           button(type='submit' class='search-page-submit') Search
-//         .search-page-options
-//           .radio-container
-//             input(type='radio' name='filter' id='all' value='all' checked)
-//             label(for='all') all
-//           .radio-container
-//             input(type='radio' name='filter' id='title' value='title')
-//             label(for='title') title
-//           .radio-container
-//             input(type='radio' name='filter' id='author' value='author')
-//             label(for='author') author
-//           .radio-container
-//             input(type='radio' name='filter' id='description' value='description')
-//             label(for='description') description
-//       .search-page-story-section

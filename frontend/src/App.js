@@ -17,6 +17,7 @@ import Bookshelves from "./components/Bookshelves";
 import EditBookshelves from "./components/Bookshelves/EditBookshelves";
 import BrowseStories from './components/BrowseStories';
 import StoryPage from './components/StoryPage';
+import Search from './components/Search';
 
 
 import ProtectedRoute from "./components/utils/ProtectedRoute";
@@ -61,6 +62,9 @@ function App() {
           </ProtectedRoute>
           <ProtectedRoute path="/stories/:id" min={3}>
             <StoryPage />
+          </ProtectedRoute>
+          <ProtectedRoute path="/search" min={6}>
+            <Search />
           </ProtectedRoute>
           <Route path='/page-not-made'>
             <PageNotMade location={location} />
