@@ -30,7 +30,7 @@ const BookshelfSelector = ({ storyId }) => {
     }
   }, [sessionUser, storyId, placements])
 
-  const handleShelfAdd = async (e, bookshelfId) => {
+  const handleNormalShelfAction = (e, bookshelfId) => {
     e.preventDefault();
     dispatch(addOrUpdatePlacement(bookshelfId, storyId, sessionUser.id)).then(placement => {
       if (placement && !bookshelves[placement.bookshelfId].deleteAllowed) {
@@ -38,6 +38,19 @@ const BookshelfSelector = ({ storyId }) => {
       }
     })
   }
+
+  const handleCustomShelfAction = (e, bookshelfId) => {
+    e.preventDefault()
+    e.stopPropagation()
+    if (e.currentTarget.classList.contains(styles.nonstandard_shelf_container)) {
+      const checkbox = e.currentTarget.children[0];
+      checkbox.checked = !checkbox.checked;
+      dispatch(addOrUpdatePlacement(bookshelfId, storyId, sessionUser.id))
+      console.log(checkbox);
+    }
+    // console.log(e.currentTarget)
+    // console.log(e.currentTarget.classList.contains(styles.nonstandard_shelf_container))
+  } 
   // const handleShelfRemove = (e) => {
 
   // }
@@ -60,7 +73,7 @@ const BookshelfSelector = ({ storyId }) => {
                     <div
                       className={styles.standard_shelf}
                       value={shelf.id}
-                      onClick={(e) => handleShelfAdd(e, shelf.id)}
+                      onClick={(e) => handleNormalShelfAction(e, shelf.id)}
                       key={`standard-shelf-${shelf.id}`}
                     >{shelf.name}</div>
                   )
@@ -70,13 +83,13 @@ const BookshelfSelector = ({ storyId }) => {
                     <div
                       className={styles.nonstandard_shelf_container}
                       value={shelf.id}
-                      onClick={(e) => handleShelfAdd(e, shelf.id)}
+                      onClick={(e) => handleCustomShelfAction(e, shelf.id)}
                       key={`custom-shelf-${shelf.id}`}>
                       <input
                         type='checkbox'
                         className={styles.nonstandard_shelf_checkbox}
-                        checked={shelf.Stories.map(story => story.id).includes(storyId)}
-                        // onChange={(e) => handleShelfAdd(e, shelf.id)}
+                        defaultChecked={shelf.Stories.map(story => story.id).includes(storyId)}
+                        onChange={(e) => handleCustomShelfAction(e, shelf.id)}
                       />
                       <div className={styles.standard_shelf} id={shelf.id}>{shelf.name}</div>
                     </div>
@@ -90,7 +103,7 @@ const BookshelfSelector = ({ storyId }) => {
           <>
             <div
               className={styles.feed_bookshelf_wtr_button}
-              onClick={(e) => handleShelfAdd(e, wtrId)}
+              onClick={(e) => handleNormalShelfAction(e, wtrId)}
             >Want To Read</div>
             <div className={styles.feed_modal_container}>
               <i className={`${styles.feed_modal_button} fas fa-chevron-down ${styles.fa_chevron_down}`} />
@@ -99,7 +112,7 @@ const BookshelfSelector = ({ storyId }) => {
                   return (
                     <div className={styles.standard_shelf}
                       value={shelf.id}
-                      onClick={(e) => handleShelfAdd(e, shelf.id)}
+                      onClick={(e) => handleNormalShelfAction(e, shelf.id)}
                       key={`standard-shelf-${shelf.id}`}
                     >{shelf.name}</div>
                   )
@@ -109,14 +122,14 @@ const BookshelfSelector = ({ storyId }) => {
                     <div
                       className={styles.nonstandard_shelf_container}
                       value={shelf.id}
-                      onClick={(e) => handleShelfAdd(e, shelf.id)}
+                      onClick={(e) => handleCustomShelfAction(e, shelf.id)}
                       key={`custom-shelf-${shelf.id}`}
                     >
                       <input
                         type='checkbox'
                         className={styles.nonstandard_shelf_checkbox}
-                        checked={shelf.Stories.map(story => story.id).includes(storyId)}
-                        // onChange={(e) => handleShelfAdd(e, shelf.id)}
+                        defaultChecked={shelf.Stories.map(story => story.id).includes(storyId)}
+                        onChange={(e) => handleCustomShelfAction(e, shelf.id)}
                       />
                       <div className={styles.standard_shelf} id={shelf.id}>{shelf.name}</div>
                     </div>

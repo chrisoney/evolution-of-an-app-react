@@ -115,7 +115,7 @@
 	margin-right: 5px;
 }
 
-.nonstandard_shelf_container {
+.nonstandard_shelf_container, .nonstandard_shelf_checkbox {
 	cursor: pointer;
 }
 
