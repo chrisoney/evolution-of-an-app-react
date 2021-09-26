@@ -2,11 +2,23 @@ import React, { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import styles from './editBookshelves.module.css';
 
-import { updateBookshelf } from '../../store/bookshelves';
+import { updateBookshelf, createNewBookshelf } from '../../store/bookshelves';
 
 const EditBookshelves = () => {
-  const stage = useSelector(state => state.ui.stage)
-  const sessionUser = useSelector(state => state.session.user)
+  const dispatch = useDispatch();
+  const stage = useSelector(state => state.ui.stage);
+  const sessionUser = useSelector(state => state.session.user);
+  const [loadedShelves, setLoadedShelves] = useState(sessionUser.Bookshelves);
+  const [newShelfName, setNewShelfName] = useState('');
+
+  const handleNewShelfSubmit = (e) => {
+    e.preventDefault()
+    dispatch(createNewBookshelf(sessionUser.id, newShelfName)).then((shelf) => {
+      setNewShelfName('')
+      setLoadedShelves([...loadedShelves, shelf])
+    })
+  }
+
   return (
     <div className={styles.bookshelf_edit_page_container}>
       <div className={styles.bookshelf_edit_page_left}>
@@ -18,8 +30,17 @@ const EditBookshelves = () => {
           <div className={styles.path_no_link}>Edit Shelves</div>
         </div>
         <div className={styles.new_shelf_section}>
-          <input type='text' className={styles.new_shelf_input} placeholder='Add a Shelf' />
-          <button className={styles.new_shelf_submit}>Add</button>
+          <input
+            type='text'
+            className={styles.new_shelf_input}
+            placeholder='Add a Shelf'
+            value={newShelfName}
+            onChange={(e) => setNewShelfName(e.target.value)}
+          />
+          <button
+            className={styles.new_shelf_submit}
+            onClick={handleNewShelfSubmit}
+          >Add</button>
         </div>
         <table className={styles.shelf_table}>
           <thead>
@@ -31,7 +52,7 @@ const EditBookshelves = () => {
             </tr>
           </thead>
           <tbody>
-            {sessionUser.Bookshelves.map((shelf, idx) => {
+            {loadedShelves.map((shelf, idx) => {
               return (
                 <BookshelfEditRow shelf={shelf} key={`bookshelf-edit-row-${idx}`}/>
                 // <tr className={styles.shelf_row} data-editable={`${shelf.deleteAllowed ? true : false}`} data-shelf-id={shelf.id}>
