@@ -46,6 +46,17 @@ export const updateBookshelf = (bookshelfId, name) => async (dispatch) => {
   return res.data.bookshelf
 };
 
+export const annihilateBookshelf = (bookshelfId) => async (dispatch) => {
+  const res = await fetch(`/api/bookshelves/${bookshelfId}`, {
+    method: 'DELETE',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+  });
+  dispatch(removeBookshelf(res.data.bookshelfId));
+  return res.data.bookshelfId
+};
+
 const initialState = { bookshelves: {} };
 
 function reducer(state = initialState, action) {

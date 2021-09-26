@@ -5,6 +5,7 @@
   left: -135px;
   transform: translateY(-50%);
   z-index: 5;
+  pointer-events: none;
   animation: slide-out-effect 1s ease-in-out 0s infinite alternate both paused;
 }
 
@@ -55,6 +56,7 @@
   line-height: 50px;
   border-top-right-radius: 5px;
   border-bottom-right-radius: 5px;
+  pointer-events: all;
 }
 
 .buttons {
@@ -74,6 +76,7 @@
   background-color: #F4F1EA;
   line-height: 1;
   padding: 8px 12px;
+  pointer-events: all;
 }
 
 .switch_stage:hover {

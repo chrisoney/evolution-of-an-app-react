@@ -1,10 +1,12 @@
-import React from "react";
+import React, { useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { setStage } from '../../store/ui';
 import styles from './stageSelector.module.css';
+import './StageContainer.css'
 
 function SignupFormPage() {
   const dispatch = useDispatch();
+  const container = useRef(null);
   const currentStage = useSelector((state) => state.ui.stage);
 
   const handleStageSelect = (e) => {
@@ -16,17 +18,25 @@ function SignupFormPage() {
     document.getElementById("box").style.animationPlayState = 'running';
   }
 
+  const handleBurgerDragEnd = (e) => {
+    const grandparent = document.querySelector('#box')
+    const newTop = `calc(${e.clientY}px)`;
+    grandparent.style.top = newTop;
+  }
+
   return (
     <>
       <div
         id="box"
-        className={`${styles.stage_button_container}`}
+        ref={container}
+        className='stage-button-container'
         onAnimationIteration={(e) => { e.target.style.animationPlayState = 'paused'}}
       >
         <div className={styles.stage_button_reveal}>
           <i
             className={`fas fa-bars ${styles.burger}`}
             onClick={handleBurgerClick}
+            onDragEnd={handleBurgerDragEnd}
             draggable={true}
             title='Switch version'
           />

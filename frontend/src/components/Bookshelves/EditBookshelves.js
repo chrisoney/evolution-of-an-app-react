@@ -2,7 +2,11 @@ import React, { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import styles from './editBookshelves.module.css';
 
-import { updateBookshelf, createNewBookshelf } from '../../store/bookshelves';
+import {
+  updateBookshelf,
+  createNewBookshelf,
+  annihilateBookshelf
+} from '../../store/bookshelves';
 
 const EditBookshelves = () => {
   const dispatch = useDispatch();
@@ -123,10 +127,19 @@ const BookshelfEditRow = ({ shelf }) => {
     setName(shelf.name);
     setReveal(!reveal);
   }
+
+  const handleDelete = (e) => {
+    dispatch(annihilateBookshelf(shelf.id))
+  }
+
   return (
     <tr className={styles.shelf_row} data-editable={`${shelf.deleteAllowed ? true : false}`} data-shelf-id={shelf.id}>
       <td className={styles.delete_shelf_container}>
-        <i className={`fas fa-times ${styles.delete_shelf} ${shelf.deleteAllowed ? styles.allow : ''}`} id={shelf.id} />
+        <i
+          className={`fas fa-times ${styles.delete_shelf} ${shelf.deleteAllowed ? styles.allow : ''}`}
+          id={shelf.id}
+          onClick={handleDelete}
+        />
       </td>
       <td className={styles.shelf_name}>
         <div

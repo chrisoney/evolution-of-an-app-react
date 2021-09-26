@@ -1,0 +1,19 @@
+
+.stage-button-container {
+  position: fixed;
+  top: 50%;
+  left: -135px;
+  transform: translateY(-50%);
+  z-index: 5;
+  pointer-events: none;
+  animation: slide-out-effect 1s ease-in-out 0s infinite alternate both paused;
+}
+
+@keyframes slide-out-effect {
+  0% {
+    left: -135px;
+  }
+  100% {
+    left: 0;
+  }
+}

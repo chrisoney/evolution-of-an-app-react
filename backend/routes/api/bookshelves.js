@@ -49,4 +49,12 @@ router.patch('/:id(\\d+)', asyncHandler(async (req, res) => {
   res.json({ bookshelf })
 }))
 
+router.delete('/:id(\\d+)', asyncHandler(async (req, res) => {
+  const bookshelfId = parseInt(req.params.id)
+  const bookshelf = await Bookshelf.findByPk(bookshelfId)
+  if (bookshelf) await bookshelf.destroy();
+
+  res.json({ bookshelfId })
+}))
+
 module.exports = router;
