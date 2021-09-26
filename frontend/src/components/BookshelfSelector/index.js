@@ -8,6 +8,8 @@ import styles from './bookshelfSelector.module.css'
 const BookshelfSelector = ({ storyId }) => {
   const dispatch = useDispatch()
   const sessionUser = useSelector(state => state.session.user);
+  const bookshelves = useSelector(state => state.bookshelves.bookshelves)
+  const placements = useSelector(state => state.placements.placements)
 
   const [shelf, setShelf] = useState(null)
   const [wtrId, setWtrId] = useState(null)
@@ -26,11 +28,15 @@ const BookshelfSelector = ({ storyId }) => {
       }
       setWtrId(sessionUser.Bookshelves.filter(shelf => shelf.name === 'Want To Read')[0].id)
     }
-  }, [sessionUser, storyId])
+  }, [sessionUser, storyId, placements])
 
-  const handleShelfAdd = (e, bookshelfId) => {
+  const handleShelfAdd = async (e, bookshelfId) => {
     e.preventDefault();
-    dispatch(addOrUpdatePlacement({ bookshelfId, storyId }));
+    dispatch(addOrUpdatePlacement(bookshelfId, storyId, sessionUser.id)).then(placement => {
+      if (placement && !bookshelves[placement.bookshelfId].deleteAllowed) {
+        setShelf(bookshelves[placement.bookshelfId])
+      }
+    })
   }
   // const handleShelfRemove = (e) => {
 
@@ -51,17 +57,26 @@ const BookshelfSelector = ({ storyId }) => {
               <div className={styles.feed_modal}>
                 {sessionUser.Bookshelves.filter(shelf => !shelf.deleteAllowed).map(shelf => {
                   return (
-                    <div className={styles.standard_shelf} value={shelf.id} key={`standard-shelf-${shelf.id}`}>{shelf.name}</div>
+                    <div
+                      className={styles.standard_shelf}
+                      value={shelf.id}
+                      onClick={(e) => handleShelfAdd(e, shelf.id)}
+                      key={`standard-shelf-${shelf.id}`}
+                    >{shelf.name}</div>
                   )
                 })}
                 {sessionUser.Bookshelves.filter(shelf => shelf.deleteAllowed).map(shelf => {
                   return (
-                    <div className={styles.nonstandard_shelf_container} value={shelf.id} key={`custom-shelf-${shelf.id}`}>
+                    <div
+                      className={styles.nonstandard_shelf_container}
+                      value={shelf.id}
+                      onClick={(e) => handleShelfAdd(e, shelf.id)}
+                      key={`custom-shelf-${shelf.id}`}>
                       <input
                         type='checkbox'
                         className={styles.nonstandard_shelf_checkbox}
                         checked={shelf.Stories.map(story => story.id).includes(storyId)}
-                        onChange={(e) => handleShelfAdd(e, shelf.id)}
+                        // onChange={(e) => handleShelfAdd(e, shelf.id)}
                       />
                       <div className={styles.standard_shelf} id={shelf.id}>{shelf.name}</div>
                     </div>
@@ -73,7 +88,10 @@ const BookshelfSelector = ({ storyId }) => {
       )
         : (
           <>
-            <div className={styles.feed_bookshelf_wtr_button} value={wtrId}>Want To Read</div>
+            <div
+              className={styles.feed_bookshelf_wtr_button}
+              onClick={(e) => handleShelfAdd(e, wtrId)}
+            >Want To Read</div>
             <div className={styles.feed_modal_container}>
               <i className={`${styles.feed_modal_button} fas fa-chevron-down ${styles.fa_chevron_down}`} />
               <div className={styles.feed_modal}>
@@ -84,12 +102,17 @@ const BookshelfSelector = ({ storyId }) => {
                 })}
                 {sessionUser.Bookshelves.filter(shelf => shelf.deleteAllowed).map(shelf => {
                   return (
-                    <div className={styles.nonstandard_shelf_container} value={shelf.id} key={`custom-shelf-${shelf.id}`}>
+                    <div
+                      className={styles.nonstandard_shelf_container}
+                      value={shelf.id}
+                      onClick={(e) => handleShelfAdd(e, shelf.id)}
+                      key={`custom-shelf-${shelf.id}`}
+                    >
                       <input
                         type='checkbox'
                         className={styles.nonstandard_shelf_checkbox}
                         checked={shelf.Stories.map(story => story.id).includes(storyId)}
-                        onChange={(e) => handleShelfAdd(e, shelf.id)}
+                        // onChange={(e) => handleShelfAdd(e, shelf.id)}
                       />
                       <div className={styles.standard_shelf} id={shelf.id}>{shelf.name}</div>
                     </div>

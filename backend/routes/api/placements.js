@@ -10,12 +10,13 @@ router.get('/', asyncHandler(async (req, res) => {
 }))
 
 router.post('/', asyncHandler(async (req, res) => {
-  const { bookshelfId, storyId } = req.body
+  const { bookshelfId, storyId, userId } = req.body
+  console.log({bookshelfId, storyId, userId})
   const bookshelf = await Bookshelf.findByPk(bookshelfId);
   if (!bookshelf.deleteAllowed) {
     const bookshelves = await Bookshelf.findAll({
       where: {
-        userId: req.session.auth.userId,
+        userId,
         deleteAllowed: false
       },
       include: Story
@@ -49,12 +50,11 @@ router.post('/', asyncHandler(async (req, res) => {
     })
   }
 
-  res.json( { placement, bookshelf })
+  res.json( { placement })
 }))
 
 router.delete('/', asyncHandler(async (req, res) => {
-  const { storyId } = req.body;
-  const userId = req.session.auth.userId;
+  const { storyId, userId } = req.body;
   const bookshelves = await Bookshelf.findAll({
     where: { userId },
     include: {

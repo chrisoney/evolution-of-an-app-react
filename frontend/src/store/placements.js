@@ -24,15 +24,16 @@ export const fetchAllPlacements = () => async (dispatch) => {
   dispatch(getAllPlacements(res.data.placements));
 };
 
-export const addOrUpdatePlacement = ({ bookshelfId, storyId }) => async (dispatch) => {
+export const addOrUpdatePlacement = (bookshelfId, storyId, userId) => async (dispatch) => {
   const res = await fetch('/api/placements', {
     method: 'POST',
     headers: {
-      'Content-type': 'application/json'
+      'Content-Type': 'application/json'
     },
-    body: JSON.stringify({ bookshelfId, storyId })
+    body: JSON.stringify({ bookshelfId, storyId, userId })
   })
   dispatch(getPlacement(res.data.placement));
+  return res.data.placement;
 }
 
 const initialState = { placements: {} };
