@@ -97,7 +97,11 @@ const BookshelfSelector = ({ storyId }) => {
               <div className={styles.feed_modal}>
                 {sessionUser.Bookshelves.filter(shelf => !shelf.deleteAllowed).map(shelf => {
                   return (
-                    <div className={styles.standard_shelf} value={shelf.id} key={`standard-shelf-${shelf.id}`}>{shelf.name}</div>
+                    <div className={styles.standard_shelf}
+                      value={shelf.id}
+                      onClick={(e) => handleShelfAdd(e, shelf.id)}
+                      key={`standard-shelf-${shelf.id}`}
+                    >{shelf.name}</div>
                   )
                 })}
                 {sessionUser.Bookshelves.filter(shelf => shelf.deleteAllowed).map(shelf => {

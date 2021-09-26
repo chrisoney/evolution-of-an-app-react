@@ -11,7 +11,6 @@ router.get('/', asyncHandler(async (req, res) => {
 
 router.post('/', asyncHandler(async (req, res) => {
   const { bookshelfId, storyId, userId } = req.body
-  console.log({bookshelfId, storyId, userId})
   const bookshelf = await Bookshelf.findByPk(bookshelfId);
   if (!bookshelf.deleteAllowed) {
     const bookshelves = await Bookshelf.findAll({
