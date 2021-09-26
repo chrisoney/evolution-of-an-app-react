@@ -6,9 +6,9 @@ const  BrowseStories = ({ preselected }) => {
   const sessionUser = useSelector(state => state.session.user);
   const [selected, setSelected] = useState([preselected])
 
-  useEffect(() => {
-    setSelected([...selected, preselected])
-  }, [preselected, selected])
+  // useEffect(() => {
+  //   setSelected([...selected, preselected])
+  // }, [preselected, selected])
 
   const toggleSelected = (e) => {
     // placeholder

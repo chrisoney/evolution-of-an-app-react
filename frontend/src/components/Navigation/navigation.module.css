@@ -41,6 +41,7 @@
 }
 
 .icon_background:hover {
+  cursor: pointer;
   color: #FFFFFF;
   background-color: #382110;
 }

@@ -78,10 +78,12 @@ function Navigation({ isLoaded }) {
             </form>
           )}
           <div className={styles.nav_icon_container}>
-            <div className={styles.icon_background}>
+            <div
+              className={styles.icon_background}
+              onClick={() => {setRevealDropdown(!revealDropdown)}}
+            >
               <i
                 className={`${styles.nav_right_icon} ${styles.user_dropdown_button} fas fa-book-reader`}
-                onClick={() => {setRevealDropdown(!revealDropdown)}}
               />
               {revealDropdown && (<div className={`${styles.user_options}`}>
                 <div className={styles.dropdown_username}>{sessionUser.username}</div>
