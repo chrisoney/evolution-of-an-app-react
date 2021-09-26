@@ -63,11 +63,15 @@ const Bookshelves = () => {
 
   useEffect(() => {
     let total = 0
-    for (let i = 0; i < users[parseInt(id, 10)]?.Bookshelves.length; i++){
+    for (let i = 0; i < users[parseInt(id, 10)]?.Bookshelves.length; i++) {
       const shelf = users[id].Bookshelves[i];
-      total += shelf.Stories.length
+      if (!shelf.deleteAllowed) {
+        console.log('hello', i, shelf.Stories.map(story => story.title))
+        total += shelf.Stories.length
+      }
     }
-    setAllCount(total)
+    console.log(total);
+    setAllCount(total);
   }, [users, id])
 
   useEffect(() => {
@@ -86,13 +90,22 @@ const Bookshelves = () => {
             {parseInt(id, 10) === sessionUser.id ? <a href='/bookshelves/edit' className={styles.bookshelf_edit_link}>(edit)</a> : null}
           </h6>
           <div className={styles.bookshelves_container}>
-            <div className={`${styles.bookshelf_selector} ${selected === '' ? styles.selected : ''}`} id={0}>
+            <div
+              className={`${styles.bookshelf_selector} ${selected === '' ? styles.selected : ''}`}
+              onClick={()=> setSelected('')}
+              id={0}
+            >
               All
               {stage >= 3 ? ` (${allCount})` : null}
             </div>
-            {pageUser.Bookshelves.map(shelf => {
+            {pageUser.Bookshelves.sort((a, b) => a.id - b.id).map(shelf => {
               return (
-                <div className={`${styles.bookshelf_selector} ${selected === shelf.name ? styles.selected : ''}`} id={shelf.id} key={`bookshelf-sidebar-${shelf.id}`}>
+                <div
+                  className={`${styles.bookshelf_selector} ${selected === shelf.name ? styles.selected : ''}`}
+                  id={shelf.id}
+                  onClick={()=> setSelected(shelf.name)}
+                  key={`bookshelf-sidebar-${shelf.id}`}
+                >
                   {shelf.name}
                   {stage >= 3 ? ` (${shelf.Stories.length})` : null}
                 </div>
@@ -114,7 +127,7 @@ const Bookshelves = () => {
         </div>
         <div className={styles.main_content}>
           {stage >= 3 && (
-            <table className={styles.stories_llist_table}>
+            <table className={styles.stories_list_table}>
               <thead>
                 <tr>
                   <th>cover</th>
