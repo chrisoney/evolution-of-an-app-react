@@ -5,6 +5,7 @@ const bookshelvesRouter = require('./bookshelves')
 const storiesRouter = require('./stories')
 const placementsRouter = require('./placements')
 const reviewsRouter = require('./reviews')
+const tagsRouter = require('./tags')
 // GET /api/set-token-cookie
 const asyncHandler = require('express-async-handler');
 const { setTokenCookie } = require('../../utils/auth.js');
@@ -49,5 +50,6 @@ router.use('/bookshelves', bookshelvesRouter);
 router.use('/stories', storiesRouter);
 router.use('/placements', placementsRouter);
 router.use('/reviews', reviewsRouter);
+router.use('/tags', tagsRouter);
 
 module.exports = router;

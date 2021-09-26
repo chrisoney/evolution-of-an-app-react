@@ -5,6 +5,7 @@ import users from './users'
 import bookshelves from './bookshelves'
 import stories from './stories'
 import placements from './placements'
+import tags from './tags'
 import ui from './ui';
 
 const rootReducer = combineReducers({
@@ -13,6 +14,7 @@ const rootReducer = combineReducers({
   bookshelves,
   stories,
   placements,
+  tags,
   ui
 });
 

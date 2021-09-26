@@ -5,6 +5,7 @@ import { useParams } from 'react-router-dom';
 import Ratings from '../Ratings';
 
 import { fetchAllStories } from '../../store/stories';
+import { fetchAllUsers } from '../../store/users';
 import styles from './storyPage.module.css';
 
 const StoryPage = () => {
@@ -13,6 +14,7 @@ const StoryPage = () => {
   const stage = useSelector(state => state.ui.stage);
   const sessionUser = useSelector(state => state.session.user);
   const stories = useSelector(state => state.stories.stories);
+  const users = useSelector(state => state.users.users);
   const [story, setStory] = useState(null)
   const [userReview, setUserReview] = useState(null)
   const [otherReviews, setOtherReviews] = useState([])
@@ -21,6 +23,7 @@ const StoryPage = () => {
 
   useEffect(() => {
     dispatch(fetchAllStories())
+    dispatch(fetchAllUsers())
   }, [dispatch])
 
   useEffect(() => {
@@ -71,7 +74,7 @@ const StoryPage = () => {
             <div className={styles.story_tags_section}>
               {story.Tags.slice(0, 3).map((tag) => {
                 // Something here for the redirect
-                return (<a href={`/stories?selectedTag=${tag.name}`}>
+                return (<a href={`/stories?selectedTag=${tag.name}`} key={`tag-${tag.id}`}>
                   <div className={styles.tag_element}>{tag.name}</div>
                 </a>)
               })}
@@ -82,7 +85,7 @@ const StoryPage = () => {
               <div className={styles.story_tags_inner_section}>
                 {revealTags && story.Tags.slice(3).map((tag) => {
                   // Something here for the redirect
-                  return (<a href={`/stories?selectedTag=${tag.name}`}>
+                  return (<a href={`/stories?selectedTag=${tag.name}`} key={`tag-${tag.id}`}>
                     <div className={styles.tag_element}>{tag.name}</div>
                   </a>)
                 })}
@@ -99,8 +102,8 @@ const StoryPage = () => {
                     onClick={() => setRevealWarnings(!revealWarnings)}
                   >{revealWarnings ? 'Hide Warnings' : 'Reveal Warnings'}</div>
                   {revealWarnings && <div className={styles.story_warnings_container}>
-                    {story.warnings.warnings.map(warning => {
-                      return (<div className={styles.story_warning}>{warning}</div>)
+                    {story.warnings.warnings.map((warning, idx) => {
+                      return (<div className={styles.story_warning} key={`warning-${idx}`}>{warning}</div>)
                     })}
                   </div>}
                 </>
@@ -116,13 +119,13 @@ const StoryPage = () => {
             </div>
           </div>
         </div>
-       {stage >= 4 &&  <div className={styles.reviews_section}>
+       {stage >= 4 &&  (<div className={styles.reviews_section}>
           <div className={styles.logged_in_user_rating_section}>
             <div className={styles.new_user_review_left}>
               <div className={styles.new_review_prompt}>Your review</div>
               <Ratings rating={userReview ? userReview.rating : 0} userId={sessionUser.id} storyId={story.id} />
             </div>
-            {!userReview.content && (
+            {(!userReview || !userReview.content) && (
               <div className={styles.new_user_review_right}>
                 <button className={styles.reveal_form}>Write a Review</button>
               </div>
@@ -130,7 +133,7 @@ const StoryPage = () => {
           </div>
           <div className={styles.logged_in_user_review_content_section}>
             <div className={styles.user_content_container}>
-              <div className={styles.user_review_content}>{userReview.content || ''}</div>
+              <div className={styles.user_review_content}>{userReview ? userReview.content : ''}</div>
               <button className={styles.reveal_form_edit}>Edit review</button>
             </div>
             <div className={styles.user_review_form_section}>
@@ -169,9 +172,44 @@ const StoryPage = () => {
                   .map(review => review.rating)
                   .filter(rating => rating !== null).length} Ratings</div>
               </div>
+              <div className={styles.other_reviews_social_container}>
+                {otherReviews.map((review) => {
+                  return (
+                    <div className={styles.review_container}>
+                      <div className={styles.review_header}>
+                        <div className={styles.review_header_left}>
+
+                        </div>
+                      </div>
+                    </div>
+                  )
+                })}
+              </div>
+              {/* .other-reviews-social-container
+                //- -const otherReviews = reviews.filter(review => review.userId !== user.id)
+                each review in otherReviews
+                  .review-container
+                    .review-header
+                      .review-header-left
+                        a(href=`/users/${review.User.id}/bookshelves` class='user-bookshelves-link')
+                          .review-username= review.User.username
+                        .review-action rated it
+                        //- +ratingsSection(review.rating, story.id, false)
+                        div(class='ratings-container' data-story-id=story.id data-current-rating=review.rating)
+                          - let x = 0, y = review.rating + 1
+                          while x < review.rating
+                            span(data-score=(x+1) class='fas fa-star')
+                            - x++
+                          while y <= 5
+                            span(data-score=y class='far fa-star')
+                            - y++
+                      .review-header-right
+                        .review-date= review.createdAt.toString().slice(4, 16)
+                    .review-content-container
+                      .review-content= review.content */}
             </div>
           </div>
-        </div>}
+        </div>)}
       </div>
     </div>
   )
@@ -301,25 +339,25 @@ export default StoryPage;
           //     .num-review-parts #{reviewContents.length} Reviews
           //     .dot &#183;
           //     .num-review-parts #{ratings.length} Ratings
-  //           .other-reviews-social-container
-  //             //- -const otherReviews = reviews.filter(review => review.userId !== user.id)
-  //             each review in otherReviews
-  //               .review-container
-  //                 .review-header
-  //                   .review-header-left
-  //                     a(href=`/users/${review.User.id}/bookshelves` class='user-bookshelves-link')
-  //                       .review-username= review.User.username
-  //                     .review-action rated it
-  //                     //- +ratingsSection(review.rating, story.id, false)
-  //                     div(class='ratings-container' data-story-id=story.id data-current-rating=review.rating)
-  //                       - let x = 0, y = review.rating + 1
-  //                       while x < review.rating
-  //                         span(data-score=(x+1) class='fas fa-star')
-  //                         - x++
-  //                       while y <= 5
-  //                         span(data-score=y class='far fa-star')
-  //                         - y++
-  //                   .review-header-right
-  //                     .review-date= review.createdAt.toString().slice(4, 16)
-  //                 .review-content-container
-  //                   .review-content= review.content
+            // .other-reviews-social-container
+            //   //- -const otherReviews = reviews.filter(review => review.userId !== user.id)
+            //   each review in otherReviews
+            //     .review-container
+            //       .review-header
+            //         .review-header-left
+            //           a(href=`/users/${review.User.id}/bookshelves` class='user-bookshelves-link')
+            //             .review-username= review.User.username
+            //           .review-action rated it
+            //           //- +ratingsSection(review.rating, story.id, false)
+            //           div(class='ratings-container' data-story-id=story.id data-current-rating=review.rating)
+            //             - let x = 0, y = review.rating + 1
+            //             while x < review.rating
+            //               span(data-score=(x+1) class='fas fa-star')
+            //               - x++
+            //             while y <= 5
+            //               span(data-score=y class='far fa-star')
+            //               - y++
+            //         .review-header-right
+            //           .review-date= review.createdAt.toString().slice(4, 16)
+            //       .review-content-container
+            //         .review-content= review.content
