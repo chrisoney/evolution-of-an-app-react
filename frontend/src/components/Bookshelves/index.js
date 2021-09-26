@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useParams } from 'react-router-dom';
-import { fetchAllBookshelves } from '../../store/bookshelves';
+import { fetchAllBookshelves, createNewBookshelf } from '../../store/bookshelves';
 import { fetchAllUsers } from '../../store/users';
 import { fetchAllStories } from '../../store/stories';
 import styles from './bookshelves.module.css';
@@ -14,25 +14,30 @@ const Bookshelves = () => {
   const stage = useSelector(state => state.ui.stage);
   const sessionUser = useSelector(state => state.session.user);
   const users = useSelector(state => state.users.users);
-  // const bookshelves = useSelector(state => state.bookshelves.bookshelves);
+  const bookshelves = useSelector(state => state.bookshelves.bookshelves);
   const stories = useSelector(state => state.stories.stories);
 
   const [selected, setSelected] = useState('');
-  const [loaded, setLoaded] = useState(false)
-  const [pageUser, setPageUser] = useState(null)
-  const [allCount, setAllCount] = useState(null)
-  const [addShelfReveal, setAddShelfReveal] = useState(false)
-  const [loadedStories, setLoadedStories] = useState([])
+  const [loaded, setLoaded] = useState(false);
+  const [newShelfName, setNewShelfName] = useState('');
+  const [pageUser, setPageUser] = useState(null);
+  const [allCount, setAllCount] = useState(null);
+  const [addShelfReveal, setAddShelfReveal] = useState(false);
+  const [loadedShelves, setLoadedShelves] = useState([])
+  const [loadedStories, setLoadedStories] = useState([]);
 
   // useEffect(() => {
-  //   console.log(loadedStories)
-  // }, [loadedStories])
+  //   if (sessionUser) {
+  //     console.log(sessionUser.Bookshelves)
+  //     setLoadedShelves([...sessionUser.Bookshelves])
+  //   }
+  // }, [sessionUser])
 
   useEffect(() => {
     if (pageUser) {
       if (selected === '') {
         const tempArray = []
-        const shelves = Object.values(pageUser.Bookshelves)
+        const shelves = loadedShelves
         for (let i = 0; i < shelves.length; i++){
           const shelf = shelves[i];
           for (let j = 0; j < shelf.Stories.length; j++){
@@ -44,11 +49,11 @@ const Bookshelves = () => {
         }
         setLoadedStories([...tempArray])
       } else {
-        const temp = Object.values(pageUser.Bookshelves).filter(shelf => shelf.name === selected)[0].Stories;
+        const temp = loadedShelves.filter(shelf => shelf.name === selected)[0].Stories;
         setLoadedStories([...temp])
       }
     }
-  }, [selected, pageUser])
+  }, [selected, pageUser, loadedShelves])
 
   useEffect(() => {
     dispatch(fetchAllUsers()).then(() => {
@@ -66,17 +71,26 @@ const Bookshelves = () => {
     for (let i = 0; i < users[parseInt(id, 10)]?.Bookshelves.length; i++) {
       const shelf = users[id].Bookshelves[i];
       if (!shelf.deleteAllowed) {
-        console.log('hello', i, shelf.Stories.map(story => story.title))
         total += shelf.Stories.length
       }
     }
-    console.log(total);
     setAllCount(total);
   }, [users, id])
 
   useEffect(() => {
     setPageUser(users[id])
-  }, [users, id])
+    console.log(id, Object.values(bookshelves).map(shelf => shelf.name))
+    setLoadedShelves([...Object.values(bookshelves).filter(shelf => shelf.userId === parseInt(id, 10))]);
+  }, [users, bookshelves, id])
+
+  const handleNewShelfSubmit = (e) => {
+    e.preventDefault()
+    dispatch(createNewBookshelf(sessionUser.id, newShelfName)).then((shelf) => {
+      setNewShelfName('')
+      setLoadedShelves([...loadedShelves, shelf])
+    })
+  }
+
   if (!loaded) return null;
   return (
     <div className={styles.page_container}>
@@ -98,7 +112,7 @@ const Bookshelves = () => {
               All
               {stage >= 3 ? ` (${allCount})` : null}
             </div>
-            {pageUser.Bookshelves.sort((a, b) => a.id - b.id).map(shelf => {
+            {loadedShelves.sort((a, b) => a.id - b.id).map(shelf => {
               return (
                 <div
                   className={`${styles.bookshelf_selector} ${selected === shelf.name ? styles.selected : ''}`}
@@ -120,8 +134,14 @@ const Bookshelves = () => {
           {addShelfReveal && (<div className={`${styles.add_new_bookshelf_form_container}`}>
             <div className={styles.add_new_bookshelf_title}>Add a Shelf:</div>
             <div className={styles.add_new_bookshelf_input_section}>
-              <input type='text' className={styles.add_new_bookshelf_input} />
-              <button className={styles.add_new_bookshelf_submit_button}>add</button>
+              <input
+                value={newShelfName}
+                onChange={(e) => setNewShelfName(e.target.value)}
+                type='text' className={styles.add_new_bookshelf_input} />
+              <button
+                className={styles.add_new_bookshelf_submit_button}
+                onClick={handleNewShelfSubmit}
+              >add</button>
             </div>
           </div>)}
         </div>

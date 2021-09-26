@@ -15,4 +15,21 @@ router.get('/', asyncHandler(async (req, res) => {
   })
   res.json({ bookshelves })
 }))
+
+router.post('/', asyncHandler(async(req, res) => {
+  const { userId, name } = req.body;
+  const bookshelf = await Bookshelf.create({
+    userId,
+    name
+  })
+  const loadedBookshelf = await Bookshelf.findByPk(bookshelf.id, {
+    include: [{
+      model: User,
+      attributes: ['id','username']
+    }, {
+      model: Story,
+    }]
+  })
+  res.json({ bookshelf: loadedBookshelf })
+}))
 module.exports = router;
