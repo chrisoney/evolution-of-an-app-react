@@ -34,7 +34,6 @@ function Root() {
   const modalRef = useRef(null);
 
   useEffect(() => {
-    console.log(modalRef.current)
     dispatch(setModalMount(modalRef.current))
   }, [dispatch])
   return (

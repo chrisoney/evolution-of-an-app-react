@@ -4,7 +4,7 @@ import { Route, Switch, useLocation, Redirect } from "react-router-dom";
 import SignupFormPage from "./components/SignupFormPage";
 import LoginFormPage from "./components/LoginFormPage";
 import * as sessionActions from "./store/session";
-import { getStage, setStage, setCurrentModal } from './store/ui';
+import { getStage, setStage, setCurrentModal, showModal } from './store/ui';
 
 import Navigation from "./components/Navigation";
 import PageNotMade from './components/AlternativePages/PageNotMade';
@@ -19,6 +19,7 @@ import EditBookshelves from "./components/Bookshelves/EditBookshelves";
 import BrowseStories from './components/BrowseStories';
 import StoryPage from './components/StoryPage';
 import Search from './components/Search';
+import Instructions from "./components/Modal/Instructions";
 
 
 import ProtectedRoute from "./components/utils/ProtectedRoute";
@@ -35,12 +36,13 @@ function App() {
   }, [dispatch]);
 
 
-  // useEffect(() => {
-  //   if (!stage) {
-  //     dispatch(setStage(0));
-  //     dispatch(setCurrentModal(Instructions))
-  //   }
-  // }, [dispatch, stage])
+  useEffect(() => {
+    if (stage === null && isLoaded) {
+      dispatch(setStage(0));
+      dispatch(setCurrentModal(Instructions))
+      dispatch(showModal())
+    }
+  }, [dispatch, stage, isLoaded])
 
   return (
     <>

@@ -50,7 +50,7 @@ function reducer(state = initialState, action) {
   let newState;
   switch (action.type) {
     case GET_STAGE:
-      const stage = parseInt(localStorage.getItem('stage'), 10) || 0;
+      const stage = parseInt(localStorage.getItem('stage'), 10) || null;
       newState = Object.assign({}, state, { stage });
       return newState;
     case SET_STAGE:
