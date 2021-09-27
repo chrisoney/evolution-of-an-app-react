@@ -29,10 +29,6 @@ const EditBookshelves = () => {
     if (!ans) return;
     dispatch(annihilateCustomBookshelves(sessionUser.id))
     setLoadedShelves([...loadedShelves.filter(shelf => !shelf.deleteAllowed)])
-    // for (let i = 0; i < ids.length; i++){
-    //   let id = ids[i];
-
-    // }
   }
 
   return (

@@ -79,7 +79,6 @@ const Bookshelves = () => {
 
   useEffect(() => {
     setPageUser(users[id])
-    console.log(id, Object.values(bookshelves).map(shelf => shelf.name))
     setLoadedShelves([...Object.values(bookshelves).filter(shelf => shelf.userId === parseInt(id, 10))]);
   }, [users, bookshelves, id])
 

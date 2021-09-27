@@ -46,7 +46,6 @@ const BookshelfSelector = ({ storyId }) => {
       const checkbox = e.currentTarget.children[0];
       checkbox.checked = !checkbox.checked;
       dispatch(addOrUpdatePlacement(bookshelfId, storyId, sessionUser.id))
-      console.log(checkbox);
     }
     // console.log(e.currentTarget)
     // console.log(e.currentTarget.classList.contains(styles.nonstandard_shelf_container))
