@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 
 import { fetchAllPlacements, addOrUpdatePlacement } from '../../store/placements';
+import { restoreUser } from '../../store/session';
 
 import styles from './bookshelfSelector.module.css'
 
@@ -44,15 +45,20 @@ const BookshelfSelector = ({ storyId }) => {
     e.stopPropagation()
     if (e.currentTarget.classList.contains(styles.nonstandard_shelf_container)) {
       const checkbox = e.currentTarget.querySelector("input[type='checkbox']")
-      checkbox.checked = !checkbox.checked;
       console.log(checkbox.checked)
+      checkbox.checked = !checkbox.checked;
+      if (!shelf) {
+        dispatch(addOrUpdatePlacement(wtrId, storyId, sessionUser.id))
+          .then(placement => {
+          dispatch(restoreUser())
+          if (placement && !bookshelves[placement.bookshelfId].deleteAllowed) {
+            setShelf(bookshelves[wtrId])
+          }
+        })
+      }
       dispatch(addOrUpdatePlacement(bookshelfId, storyId, sessionUser.id))
     }
-  } 
-  // const handleShelfRemove = (e) => {
-
-  // }
-
+  }
 
   return (
     <div className={styles.feed_bookshelf_selector_container}>
@@ -87,6 +93,7 @@ const BookshelfSelector = ({ storyId }) => {
                         type='checkbox'
                         className={styles.nonstandard_shelf_checkbox}
                         checked={shelf.Stories.map(story => story.id).includes(storyId)}
+                        readonly
                         onChange={null}
                       />
                       <div className={styles.standard_shelf} id={shelf.id}>{shelf.name}</div>
