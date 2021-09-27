@@ -94,6 +94,10 @@ h2.story_browse_title {
   cursor: pointer;
 }
 
+.tag_checkbox {
+  pointer-events: none;
+}
+
 
 /* Pseudo Important */
 .hidden { display: none; }

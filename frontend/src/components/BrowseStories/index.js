@@ -22,8 +22,12 @@ const BrowseStories = ({ preselected }) => {
   //   setSelected([...selected, preselected])
   // }, [preselected, selected])
 
-  const storyTagHelper = (story, tagId) => {
-    return story.Tags.map(tag => tag.id).includes(tagId);
+  const storyTagHelper = (story, tags) => {
+    for (let i = 0; i < tags.length; i++){
+      const tagId = tags[i];
+      if (!story.Tags.map(tag => tag.id).includes(tagId)) return false;
+    }
+    return true;
   }
 
   useEffect(() => {
@@ -33,10 +37,7 @@ const BrowseStories = ({ preselected }) => {
       const tempStories = []
       for (let i = 0; i < storyArr.length; i++){
         const story = storyArr[i];
-        for (let j = 0; j < selected.length; j++){
-          const tagId = selected[j];
-          if (storyTagHelper(story, tagId)) tempStories.push(story);
-        }
+        if (storyTagHelper(story, selected) && !tempStories.map(story => story.id).includes(story.id)) tempStories.push(story);
       }
       setLoadedStories([...tempStories])
     }
@@ -49,7 +50,17 @@ const BrowseStories = ({ preselected }) => {
     })
   }, [dispatch])
 
-  const handleTagSelect = (e) => {
+  const handleTagSelect = (e, tagId) => {
+    console.log('hello')
+    if (selected.includes(tagId)) {
+      const idx = selected.indexOf(tagId);
+      setSelected([...selected.slice(0, idx), ...selected.slice(idx + 1)])
+      // const checkbox = e.currentTarget.querySelector("input[type='checkbox']")
+      // checkbox.checked = !checkbox.checked;
+    } else {
+      console.log('not there')
+      setSelected([...selected, tagId])
+    }
   }
 
   return (
@@ -71,12 +82,15 @@ const BrowseStories = ({ preselected }) => {
                     <div
                       className={styles.tag_container}
                       key={`tag-selector-${tag.id}`}
+                      value={tag.id}
+                      onClick={(e) => handleTagSelect(e, tag.id)}
                     >
                       <input
                         className={styles.tag_checkbox}
                         type='checkbox'
                         checked={selected.includes(tag.id)}
-                        onChange={handleTagSelect}
+                        readOnly
+                        onChange={null}
                       />
                       <div className={styles.tag_name}>{tag.name}</div>
                     </div>
