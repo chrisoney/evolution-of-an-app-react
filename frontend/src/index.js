@@ -1,5 +1,5 @@
-import React from 'react';
-
+import React, { useRef, useEffect } from 'react';
+import { useDispatch } from 'react-redux'
 import './index.css';
 
 import ReactDOM from 'react-dom';
@@ -12,7 +12,7 @@ import App from './App';
 import configureStore from './store';
 import { restoreCSRF, fetch } from './store/csrf';
 import * as sessionActions from './store/session';
-
+import { setModalMount } from './store/ui';
 const store = configureStore();
 
 if (process.env.NODE_ENV !== 'production') {
@@ -30,23 +30,29 @@ if (process.env.NODE_ENV !== 'production') {
 // );
 
 function Root() {
+  const dispatch = useDispatch()
+  const modalRef = useRef(null);
+
+  useEffect(() => {
+    console.log(modalRef.current)
+    dispatch(setModalMount(modalRef.current))
+  }, [dispatch])
   return (
     <HelmetProvider>
-      {/* <ModalProvider> */}
-        <Provider store={store}>
-          <BrowserRouter>
-            <App />
-            {/* <Carrot /> */}
-          </BrowserRouter>
-        </Provider>
-      {/* </ModalProvider> */}
+      <BrowserRouter>
+        <App />
+        {/* <Carrot /> */}
+        <div className='modal' ref={modalRef} />
+      </BrowserRouter>
     </HelmetProvider>
   );
 }
 
 ReactDOM.render(
   <React.StrictMode>
-    <Root />
+    <Provider store={store}>
+      <Root />
+    </Provider>
   </React.StrictMode>,
   document.getElementById('root')
 );

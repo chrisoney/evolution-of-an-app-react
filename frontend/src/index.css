@@ -1,1 +1,7 @@
 /* TODO Add site wide styles */
+
+.modal {
+  height: 100vh;
+  width: 100vw;
+  position: relative;
+}

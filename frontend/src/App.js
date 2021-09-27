@@ -11,6 +11,7 @@ import PageNotMade from './components/AlternativePages/PageNotMade';
 import FourOhFour from './components/AlternativePages/FourOhFour';
 import Footer from './components/Footer';
 import StageSelector from "./components/StageSelector";
+import Modal from './components/Modal';
 
 import Home from "./components/Home";
 import Bookshelves from "./components/Bookshelves";
@@ -38,6 +39,7 @@ function App() {
       <Helmet>
         {stage === 0 ? <link rel="icon" type="image/ico" href="favicon.ico" sizes="16x16" /> : <link rel="icon" type="image/ico" href="favicon2.ico" sizes="16x16" />}
       </Helmet>
+      <Modal />
       <Navigation isLoaded={isLoaded} />
       <StageSelector />
       {isLoaded && (

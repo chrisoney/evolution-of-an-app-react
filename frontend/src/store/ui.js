@@ -76,13 +76,13 @@ function reducer(state = initialState, action) {
       return {
         ...state, modal: {
           ...state.modal,
-          current: action.payload.currentModal
+          current: action.payload
       }}
     case SET_MOUNT:
       return {
         ...state, modal: {
           ...state.modal,
-          mount: action.payload.mount
+          mount: action.payload
       }}
     default:
       return state;
