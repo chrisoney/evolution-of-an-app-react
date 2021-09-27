@@ -81,7 +81,7 @@ h2.story_browse_title {
   margin-bottom: 10px;
 }
 
-.tag-section {
+.tag_section {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   font-size: 12px;
