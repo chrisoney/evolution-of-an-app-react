@@ -65,8 +65,9 @@ router.delete('/custom', asyncHandler(async (req, res) => {
       deleteAllowed: true
     }
   })
-  const bookshelfIds = bookshelf.map(shelf => shelf.id);
+  const bookshelfIds = bookshelves.map(shelf => shelf.id);
   for (let i = 0; i < bookshelves.length; i++){
+    const bookshelf = bookshelves[i];
     await bookshelf.destroy()
   }
   res.json({ bookshelfIds })

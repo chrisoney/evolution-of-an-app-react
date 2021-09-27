@@ -1,9 +1,11 @@
 import React from 'react';
 
 const DeleteCustomShelvesModal = () => {
-  return (<>
+  return (
+    <>
     
-  </>)
+    </>
+  )
 }
 
 export default DeleteCustomShelvesModal;

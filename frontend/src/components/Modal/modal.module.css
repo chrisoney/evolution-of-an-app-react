@@ -15,8 +15,6 @@
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  height: 40vh;
-  width: 40vw;
   background-color: white;
 }
 
@@ -50,8 +48,29 @@
   font-size: 20px;
   text-align: center;
   margin-bottom: 10px;
+  font-family: "Merriweather", Georgia, "Times New Roman", serif;
+  line-height: 24px;
+  font-weight: bold;
 }
 
 .top_section, .mid_section {
   text-align: justify;
+}
+
+.pnf_description, .pnf_mode_description {
+  display: flex;
+  flex-direction: column;
+  padding: 10px 5px;
+  font-family: "Lato", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  line-height: 1.4;
+  font-size: 16px;
+  text-align: center;
+}
+
+.pnf_mode_description {
+  text-align: left;
+}
+
+.pnf_description_block {
+  margin-bottom: 8px;
 }

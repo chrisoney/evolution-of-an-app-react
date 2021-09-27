@@ -5,7 +5,8 @@ import styles from './editBookshelves.module.css';
 import {
   updateBookshelf,
   createNewBookshelf,
-  annihilateBookshelf
+  annihilateBookshelf,
+  annihilateCustomBookshelves
 } from '../../store/bookshelves';
 
 const EditBookshelves = () => {
@@ -21,6 +22,17 @@ const EditBookshelves = () => {
       setNewShelfName('')
       setLoadedShelves([...loadedShelves, shelf])
     })
+  }
+
+  const handleDeleteAllCustom = (e) => {
+    const ans = window.confirm("This will delete all your shelves. This will only delete non-exclusive shelves. Are you sure?")
+    if (!ans) return;
+    dispatch(annihilateCustomBookshelves(sessionUser.id))
+    setLoadedShelves([...loadedShelves.filter(shelf => !shelf.deleteAllowed)])
+    // for (let i = 0; i < ids.length; i++){
+    //   let id = ids[i];
+
+    // }
   }
 
   return (
@@ -59,35 +71,15 @@ const EditBookshelves = () => {
             {loadedShelves.map((shelf, idx) => {
               return (
                 <BookshelfEditRow shelf={shelf} key={`bookshelf-edit-row-${idx}`}/>
-                // <tr className={styles.shelf_row} data-editable={`${shelf.deleteAllowed ? true : false}`} data-shelf-id={shelf.id}>
-                //   <td className={styles.delete_shelf_container}>
-                //     <i class={`fas fa-times ${styles.delete_shelf} ${shelf.deleteAllowed ? styles.allow : ''}`} id={shelf.id} />
-                //   </td>
-                //   <td className={styles.shelf_name}></td>
-                //     <a href={`/users/${sessionUser.id}/bookshelves?selected=${queryVar}`} className={styles.shelf_link}>
-                //       <div>{shelf.name}</div>
-                //     {/* Need to hide here */}
-                //     <div className={styles.shelf_name_update_container}>
-                //       <input type='text' className={styles.shelf_name_update_input} value={shelf.name} />
-                //       <button className={styles.shelf_name_update_submit} id={shelf.id}>Save</button>
-                //       <button className={styles.shelf_name_update_cancel}>Cancel</button>
-                //     </div>
-                //   </a>
-                //   <td className={styles.editable_container}>
-                //     <i class={`editable fas ${shelf.deleteAllowed ? 'fa-check' + styles.fa_check : 'fa-times' + styles.fa_times}`} />
-                //   </td>
-                //   {stage >= 3 && (
-                //     <td className={styles.story_count_container}>
-                //       <div className={styles.story_count}>{shelf.Stories.length}</div>
-                //     </td>
-                //   )}
-                // </tr>
               )
             })}
           </tbody>
         </table>
         <div className={styles.lower_bookshelf_buttons}>
-          <div className={styles.delete_all}>delete all my shelves</div>
+          <div
+            className={styles.delete_all}
+            onClick={handleDeleteAllCustom}
+          >delete all my shelves</div>
           <a href={`/users/${sessionUser.id}/bookshelves`} className={styles.backtrack}>I'm Done</a>
         </div>
       </div>
