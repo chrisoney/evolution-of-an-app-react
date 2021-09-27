@@ -3,6 +3,7 @@ import { useSelector, useDispatch } from 'react-redux';
 // import { Redirect, useLocation } from "react-router-dom";
 
 import { fetchAllTags } from '../../store/tags';
+import { fetchAllStories } from '../../store/stories';
 
 import styles from './browseStories.module.css';
 
@@ -11,15 +12,40 @@ const BrowseStories = ({ preselected }) => {
   const stage = useSelector(state => state.ui.stage);
   const sessionUser = useSelector(state => state.session.user);
   const tags = useSelector(state => state.tags.tags);
+  const stories = useSelector(state => state.stories.stories);
   const [selected, setSelected] = useState(preselected ? [preselected] : [])
   const [revealTags, setRevealTags] = useState(false);
+  const [loadedStories, setLoadedStories] = useState([])
+  const [recentStories, setRecentStories] = useState([])
 
   // useEffect(() => {
   //   setSelected([...selected, preselected])
   // }, [preselected, selected])
 
+  const storyTagHelper = (story, tagId) => {
+    return story.Tags.map(tag => tag.id).includes(tagId);
+  }
+
   useEffect(() => {
-    dispatch(fetchAllTags())
+    if (selected.length === 0) setLoadedStories([...Object.values(stories)])
+    else {
+      const tempStories = []
+      const storyArr = Object.values(stories)
+      for (let i = 0; i < storyArr.length; i++){
+        const story = storyArr[i];
+        for (let j = 0; j < selected.length; j++){
+          const tagId = selected[j];
+          if (storyTagHelper(story, tagId)) tempStories.push(story);
+        }
+      }
+      setLoadedStories([...tempStories])
+    }
+  }, [stories, selected])
+
+  useEffect(() => {
+    dispatch(fetchAllTags()).then(() => {
+      dispatch(fetchAllStories())
+    })
   }, [dispatch])
 
   const handleTagSelect = (e) => {
@@ -56,10 +82,30 @@ const BrowseStories = ({ preselected }) => {
                 })}
               </div>
             )}
+            <div className={styles.left_story_container}>
+              {loadedStories.map(story => {
+                return (
+                  <a href={`/stories/${story.id}`}>
+                    <img src={story.imageUrl} className={styles.story_browse_image} title={story.title} alt={story.title} />
+                  </a>
+                )
+              })}
+            </div>
           </>
         )}
       </div>
-      <div className={styles.main_content_right}></div>
+      <div className={styles.main_content_right}>
+        <h2 className={styles.story_browse_title}>Recently Popular Stories</h2>
+        <div className={styles.right_story_container}>
+          {recentStories.map(story => {
+            return (
+              <a href={`/stories/${story.id}`}>
+                <img src={story.imageUrl} className={`${styles.story_browse_image} ${styles.smaller_image}`} alt={story.title} />
+              </a>
+            )
+          })}
+        </div>
+      </div>
     </div>
   )
 }
