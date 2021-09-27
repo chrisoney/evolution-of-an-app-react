@@ -38,7 +38,7 @@ export const setModalMount = (mount) => ({
 })
 
 const initialState = {
-  stage: 0,
+  stage: null,
   modal: {
     mount: null,
     current: null,

@@ -4,7 +4,7 @@ import { Route, Switch, useLocation, Redirect } from "react-router-dom";
 import SignupFormPage from "./components/SignupFormPage";
 import LoginFormPage from "./components/LoginFormPage";
 import * as sessionActions from "./store/session";
-import { getStage } from './store/ui';
+import { getStage, setStage, setCurrentModal } from './store/ui';
 
 import Navigation from "./components/Navigation";
 import PageNotMade from './components/AlternativePages/PageNotMade';
@@ -33,6 +33,14 @@ function App() {
     dispatch(getStage())
     dispatch(sessionActions.restoreUser()).then(() => setIsLoaded(true));
   }, [dispatch]);
+
+
+  // useEffect(() => {
+  //   if (!stage) {
+  //     dispatch(setStage(0));
+  //     dispatch(setCurrentModal(Instructions))
+  //   }
+  // }, [dispatch, stage])
 
   return (
     <>
