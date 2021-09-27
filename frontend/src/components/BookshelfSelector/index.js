@@ -43,12 +43,11 @@ const BookshelfSelector = ({ storyId }) => {
     e.preventDefault()
     e.stopPropagation()
     if (e.currentTarget.classList.contains(styles.nonstandard_shelf_container)) {
-      const checkbox = e.currentTarget.children[0];
+      const checkbox = e.currentTarget.querySelector("input[type='checkbox']")
       checkbox.checked = !checkbox.checked;
+      console.log(checkbox.checked)
       dispatch(addOrUpdatePlacement(bookshelfId, storyId, sessionUser.id))
     }
-    // console.log(e.currentTarget)
-    // console.log(e.currentTarget.classList.contains(styles.nonstandard_shelf_container))
   } 
   // const handleShelfRemove = (e) => {
 
@@ -87,8 +86,8 @@ const BookshelfSelector = ({ storyId }) => {
                       <input
                         type='checkbox'
                         className={styles.nonstandard_shelf_checkbox}
-                        defaultChecked={shelf.Stories.map(story => story.id).includes(storyId)}
-                        onChange={(e) => handleCustomShelfAction(e, shelf.id)}
+                        checked={shelf.Stories.map(story => story.id).includes(storyId)}
+                        onChange={null}
                       />
                       <div className={styles.standard_shelf} id={shelf.id}>{shelf.name}</div>
                     </div>
@@ -127,8 +126,9 @@ const BookshelfSelector = ({ storyId }) => {
                       <input
                         type='checkbox'
                         className={styles.nonstandard_shelf_checkbox}
-                        defaultChecked={shelf.Stories.map(story => story.id).includes(storyId)}
-                        onChange={(e) => handleCustomShelfAction(e, shelf.id)}
+                        checked={shelf.Stories.map(story => story.id).includes(storyId)}
+                        readOnly
+                        onChange={null}
                       />
                       <div className={styles.standard_shelf} id={shelf.id}>{shelf.name}</div>
                     </div>

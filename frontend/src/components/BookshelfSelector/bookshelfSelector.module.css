@@ -119,6 +119,10 @@
 	cursor: pointer;
 }
 
+.nonstandard_shelf_checkbox {
+	pointer-events: none;
+}
+
 .no_ratings {
   margin-right: 5px;
 }

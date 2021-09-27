@@ -27,10 +27,10 @@ const BrowseStories = ({ preselected }) => {
   }
 
   useEffect(() => {
+    const storyArr = Object.values(stories)
     if (selected.length === 0) setLoadedStories([...Object.values(stories)])
     else {
       const tempStories = []
-      const storyArr = Object.values(stories)
       for (let i = 0; i < storyArr.length; i++){
         const story = storyArr[i];
         for (let j = 0; j < selected.length; j++){
@@ -40,6 +40,7 @@ const BrowseStories = ({ preselected }) => {
       }
       setLoadedStories([...tempStories])
     }
+    setRecentStories([...storyArr.filter(story => story.Bookshelves.length > 0).sort((a,b) => a.Bookshelves[0].Placement.updatedAt - b.Bookshelves[0].Placement.updatedAt).slice(0,15)])
   }, [stories, selected])
 
   useEffect(() => {
@@ -49,7 +50,6 @@ const BrowseStories = ({ preselected }) => {
   }, [dispatch])
 
   const handleTagSelect = (e) => {
-    // placeholder
   }
 
   return (
@@ -68,13 +68,15 @@ const BrowseStories = ({ preselected }) => {
               <div className={styles.tag_section}>
                 {Object.values(tags).map(tag => {
                   return (
-                    <div className={styles.tag_container}>
+                    <div
+                      className={styles.tag_container}
+                      key={`tag-selector-${tag.id}`}
+                    >
                       <input
                         className={styles.tag_checkbox}
                         type='checkbox'
                         checked={selected.includes(tag.id)}
                         onChange={handleTagSelect}
-                        key={`tag-selector-${tag.id}`}
                       />
                       <div className={styles.tag_name}>{tag.name}</div>
                     </div>
@@ -85,7 +87,7 @@ const BrowseStories = ({ preselected }) => {
             <div className={styles.left_story_container}>
               {loadedStories.map(story => {
                 return (
-                  <a href={`/stories/${story.id}`}>
+                  <a href={`/stories/${story.id}`} key={`main-story-section-${story.id}`}>
                     <img src={story.imageUrl} className={styles.story_browse_image} title={story.title} alt={story.title} />
                   </a>
                 )
@@ -99,7 +101,7 @@ const BrowseStories = ({ preselected }) => {
         <div className={styles.right_story_container}>
           {recentStories.map(story => {
             return (
-              <a href={`/stories/${story.id}`}>
+              <a href={`/stories/${story.id}`} key={`recent-story-section-${story.id}`}>
                 <img src={story.imageUrl} className={`${styles.story_browse_image} ${styles.smaller_image}`} alt={story.title} />
               </a>
             )
