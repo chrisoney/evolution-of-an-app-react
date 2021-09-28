@@ -23,7 +23,6 @@ function Navigation({ isLoaded }) {
 
   const handleSearch = (e) => {
     e.preventDefault();
-    console.log('hit?')
     dispatch(fetchSearchedStories('all', term));
     history.push(`/search?term=${term}`)    
   }

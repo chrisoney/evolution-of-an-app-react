@@ -1,19 +1,98 @@
-
-.stage-button-container {
+.stage-button-container.left {
   position: fixed;
   top: 50%;
   left: -135px;
   transform: translateY(-50%);
-  z-index: 5;
+  z-index: 4;
   pointer-events: none;
-  animation: slide-out-effect 1s ease-in-out 0s infinite alternate both paused;
+  animation: slide-out-effect-left 1s ease-in-out 0s infinite alternate both paused;
 }
 
-@keyframes slide-out-effect {
+@keyframes slide-out-effect-left {
   0% {
     left: -135px;
   }
   100% {
     left: 0;
+  }
+}
+
+.stage-button-container.top{
+  position: fixed;
+  top: -240px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 4;
+  pointer-events: none;
+  animation: slide-out-effect-top 1s ease-in-out 0s infinite alternate both paused;
+}
+.stage-button-container.top > div{
+  flex-direction: column-reverse;
+}
+/* .stage-button-container.top > div > i{
+  border-top-right-radius: none;
+  border-bottom-left-radius: 5px;
+} */
+
+@keyframes slide-out-effect-top {
+  0% {
+    top: -240px;
+  }
+  100% {
+    top: 0;
+  }
+}
+
+.stage-button-container.right{
+  position: fixed;
+  right: -135px;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 5;
+  pointer-events: none;
+  animation: slide-out-effect-right 1s ease-in-out 0s infinite alternate both paused;
+}
+.stage-button-container.right > div{
+  flex-direction: row;
+}
+/* .stage-button-container.right > div > i{
+  border-top-right-radius: none;
+  border-bottom-right-radius: none;
+  border-top-left-radius: 5px;
+  border-bottom-left-radius: 5px;
+} */
+
+@keyframes slide-out-effect-right {
+  0% {
+    right: -135px;
+  }
+  100% {
+    right: 0;
+  }
+}
+
+.stage-button-container.bottom{
+  position: fixed;
+  bottom: -240px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 5;
+  pointer-events: none;
+  animation: slide-out-effect-bottom 1s ease-in-out 0s infinite alternate both paused;
+}
+.stage-button-container.bottom > div{
+  flex-direction: column;
+}
+/* .stage-button-container.top > div > i{
+  border-top-right-radius: none;
+  border-bottom-left-radius: 5px;
+} */
+
+@keyframes slide-out-effect-bottom {
+  0% {
+    bottom: -240px;
+  }
+  100% {
+    bottom: 0;
   }
 }

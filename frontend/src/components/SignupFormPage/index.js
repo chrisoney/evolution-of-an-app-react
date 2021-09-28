@@ -86,7 +86,7 @@ function SignupFormPage() {
         </a>
         <div className={styles.form_container}>
           <h1 className={styles.auth_title}>Sign up for RoyalReads</h1>
-          {errors.map((error, idx) => <li key={idx}>{error}</li>)}
+          {errors.map((error, idx) => <li key={`other-error-${idx}`}>{error}</li>)}
           <form onSubmit={handleSubmit}>
             <div className={styles.form_group}>
               <label className={styles.form_label}>Username</label>

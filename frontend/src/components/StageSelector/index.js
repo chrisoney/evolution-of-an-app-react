@@ -5,6 +5,7 @@ import styles from './stageSelector.module.css';
 import './StageContainer.css'
 
 function SignupFormPage() {
+  const stageSelectorEle = useRef(null)
   const dispatch = useDispatch();
   const currentStage = useSelector((state) => state.ui.stage);
 
@@ -18,26 +19,64 @@ function SignupFormPage() {
   }
 
   const handleBurgerDragEnd = (e) => {
-    const grandparent = document.querySelector('#box')
-    const newTop = `calc(${e.clientY}px)`;
-    grandparent.style.top = newTop;
+    // const grandparent = document.querySelector('#box')
+    // const newTop = `calc(${e.clientY}px)`;
+    // grandparent.style.top = newTop;
+    document.querySelectorAll('.box').forEach(ele => ele.style.visibility = 'hidden')
+    document.querySelector('#root').style.overflow = 'scroll';
+  }
+
+  const handleDrag = (e) => {
+    stageSelectorEle.current.style.visibility = 'hidden';
+    document.querySelectorAll('.box').forEach(ele => ele.style.visibility = 'visible')
+    document.querySelector('#root').style.overflow = 'hidden';
+  }
+
+  const handleDragOver = (e, newDir) => {
+    e.preventDefault()
+    if (!e.currentTarget.classList.contains(styles.active)) {
+      e.currentTarget.classList.add(styles.active)
+    }
+    stageSelectorEle.current.classList.remove('top', 'bottom', 'right', 'left')
+    stageSelectorEle.current.classList.add(newDir) 
+  }
+
+  const handleDragLeave = (e) => {
+    e.currentTarget.classList.remove(styles.active)
+  }
+
+  const handleDrop = (e) => {
+    stageSelectorEle.current.style.visibility = 'visible';
   }
 
   return (
     <>
-      {/* <div className={styles.top_box}><div className={`fas fa-bars ${styles['top']}`} /></div>
-      <div className={styles.bottom_box}><div className={`fas fa-bars ${styles['bottom']}`} /></div>
-      <div className={styles.left_box}><div className={`fas fa-bars ${styles['left']}`} /></div>
-      <div className={styles.right_box}><div className={`fas fa-bars ${styles['right']}`} /></div> */}
+      {['top', 'bottom', 'left', 'right'].map((dir,idx) => {
+        return (
+          <div
+            className={`${styles[dir + '_box']} box`}
+            onDragEnter={(e) => e.preventDefault()}
+            onDragOver={(e) => handleDragOver(e, dir)}
+            onDragLeave={handleDragLeave}
+            // onDrop={(e) => handleDrop(e)}
+            onDropCapture={handleDrop}
+            key={`selector-box-${idx}`}
+          >
+            <div className={`${styles[dir]}`} />
+          </div>
+        )
+      })}
       <div
         id="box"
-        className='stage-button-container'
+        className='stage-button-container left'
+        ref={stageSelectorEle}
         onAnimationIteration={(e) => { e.target.style.animationPlayState = 'paused'}}
       >
         <div className={styles.stage_button_reveal}>
           <i
             className={`fas fa-bars ${styles.burger}`}
             onClick={handleBurgerClick}
+            onDrag={handleDrag}
             onDragEnd={handleBurgerDragEnd}
             draggable={true}
             title='Switch version'
