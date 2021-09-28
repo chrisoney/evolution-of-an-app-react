@@ -75,8 +75,8 @@ function App() {
           <ProtectedRoute path="/stories/:id" min={3}>
             <StoryPage />
           </ProtectedRoute>
-          <ProtectedRoute path="/search" min={6}>
-            <Search />
+          <ProtectedRoute  path="/search" min={6}>
+            <Search location={location} />
           </ProtectedRoute>
           <Route path='/page-not-made'>
             <PageNotMade location={location} />

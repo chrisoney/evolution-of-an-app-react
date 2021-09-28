@@ -8,11 +8,11 @@ import styles from './search.module.css';
 import Ratings from '../Ratings';
 import BookshelfSelector from '../BookshelfSelector';
 
-const Search = () => {
+const Search = (location) => {
   const dispatch = useDispatch();
   const searchStories = useSelector(state => state.stories.search)
-
-  const [searchPageInput, setSearchPageInput] = useState('');
+  const term = location.state ? location.state.term ? location.state.term : '' : ''
+  const [searchPageInput, setSearchPageInput] = useState(term);
   const [filter, setFilter] = useState('all')
   const [loadedStories, setLoadedStories] = useState([])
 

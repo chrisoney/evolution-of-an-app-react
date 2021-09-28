@@ -1,15 +1,16 @@
 import React, { useState } from 'react';
-import { NavLink } from 'react-router-dom';
+import { NavLink, useHistory } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import ProfileButton from './ProfileButton';
 import LoginFormModal from '../LoginFormModal';
 import { useLocation } from "react-router-dom";
 
-
+import { fetchSearchedStories } from '../../store/stories';
 import * as sessionActions from '../../store/session';
 import styles from  './navigation.module.css';
 
 function Navigation({ isLoaded }) {
+  const history = useHistory()
   const dispatch = useDispatch();
   const sessionUser = useSelector(state => state.session.user);
   const stage = useSelector(state => state.ui.stage);
@@ -22,14 +23,22 @@ function Navigation({ isLoaded }) {
 
   const handleSearch = (e) => {
     e.preventDefault();
-    // This will handle search
+    console.log('hit?')
+    dispatch(fetchSearchedStories('all', term));
+    history.push(`/search?term=${term}`)    
   }
 
   const handleSignOut = (e) => {
     e.preventDefault();
     dispatch(sessionActions.logout());
   }
-
+  // return <Redirect
+  //     push to={{
+  //       pathname: "/search",
+  //       state: {
+  //         term: term
+  //     }
+  //   }} />
   if (sessionUser) {
     sessionLinks = (
       <ProfileButton user={sessionUser} />
@@ -63,7 +72,7 @@ function Navigation({ isLoaded }) {
             </a>
           </div>
           {stage >= 6 && (
-            <form className={styles.search_form}>
+            <form className={styles.search_form} onSubmit={handleSearch}>
               <input
                 type='text'
                 value={term}
@@ -73,7 +82,6 @@ function Navigation({ isLoaded }) {
               />
               <button
                 className={`${styles.search_submit} fas fa-search`}
-                onClick={handleSearch}
               />
             </form>
           )}
