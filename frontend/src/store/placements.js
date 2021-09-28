@@ -44,8 +44,8 @@ function reducer(state = initialState, action) {
     case GET_ALL_PLACEMENTS:
       newState = { placements: {} }
       for (let i = 0; i < action.payload.length; i++) {
-        const shelf = action.payload[i];
-        newState.placements[shelf.id] = shelf
+        const placement = action.payload[i];
+        newState.placements[placement.id] = placement
       }
       return newState;
     case GET_PLACEMENT:

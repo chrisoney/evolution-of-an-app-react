@@ -2,6 +2,7 @@ import { fetch } from './csrf.js';
 
 const GET_STORY = 'stories/getStory';
 const GET_ALL_STORIES = 'stories/getAllStories';
+const GET_SEARCHED_STORIES = '/stories/getSearchedStories';
 // const REMOVE_STORY = 'stories/removeStory';
 
 export const getStory = (story) => ({
@@ -11,6 +12,11 @@ export const getStory = (story) => ({
 
 export const getAllStories = (stories) => ({
   type: GET_ALL_STORIES,
+  payload: stories
+});
+
+export const getSearchedStories = (stories) => ({
+  type: GET_SEARCHED_STORIES,
   payload: stories
 });
 
@@ -24,16 +30,27 @@ export const fetchAllStories = () => async (dispatch) => {
   dispatch(getAllStories(res.data.stories));
 };
 
-const initialState = { stories: {} };
+export const fetchSearchedStories = (filter, term) => async (dispatch) => {
+  const res = await fetch('/api/stories/search', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({ filter, term })
+  })
+  dispatch(getSearchedStories(res.data.stories))
+}
+
+const initialState = { stories: {}, search: {} };
 
 function reducer(state = initialState, action) {
   let newState;
   switch (action.type) {
     case GET_ALL_STORIES:
-      newState = { stories: {} }
+      newState = { ...state, stories: {} }
       for (let i = 0; i < action.payload.length; i++) {
-        const shelf = action.payload[i];
-        newState.stories[shelf.id] = shelf
+        const story = action.payload[i];
+        newState.stories[story.id] = story
       }
       return newState;
     case GET_STORY:
@@ -44,6 +61,13 @@ function reducer(state = initialState, action) {
     //   newState = Object.assign({}, state);
     //   delete newState.stories[action.payload]
     //   return newState;
+    case GET_SEARCHED_STORIES:
+      newState = { ...state, search: {} }
+      for (let i = 0; i < action.payload.length; i++) {
+        const story = action.payload[i];
+        newState.search[story.id] = story
+      }
+      return newState;
     default:
       return state;
   }

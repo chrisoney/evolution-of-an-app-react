@@ -10,7 +10,7 @@ import styles from './browseStories.module.css';
 const BrowseStories = ({ preselected }) => {
   const dispatch = useDispatch()
   const stage = useSelector(state => state.ui.stage);
-  const sessionUser = useSelector(state => state.session.user);
+  // const sessionUser = useSelector(state => state.session.user);
   const tags = useSelector(state => state.tags.tags);
   const stories = useSelector(state => state.stories.stories);
   const [selected, setSelected] = useState(preselected ? [preselected] : [])

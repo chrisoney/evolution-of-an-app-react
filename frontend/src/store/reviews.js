@@ -43,8 +43,8 @@ function reducer(state = initialState, action) {
     case GET_ALL_REVIEWS:
       newState = { reviews: {} }
       for (let i = 0; i < action.payload.length; i++) {
-        const shelf = action.payload[i];
-        newState.reviews[shelf.id] = shelf
+        const review = action.payload[i];
+        newState.reviews[review.id] = review
       }
       return newState;
     case GET_REVIEW:

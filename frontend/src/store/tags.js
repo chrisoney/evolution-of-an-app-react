@@ -32,8 +32,8 @@ function reducer(state = initialState, action) {
     case GET_ALL_TAGS:
       newState = { tags: {} }
       for (let i = 0; i < action.payload.length; i++) {
-        const shelf = action.payload[i];
-        newState.tags[shelf.id] = shelf
+        const tag = action.payload[i];
+        newState.tags[tag.id] = tag
       }
       return newState;
     case GET_TAG:
