@@ -25,6 +25,10 @@ function SignupFormPage() {
 
   return (
     <>
+      <div className={styles.top_box}><div className={`fas fa-bars ${styles['top']}`} /></div>
+      <div className={styles.bottom_box}><div className={`fas fa-bars ${styles['bottom']}`} /></div>
+      <div className={styles.left_box}><div className={`fas fa-bars ${styles['left']}`} /></div>
+      <div className={styles.right_box}><div className={`fas fa-bars ${styles['right']}`} /></div>
       <div
         id="box"
         className='stage-button-container'

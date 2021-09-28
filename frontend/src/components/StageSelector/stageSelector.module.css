@@ -82,3 +82,95 @@
 .switch_stage:hover {
   background-color: #EDE6D6;
 }
+
+.top_box {
+  position: absolute;
+  left: 50vw;
+  top: 0;
+  z-index: 10;
+  transform: translateX(-50%);
+  width: 100vw;
+  height: 25vh;
+  /* background-color: yellow; */
+}
+
+.bottom_box {
+  position: absolute;
+  left: 50vw;
+  bottom: 0;
+  z-index: 10;
+  transform: translateX(-50%);
+  width: 100vw;
+  height: 25vh;
+  /* background-color: green; */
+}
+
+.left_box {
+  position: absolute;
+  left: 0;
+  top: 50vh;
+  z-index: 10;
+  transform: translateY(-50%);
+  width: 50vw;
+  height: 50vh;
+  /* background-color: blue; */
+}
+
+.right_box {
+  position: absolute;
+  right: 0;
+  top: 50vh;
+  z-index: 10;
+  transform: translateY(-50%);
+  width: 50vw;
+  height: 50vh;
+  /* background-color: red; */
+}
+
+.top{
+  position: absolute;
+  color: white;
+  top: -3px;
+  left: 50vw;
+  z-index: 10;
+  transform: translateX(-50%);
+  padding: 10px 15px;
+  border: 2px dashed black;
+  border-radius: 5px;
+}
+
+.bottom{
+  position: absolute;
+  color: white;
+  bottom: -3px;
+  left: 50vw;
+  z-index: 10;
+  transform: translateX(-50%);
+  padding: 10px 15px;
+  border: 2px dashed black;
+  border-radius: 5px;
+}
+
+.left{
+  position: absolute;
+  color: white;
+  left: 0;
+  top: 50%;
+  z-index: 10;
+  transform: translateY(-50%);
+  padding: 10px 15px;
+  border: 2px dashed black;
+  border-radius: 5px;
+}
+
+.right{
+  position: absolute;
+  color: white;
+  right: 0;
+  top: 50%;
+  z-index: 10;
+  transform: translateY(-50%);
+  padding: 10px 15px;
+  border: 2px dashed black;
+  border-radius: 5px;
+}
