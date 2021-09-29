@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { useParams } from 'react-router-dom';
+import { useParams, Link } from 'react-router-dom';
 
 import Ratings from '../Ratings';
 
@@ -73,10 +73,9 @@ const StoryPage = () => {
           {stage >= 5 && (
             <div className={styles.story_tags_section}>
               {story.Tags.slice(0, 3).map((tag) => {
-                // Something here for the redirect
-                return (<a href={`/stories?selectedTag=${tag.name}`} key={`tag-${tag.id}`}>
+                return (<Link to={{ pathname: '/stories', state: { selectedTag: tag.id}}} key={`tag-${tag.id}`}>
                   <div className={styles.tag_element}>{tag.name}</div>
-                </a>)
+                </Link>)
               })}
               <i
                 className={`${styles.tag_toggle} fas ${revealTags ? 'fa-minus' : 'fa-plus'}`}
@@ -84,10 +83,9 @@ const StoryPage = () => {
               />
               <div className={styles.story_tags_inner_section}>
                 {revealTags && story.Tags.slice(3).map((tag) => {
-                  // Something here for the redirect
-                  return (<a href={`/stories?selectedTag=${tag.name}`} key={`tag-${tag.id}`}>
+                  return (<Link to={{ pathname: '/stories', state: { selectedTag: tag.id}}} key={`tag-${tag.id}`}>
                     <div className={styles.tag_element}>{tag.name}</div>
-                  </a>)
+                  </Link>)
                 })}
               </div>
             </div>

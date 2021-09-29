@@ -7,14 +7,16 @@ import { fetchAllStories } from '../../store/stories';
 
 import styles from './browseStories.module.css';
 
-const BrowseStories = ({ preselected }) => {
+const BrowseStories = ({location}) => {
   const dispatch = useDispatch()
   const stage = useSelector(state => state.ui.stage);
+  const preselected = location.state ? [location.state.selectedTag] : []
+  console.log(location.state, preselected)
   // const sessionUser = useSelector(state => state.session.user);
   const tags = useSelector(state => state.tags.tags);
   const stories = useSelector(state => state.stories.stories);
-  const [selected, setSelected] = useState(preselected ? [preselected] : [])
-  const [revealTags, setRevealTags] = useState(false);
+  const [selected, setSelected] = useState(preselected)
+  const [revealTags, setRevealTags] = useState(preselected.length > 0);
   const [loadedStories, setLoadedStories] = useState([])
   const [recentStories, setRecentStories] = useState([])
 
@@ -31,8 +33,9 @@ const BrowseStories = ({ preselected }) => {
   }
 
   useEffect(() => {
+    console.log(selected)
     const storyArr = Object.values(stories)
-    if (selected.length === 0) setLoadedStories([...Object.values(stories)])
+    if (selected.length === 0 || stage < 5) setLoadedStories([...Object.values(stories)])
     else {
       const tempStories = []
       for (let i = 0; i < storyArr.length; i++){
@@ -42,7 +45,7 @@ const BrowseStories = ({ preselected }) => {
       setLoadedStories([...tempStories])
     }
     setRecentStories([...storyArr.filter(story => story.Bookshelves.length > 0).sort((a,b) => a.Bookshelves[0].Placement.updatedAt - b.Bookshelves[0].Placement.updatedAt).slice(0,15)])
-  }, [stories, selected])
+  }, [stories, selected, stage])
 
   useEffect(() => {
     dispatch(fetchAllTags()).then(() => {
@@ -98,17 +101,17 @@ const BrowseStories = ({ preselected }) => {
                 })}
               </div>
             )}
-            <div className={styles.left_story_container}>
-              {loadedStories.map(story => {
-                return (
-                  <a href={`/stories/${story.id}`} key={`main-story-section-${story.id}`}>
-                    <img src={story.imageUrl} className={styles.story_browse_image} title={story.title} alt={story.title} />
-                  </a>
-                )
-              })}
-            </div>
           </>
         )}
+        <div className={styles.left_story_container}>
+          {loadedStories.map(story => {
+            return (
+              <a href={`/stories/${story.id}`} key={`main-story-section-${story.id}`}>
+                <img src={story.imageUrl} className={styles.story_browse_image} title={story.title} alt={story.title} />
+              </a>
+            )
+          })}
+        </div>
       </div>
       <div className={styles.main_content_right}>
         <h2 className={styles.story_browse_title}>Recently Popular Stories</h2>
@@ -127,26 +130,3 @@ const BrowseStories = ({ preselected }) => {
 }
 
 export default BrowseStories;
-
-// .main-content
-//     .main-content-left
-//       h1.story_browse_title Browse Stories
-//       if (parseInt(mode) >= 5)
-//         div(class='hidden selected_tag' id=selectedTag)
-//         .tag_section_reveal_container
-//           .tag_section_reveal #{selectedTag ? 'Close' : 'Filter by Tags'}
-//         div(class=`tag_section ${selectedTag ? '' : 'hidden'}`)
-//           for tag in tags
-//             .tag_container
-//               input(class='tag_checkbox' type='checkbox' checked=(selectedTag === tag.name))
-//               .tag_name= tag.name
-//       .left_story_container
-//         each story in stories
-//           a(href=`/stories/${story.id}`)
-//             img(src=story.imageUrl class='story_browse_image' title=story.title)
-//     .main_content_right
-//       h2.story_browse_title Recently Popular Stories
-//         .right_story_container
-//         each story in newStories
-//           a(href=`/stories/${story.id}`)
-//             img(src=story.imageUrl class='story_browse_image smaller_image')

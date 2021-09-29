@@ -63,11 +63,11 @@ function App() {
           <Route path="/signup">
             <SignupFormPage />
           </Route>
-          <ProtectedRoute path="/stories" exact min={4}>
-            <BrowseStories />
+          <ProtectedRoute path="/stories" exact min={3}>
+            <BrowseStories location={location} />
           </ProtectedRoute>
           <ProtectedRoute path="/users/:id/bookshelves" min={2}>
-            <Bookshelves />
+            <Bookshelves location={location} />
           </ProtectedRoute>
           <ProtectedRoute path="/bookshelves/edit" min={2}>
             <EditBookshelves />

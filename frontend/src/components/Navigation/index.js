@@ -24,7 +24,7 @@ function Navigation({ isLoaded }) {
   const handleSearch = (e) => {
     e.preventDefault();
     dispatch(fetchSearchedStories('all', term));
-    history.push(`/search?term=${term}`)    
+    history.push(`/search?term=${term}`)
   }
 
   const handleSignOut = (e) => {
