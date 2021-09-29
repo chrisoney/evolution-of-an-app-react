@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-
+import { Link } from 'react-router-dom';
 import { fetchAllBookshelves } from "../../store/bookshelves";
 import { fetchAllStories } from "../../store/stories";
 import { fetchAllPlacements } from "../../store/placements";
@@ -96,7 +96,7 @@ function Home() {
                 </div>
               )}
             <div className={styles.currently_reading_example_button_section}>
-              <a href={`/users/${sessionUser.id}/bookshelves?selected=Currently-Reading`} className={styles.currently_reading_section_button}>View all books</a>
+            <Link to={{pathname: `/users/${sessionUser.id}/bookshelves`, state: { shelf: 'Currently Reading' }}} className={styles.currently_reading_section_button}>View all books</Link>
             </div>
           </div>
           <div className={styles.want_to_read_examples_section_container}>
@@ -111,7 +111,7 @@ function Home() {
               })}
             </div>
             <div className={styles.want_to_read_example_button_section}>
-              <a href={`/users/${sessionUser.id}/bookshelves?selected=Want-To-Read`} className={styles.want_to_read_section_button}>View all books</a>
+            <Link to={{pathname: `/users/${sessionUser.id}/bookshelves`, state: { shelf: 'Want To Read' }}} className={styles.want_to_read_section_button}>View all books</Link>
             </div>
           </div>
           <div className={styles.bookshelves_listing_section_container}>
@@ -119,10 +119,10 @@ function Home() {
             <div className={styles.bookshelves_listing_shelves_container}>
               {sessionUser.Bookshelves && sessionUser.Bookshelves.map((shelf, idx) => {
                 return (
-                  <a href={`/users/${sessionUser.id}/bookshelves?selected=${shelf.name.split(' ').join('-')}`} className={styles.bookshelves_listing_shelf_container} key={`shelf-link-${idx}`}>
+                  <Link to={{pathname: `/users/${shelf.userId}/bookshelves`, state: { shelf: shelf.name }}} className={styles.bookshelves_listing_shelf_container} key={`shelf-link-${idx}`}>
                     <div className={styles.shelf_count}>{shelf.Stories.length}</div>
                     <div className={styles.shelf_name}>{shelf.name}</div>
-                  </a>
+                  </Link>
                 )
               })}
             </div>
@@ -305,7 +305,7 @@ function Home() {
                   return (
                     <div className={styles.homepage_list_container} key={`homepage-list-${id}`}>
                       <div className={styles.homepage_list_left}>
-                        <a href={`/users/${shelf.userId}/bookshelves?selected=${shelf.name.split(' ').join('-')}`} className={styles.shelf_link}>
+                        <a href={`/users/${shelf.userId}/bookshelves`} className={styles.shelf_link}>
                           <div className={styles.list_section_list_title}>{shelf.name}</div>
                         </a>
                         <a href={`/users/${shelf.userID}/bookshelves`} className={styles.shelf_link}>

@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
+import { Link } from 'react-router-dom'
 import styles from './editBookshelves.module.css';
 
 import {
@@ -103,6 +104,7 @@ const EditBookshelves = () => {
 const BookshelfEditRow = ({ shelf }) => {
   const dispatch = useDispatch()
   const stage = useSelector(state => state.ui.stage);
+  // const sessionUser = useSelector(state => state.session.user)
   const [reveal, setReveal] = useState()
   const [name, setName] = useState(shelf.name)
 
@@ -130,29 +132,26 @@ const BookshelfEditRow = ({ shelf }) => {
         />
       </td>
       <td className={styles.shelf_name}>
-        <div
-          // href={`/users/${sessionUser.id}/bookshelves?selected=${queryVar}`}
-          className={styles.shelf_link}
-        >
-          {!reveal && <div>{name}</div>}
-          {reveal && <div className={styles.shelf_name_update_container}>
-            <input
-              type='text'
-              className={styles.shelf_name_update_input}
-              value={name}
-              onChange={(e) => setName(e.target.value)}
-            />
-            <button
-              className={styles.shelf_name_update_submit}
-              onClick={handleSubmit}
-              id={shelf.id}
-            >Save</button>
-            <button
-              className={styles.shelf_name_update_cancel}
-              onClick={handleCancel}
-            >Cancel</button>
-          </div>}
-        </div>
+        {!reveal && <Link to={{ pathname: `/users/${shelf.userId}/bookshelves`, state: { shelf: shelf.name } }} className={styles.shelf_link}>
+          <div>{name}</div>
+        </Link>}
+        {reveal && <div className={styles.shelf_name_update_container}>
+          <input
+            type='text'
+            className={styles.shelf_name_update_input}
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+          />
+          <button
+            className={styles.shelf_name_update_submit}
+            onClick={handleSubmit}
+            id={shelf.id}
+          >Save</button>
+          <button
+            className={styles.shelf_name_update_cancel}
+            onClick={handleCancel}
+          >Cancel</button>
+        </div>}
       </td>
       <td className={styles.editable_container}>
         <i

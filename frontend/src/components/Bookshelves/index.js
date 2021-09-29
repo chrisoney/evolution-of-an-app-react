@@ -8,7 +8,7 @@ import styles from './bookshelves.module.css';
 
 import Ratings from '../Ratings';
 
-const Bookshelves = () => {
+const Bookshelves = (location) => {
   const { id } = useParams()
   const dispatch = useDispatch()
   const stage = useSelector(state => state.ui.stage);
@@ -16,8 +16,7 @@ const Bookshelves = () => {
   const users = useSelector(state => state.users.users);
   const bookshelves = useSelector(state => state.bookshelves.bookshelves);
   const stories = useSelector(state => state.stories.stories);
-
-  const [selected, setSelected] = useState('');
+  const [selected, setSelected] = useState(id === sessionUser.id ? location.location.state.shelf : '');
   const [loaded, setLoaded] = useState(false);
   const [newShelfName, setNewShelfName] = useState('');
   const [pageUser, setPageUser] = useState(null);
@@ -32,6 +31,23 @@ const Bookshelves = () => {
   //     setLoadedShelves([...sessionUser.Bookshelves])
   //   }
   // }, [sessionUser])
+
+  useEffect(() => {
+    dispatch(fetchAllUsers()).then(() => {
+      dispatch(fetchAllBookshelves()).then(() => {
+        dispatch(fetchAllStories()).then(() => {
+          setLoaded(true)
+        })
+      })
+
+    })
+  }, [dispatch, id])
+
+  useEffect(() => {
+    setPageUser(users[id])
+    setLoadedShelves([...Object.values(bookshelves).filter(shelf => shelf.userId === parseInt(id, 10))]);
+  }, [users, bookshelves, id])
+
 
   useEffect(() => {
     if (pageUser) {
@@ -49,22 +65,12 @@ const Bookshelves = () => {
         }
         setLoadedStories([...tempArray])
       } else {
-        const temp = loadedShelves.filter(shelf => shelf.name === selected)[0].Stories;
-        setLoadedStories([...temp])
+        const temp = loadedShelves.filter(shelf => shelf.name === selected)[0]
+        const result = temp ? temp.Stories : [];
+        setLoadedStories([...result])
       }
     }
   }, [selected, pageUser, loadedShelves])
-
-  useEffect(() => {
-    dispatch(fetchAllUsers()).then(() => {
-      dispatch(fetchAllBookshelves()).then(() => {
-        dispatch(fetchAllStories()).then(() => {
-          setLoaded(true)
-        })
-      })
-
-    })
-  }, [dispatch, id])
 
   useEffect(() => {
     let total = 0
@@ -76,11 +82,6 @@ const Bookshelves = () => {
     }
     setAllCount(total);
   }, [users, id])
-
-  useEffect(() => {
-    setPageUser(users[id])
-    setLoadedShelves([...Object.values(bookshelves).filter(shelf => shelf.userId === parseInt(id, 10))]);
-  }, [users, bookshelves, id])
 
   const handleNewShelfSubmit = (e) => {
     e.preventDefault()
