@@ -3,6 +3,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { useParams, Link } from 'react-router-dom';
 
 import Ratings from '../Ratings';
+import StoryBookshelfSelector from '../BookshelfSelector/StoryBookshelfSelector'
 
 import { fetchAllStories } from '../../store/stories';
 import { fetchAllUsers } from '../../store/users';
@@ -49,7 +50,7 @@ const StoryPage = () => {
       <div className={styles.story_page_left_side}>
         <div className={styles.story_stick_section}>
           <img src={story.imageUrl} className={styles.story_image} alt={story.title} />
-          {/* This is where the component to change bookshelves will be. I'll work on that in a bit */}
+          <StoryBookshelfSelector storyId={story.id} />
         </div>
       </div>
       <div className={styles.story_page_right_side}>
