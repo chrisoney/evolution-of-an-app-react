@@ -31,13 +31,7 @@ function Navigation({ isLoaded }) {
     e.preventDefault();
     dispatch(sessionActions.logout());
   }
-  // return <Redirect
-  //     push to={{
-  //       pathname: "/search",
-  //       state: {
-  //         term: term
-  //     }
-  //   }} />
+
   if (sessionUser) {
     sessionLinks = (
       <ProfileButton user={sessionUser} />

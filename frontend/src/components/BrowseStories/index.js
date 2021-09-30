@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-// import { Redirect, useLocation } from "react-router-dom";
 
 import { fetchAllTags } from '../../store/tags';
 import { fetchAllStories } from '../../store/stories';
