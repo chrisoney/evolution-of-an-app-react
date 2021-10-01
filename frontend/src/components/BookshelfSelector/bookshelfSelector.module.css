@@ -126,3 +126,62 @@
 .no_ratings {
   margin-right: 5px;
 }
+
+/* StoryBookshelfSelector */
+
+
+.bookshelf_button_container {
+  width: 100%;
+  border-radius: 25px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #3F8363;
+  color: white;
+  font-size: 16px;
+  height: 40px;
+  cursor: pointer;
+}
+
+.bookshelf_button_container .fa_check {
+  margin-right: 4px;
+  /* font-weight: 400; */
+}
+
+.bookshelf_button_container .fa_chevron_down {
+  border-left: 1px solid #377458;
+  padding: 12px;
+  padding-right: 15px;
+}
+
+.bookshelf_button_container .fa_chevron_down:hover {
+  border-top-right-radius: 30px;
+  border-bottom-right-radius: 30px;
+  background-color: #409970;
+}
+
+.bookshelf_button_container.added {
+  color: black;
+  background-color: white;
+  border: 2px solid black;
+  justify-content: center;
+}
+
+.bookshelf_button_container.added:hover {
+  background-color: rgba(0,0,0,0.05);
+}
+
+.bookshelf_button {
+  width: 90%;
+  vertical-align: middle;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+}
+
+.bookshelf_button:hover {
+  border-top-left-radius: 30px;
+  border-bottom-left-radius: 30px;
+  background-color: #409970;
+}
