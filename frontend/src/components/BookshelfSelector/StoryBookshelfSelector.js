@@ -1,11 +1,14 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { addOrUpdatePlacement, fetchAllPlacements } from '../../store/placements';
 import { fetchAllBookshelves } from '../../store/bookshelves';
+import { showModal, setCurrentModal, setModalProps } from '../../store/ui';
+import BookshelfSelectorStandardmodal from '../Modal/BookshelfSelectorStandardModal';
 import styles from './bookshelfSelector.module.css';
 
 const StoryBookshelfSelector = ({ storyId }) => {
+  const mainButton = useRef(null)
   const dispatch = useDispatch()
   const sessionUser = useSelector(state => state.session.user);
   const placements = useSelector(state => Object.values(state.placements.placements))
@@ -28,7 +31,6 @@ const StoryBookshelfSelector = ({ storyId }) => {
   }, [bookshelves, sessionUser])
 
   useEffect(() => {
-    console.log('hello')
     const shelfIds = sessionUser.Bookshelves.map(shelf => shelf.id);
     const storyPlacements = placements.filter(placement => placement.storyId === storyId);
     const currShelved = storyPlacements.filter(placement => (shelfIds.includes(placement.bookshelfId) && !bookshelves[placement.bookshelfId].deleteAllowed))[0]?.bookshelfId || null;
@@ -41,14 +43,17 @@ const StoryBookshelfSelector = ({ storyId }) => {
     dispatch(addOrUpdatePlacement(wtrId, storyId, sessionUser.id))
   }
 
-  const handleEntryModalOpen = (e) => {
-
+  const handleEntryModalOpen = (e, largeVersion) => {
+    dispatch(setCurrentModal(BookshelfSelectorStandardmodal))
+    dispatch(setModalProps({ largeVersion, storyId, mainButton }))
+    dispatch(showModal())
   }
   if (!loaded) return null;
   return (
     <div
-      className={`${styles.bookshelf_button_container} ${shelf ? styles.added : ''}`}
-      onClick={shelf ? handleEntryModalOpen : null}
+      className={`${styles.bookshelf_button_container} ${shelf ? `added ${styles.added}` : ''}`}
+      onClick={shelf ? (e) => handleEntryModalOpen(e, true) : null}
+      ref={mainButton}
     >
       {shelf ? (
           <>
@@ -64,7 +69,7 @@ const StoryBookshelfSelector = ({ storyId }) => {
             >Want To Read</div>
             <i
               className={`fas fa-chevron-down ${styles.fa_chevron_down}`}
-              onClick={handleEntryModalOpen}
+              onClick={(e) => handleEntryModalOpen(e, false)}
             />
           </>
       )}

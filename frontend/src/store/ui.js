@@ -3,8 +3,9 @@ const REMOVE_STAGE = 'ui/removeStage';
 const GET_STAGE = 'ui/getStage';
 const SHOW_MODAL = 'ui/showModal';
 const HIDE_MODAL = 'ui/hideModal';
-const SET_CURRENT = 'ui/setCurrent'
-const SET_MOUNT = 'ui/setMount'
+const SET_CURRENT = 'ui/setCurrent';
+const SET_MOUNT = 'ui/setMount';
+const SET_PROPS = 'ui/setProps';
 
 export const getStage = () => ({
   type: GET_STAGE
@@ -36,13 +37,18 @@ export const setModalMount = (mount) => ({
   type: SET_MOUNT,
   payload: mount
 })
+export const setModalProps = (props) => ({
+  type: SET_PROPS,
+  payload: props
+})
 
 const initialState = {
   stage: null,
   modal: {
     mount: null,
     current: null,
-    display: false
+    display: false,
+    props: null
   }
 };
 
@@ -83,6 +89,12 @@ function reducer(state = initialState, action) {
         ...state, modal: {
           ...state.modal,
           mount: action.payload
+      }}
+    case SET_PROPS:
+      return {
+        ...state, modal: {
+          ...state.modal,
+          props: action.payload
       }}
     default:
       return state;

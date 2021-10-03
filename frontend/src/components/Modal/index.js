@@ -12,7 +12,7 @@ const Modal = () => {
   const Current = useSelector(state => state.ui.modal.current);
   const display = useSelector(state => state.ui.modal.display);
 
-  const closeModal = () => {
+  const closeModal = (e) => {
     dispatch(hideModal())
   }
 

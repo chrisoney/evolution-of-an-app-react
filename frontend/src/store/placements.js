@@ -32,6 +32,12 @@ export const addOrUpdatePlacement = (bookshelfId, storyId, userId) => async (dis
     },
     body: JSON.stringify({ bookshelfId, storyId, userId })
   })
+  const deletedIds = res.data.deletedIds
+  if (deletedIds.length > 0) {
+    for (let i = 0; i < deletedIds.length; i++){
+      dispatch(removePlacement(deletedIds[i]));
+    }
+  }
   dispatch(getPlacement(res.data.placement));
   return res.data.placement;
 }

@@ -11,6 +11,9 @@ router.get('/', asyncHandler(async (req, res) => {
 
 router.post('/', asyncHandler(async (req, res) => {
   const { bookshelfId, storyId, userId } = req.body
+
+  const deletedIds = [];
+
   const bookshelf = await Bookshelf.findByPk(bookshelfId);
   if (!bookshelf.deleteAllowed) {
     const bookshelves = await Bookshelf.findAll({
@@ -20,16 +23,19 @@ router.post('/', asyncHandler(async (req, res) => {
       },
       include: Story
     })
+    console.log(bookshelves.map(shelf => shelf.name))
     for (let i = 0; i < bookshelves.length; i++) {
       const shelf = bookshelves[i];
       const storyIds = shelf.Stories.map(story => story.id);
       if (storyIds.includes((parseInt(storyId, 10)))) {
-        await Placement.destroy({
+        const placement = await Placement.findOne({
           where: {
             bookshelfId: shelf.id,
             storyId
           }
         })
+        deletedIds.push(placement.id);
+        await placement.destroy()
       }
     }
   }
@@ -49,7 +55,7 @@ router.post('/', asyncHandler(async (req, res) => {
     })
   }
 
-  res.json( { placement })
+  res.json( { placement, deletedIds })
 }))
 
 router.delete('/', asyncHandler(async (req, res) => {

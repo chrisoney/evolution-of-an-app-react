@@ -53,7 +53,6 @@ const BrowseStories = ({location}) => {
   }, [dispatch])
 
   const handleTagSelect = (e, tagId) => {
-    console.log('hello')
     if (selected.includes(tagId)) {
       const idx = selected.indexOf(tagId);
       setSelected([...selected.slice(0, idx), ...selected.slice(idx + 1)])
