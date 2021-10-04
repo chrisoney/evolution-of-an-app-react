@@ -21,6 +21,7 @@ const StoryPage = () => {
   const [otherReviews, setOtherReviews] = useState([])
   const [revealTags, setRevealTags] = useState(false)
   const [revealWarnings, setRevealWarnings] = useState(false)
+  const [expandStory, setExpandStory] = useState(false)
 
   useEffect(() => {
     dispatch(fetchAllStories())
@@ -38,12 +39,6 @@ const StoryPage = () => {
     }
   }, [story, sessionUser])
 
-  // useEffect(() => {
-  // }, [story, sessionUser])
-
-  useEffect(() => {
-
-  })
   if (!story) return null;
   return (
     <div className={styles.page_container}>
@@ -64,10 +59,15 @@ const StoryPage = () => {
                 </div>
             ) : (
                 <>
-                  <div className={`${styles.story_description} ${styles.shortened}`}>
+                  <div
+                    className={`${styles.story_description} ${expandStory ? '' : styles.shortened}`}
+                  >
                     {story.description}
                   </div>
-                  <button className={styles.expand}>...more</button>
+                  <button
+                    className={styles.expand}
+                    onClick={() => setExpandStory(!expandStory)}
+                  >{expandStory ? '...less' : '...more'}</button>
                 </>
             )}
           </div>
