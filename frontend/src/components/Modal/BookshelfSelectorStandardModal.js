@@ -45,7 +45,7 @@ const BookshelfSelectorStandardmodal = () => {
     setSelected(shelfName)
   }
   if (!props.largeVersion || !props.storyId) return <p>Did something go wrong?</p>
-  if (!loaded) return <p>Loading...</p>
+  if (!loaded) return <img className={styles.loading_gif} src='/images/loading.gif' alt='loading'/>
   return (
     <div className={styles.modal_container}>
       <div className={styles.modal_title_container}>

@@ -139,3 +139,8 @@
 .modal_submit:hover {
   background-color: #4F4F4D;
 }
+
+
+.loading_gif {
+  padding: 50px;
+}
