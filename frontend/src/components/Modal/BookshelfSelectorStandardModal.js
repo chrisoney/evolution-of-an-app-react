@@ -7,7 +7,7 @@ import { hideModal } from '../../store/ui';
 
 import styles from './storyModal.module.css';
 
-const BookshelfSelectorStandardmodal = () => {
+const BookshelfSelectorStandardModal = () => {
   const dispatch = useDispatch()
   const sessionUser = useSelector(state => state.session.user);
   const props = useSelector(state => state.ui.modal.props);
@@ -76,7 +76,7 @@ const BookshelfSelectorStandardmodal = () => {
 
 }
 
-export default BookshelfSelectorStandardmodal;
+export default BookshelfSelectorStandardModal;
 
 //   const titleContainer = document.createElement('div')
 //   titleContainer.className = 'modal-title-container';
