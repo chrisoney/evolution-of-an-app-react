@@ -71,6 +71,18 @@ const BookshelfSelectorStandardModal = () => {
           </button>
         )
       })}
+      {props.largeVersion && (
+        <div className={styles.modal_bottom_button_container}>
+          <button
+            className={styles.modal_cancel}
+            // onClick={null} // This will be movement to the delete modal
+          >Remove</button>
+          <button
+            className={styles.modal_submit}
+            // onClick={null} // This will be movement to the custom shelves modal
+          >Next</button>
+        </div>
+      )}
     </div>
   )
 
