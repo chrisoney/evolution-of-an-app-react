@@ -3,6 +3,8 @@ import { useDispatch, useSelector } from 'react-redux';
 
 import { fetchAllPlacements } from '../../store/placements';
 
+import styles from './storyModal.module.css'
+
 const BookshelfSelectorStandardModal = () => {
   const dispatch = useDispatch()
   const placements = useSelector(state => state.placements.placements);
@@ -12,8 +14,8 @@ const BookshelfSelectorStandardModal = () => {
   }, [dispatch])
 
   return (
-    <>
-    </>
+    <div className={styles.modal_container}>
+    </div>
   );
 }
 
