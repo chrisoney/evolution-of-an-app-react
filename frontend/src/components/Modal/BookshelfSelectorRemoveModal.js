@@ -15,6 +15,7 @@ const BookshelfSelectorRemoveModal = () => {
 
   return (
     <div className={styles.modal_container}>
+      <div className={styles.modal_title_container}></div>
     </div>
   );
 }
