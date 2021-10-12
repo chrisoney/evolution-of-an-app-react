@@ -3,7 +3,9 @@ import { useDispatch, useSelector } from 'react-redux'
 
 import { addOrUpdatePlacement } from '../../store/placements'
 import { fetchAllBookshelves } from '../../store/bookshelves'
-import { hideModal } from '../../store/ui';
+import { hideModal, setCurrentModal } from '../../store/ui';
+
+import BookshelfSelectorRemoveModal from './BookshelfSelectorRemoveModal';
 
 import styles from './storyModal.module.css';
 
@@ -44,6 +46,13 @@ const BookshelfSelectorStandardModal = () => {
     }
     setSelected(shelfName)
   }
+
+  const handleRemoveModalSwitch = (e) => {
+    e.preventDefault()
+    e.stopPropagation()
+    dispatch(setCurrentModal(BookshelfSelectorRemoveModal));
+  }
+
   if (!props.largeVersion || !props.storyId) return <p>Did something go wrong?</p>
   // if (!loaded) return <img className={styles.loading_gif} src='/images/loading.gif' alt='loading'/>
   if (!loaded) return null
@@ -75,7 +84,7 @@ const BookshelfSelectorStandardModal = () => {
         <div className={styles.modal_bottom_button_container}>
           <button
             className={styles.modal_cancel}
-            // onClick={null} // This will be movement to the delete modal
+            onClick={handleRemoveModalSwitch} // This will be movement to the delete modal
           >Remove</button>
           <button
             className={styles.modal_submit}
