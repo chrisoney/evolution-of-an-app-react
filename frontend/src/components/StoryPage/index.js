@@ -178,7 +178,7 @@ const StoryPage = () => {
                       <div className={styles.review_header}>
                         <div className={styles.review_header_left}>
                           <a href={`/users/${review.userId}/bookshelves`} className={styles.user_bookshelves_link}>
-                            <div className={styles.review_username}>{users[review.userId].username}</div>
+                            <div className={styles.review_username}>{users[review.userId]?.username || ''}</div>
                           </a>
                           <div className={styles.review_action}>rated it</div>
                           <Ratings rating={review.rating} userId={review.userId} storyId={review.storyId} />
