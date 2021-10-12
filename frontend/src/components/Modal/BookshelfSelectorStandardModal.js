@@ -57,7 +57,10 @@ const BookshelfSelectorStandardModal = () => {
   // if (!loaded) return <img className={styles.loading_gif} src='/images/loading.gif' alt='loading'/>
   if (!loaded) return null
   return (
-    <div className={styles.modal_container}>
+    <div
+      className={styles.modal_container}
+      // onClick={e => e.stopPropagation()}
+    >
       <div className={styles.modal_title_container}>
         <div className={styles.modal_title}>Choose a shelf for this story: </div>
         <div

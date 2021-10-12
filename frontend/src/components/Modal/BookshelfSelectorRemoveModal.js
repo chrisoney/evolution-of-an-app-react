@@ -2,7 +2,9 @@ import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { fetchAllPlacements } from '../../store/placements';
-import { hideModal } from '../../store/ui';
+import { hideModal, setCurrentModal } from '../../store/ui';
+
+import BookshelfSelectorStandardModal from './BookshelfSelectorStandardModal';
 
 import styles from './storyModal.module.css'
 
@@ -14,8 +16,17 @@ const BookshelfSelectorRemoveModal = () => {
     dispatch(fetchAllPlacements())
   }, [dispatch])
 
+  const handleModalSwitchStandard = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    dispatch(setCurrentModal(BookshelfSelectorStandardModal))
+  }
+
   return (
-    <div className={styles.modal_container}>
+    <div
+      className={styles.modal_container}
+      // onClick={e => e.stopPropagation()}
+    >
       <div className={styles.modal_title_container}>
         <div className={styles.modal_title}>Are you sure you want to remove this book from your shelves? </div>
         <div
@@ -29,7 +40,7 @@ const BookshelfSelectorRemoveModal = () => {
       <div className={styles.modal_bottom_button_container}>
         <button
           className={styles.modal_cancel}
-          onClick={null} // Use to switch back to modal 1?
+          onClick={handleModalSwitchStandard} // Use to switch back to modal 1?
         >Cancel</button>
         <button
           className={styles.modal_submit}
