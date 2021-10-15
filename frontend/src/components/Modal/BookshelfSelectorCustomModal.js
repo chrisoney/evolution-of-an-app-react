@@ -26,6 +26,19 @@ const BookshelfSelectorStandardModal = () => {
           <i className={`fas fa-times close-modal ${styles.fa_times} ${styles.close_modal}`} />
         </div>
       </div>
+      <div className={styles.modal_shelf_container}>
+        {/* logic for the custom shelves incoming */}
+      </div>
+      <div className={styles.modal_bottom_button_container}>
+        <button
+          className={styles.modal_cancel}
+          onClick={null} // Use to switch back to modal 1?
+        >Back</button>
+        <button
+          className={styles.modal_submit}
+          onClick={(e) => dispatch(hideModal())} // This will be an actual action to finish using the modals
+        >Done</button>
+      </div>
     </div>
   );
 }
