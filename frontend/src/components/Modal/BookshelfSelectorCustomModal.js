@@ -3,17 +3,24 @@ import { useDispatch, useSelector } from 'react-redux';
 
 import { fetchAllPlacements } from '../../store/placements';
 
-import { hideModal } from '../../store/ui';
+import { hideModal, setCurrentModal } from '../../store/ui';
+
+import BookshelfSelectorStandardModal from './BookshelfSelectorStandardModal';
 
 import styles from './storyModal.module.css'
 
-const BookshelfSelectorStandardModal = () => {
+const BookshelfSelectorCustomModal = () => {
   const dispatch = useDispatch()
   const placements = useSelector(state => state.placements.placements);
 
   useEffect(() => {
     dispatch(fetchAllPlacements())
   }, [dispatch])
+
+  const handlePreviousModalClick = (e) => {
+    e.preventDefault();
+    dispatch(setCurrentModal(BookshelfSelectorStandardModal))
+  }
 
   return (
     <div className={styles.modal_container}>
@@ -32,7 +39,7 @@ const BookshelfSelectorStandardModal = () => {
       <div className={styles.modal_bottom_button_container}>
         <button
           className={styles.modal_cancel}
-          onClick={null} // Use to switch back to modal 1?
+          onClick={handlePreviousModalClick} // Use to switch back to modal 1?
         >Back</button>
         <button
           className={styles.modal_submit}
@@ -43,4 +50,4 @@ const BookshelfSelectorStandardModal = () => {
   );
 }
 
-export default BookshelfSelectorStandardModal;
+export default BookshelfSelectorCustomModal;
