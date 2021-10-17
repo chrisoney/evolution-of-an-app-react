@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { fetchAllPlacements } from '../../store/placements';
@@ -12,6 +12,10 @@ import styles from './storyModal.module.css'
 const BookshelfSelectorCustomModal = () => {
   const dispatch = useDispatch()
   const placements = useSelector(state => state.placements.placements);
+  const bookshelves = useSelector(state => state.bookshelves.bookshelves)
+  const sessionUser = useSelector(state => state.session.user)
+
+  const [customShelves, setCustomShelves] = useState([]);
 
   useEffect(() => {
     dispatch(fetchAllPlacements())
@@ -34,6 +38,7 @@ const BookshelfSelectorCustomModal = () => {
         </div>
       </div>
       <div className={styles.modal_shelf_container}>
+
         {/* logic for the custom shelves incoming */}
       </div>
       <div className={styles.modal_bottom_button_container}>
