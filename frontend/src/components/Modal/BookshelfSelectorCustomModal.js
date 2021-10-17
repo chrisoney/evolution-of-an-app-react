@@ -21,6 +21,10 @@ const BookshelfSelectorCustomModal = () => {
     dispatch(fetchAllPlacements())
   }, [dispatch])
 
+  useEffect(() => {
+    setCustomShelves([...sessionUser.Bookshelves.filter(shelf => shelf.deletedAllowed).map(shelf => bookshelves[shelf.id])])
+  }, [sessionUser, bookshelves])
+
   const handlePreviousModalClick = (e) => {
     e.preventDefault();
     dispatch(setCurrentModal(BookshelfSelectorStandardModal))
@@ -38,7 +42,9 @@ const BookshelfSelectorCustomModal = () => {
         </div>
       </div>
       <div className={styles.modal_shelf_container}>
-
+        {customShelves.map(shelf => {
+          return (null)
+        })}
         {/* logic for the custom shelves incoming */}
       </div>
       <div className={styles.modal_bottom_button_container}>
