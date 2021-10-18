@@ -43,7 +43,7 @@ export const addOrUpdatePlacement = (bookshelfId, storyId, userId) => async (dis
 }
 
 export default removeAllUserPlacements = (userId) => async (dispatch) => {
-  const res = await fetch(`/api/users/${userID}/placements`, {
+  const res = await fetch(`/api/users/${userId}/placements`, {
     method: 'DELETE',
     headers: {
       'Content-Type': 'application/json'
