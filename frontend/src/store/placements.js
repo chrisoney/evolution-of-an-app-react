@@ -42,6 +42,22 @@ export const addOrUpdatePlacement = (bookshelfId, storyId, userId) => async (dis
   return res.data.placement;
 }
 
+export default removeAllUserPlacements = (userId) => async (dispatch) => {
+  const res = await fetch(`/api/users/${userID}/placements`, {
+    method: 'DELETE',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+  })
+  const deletedIds = res.data.deletedIds
+  if (deletedIds.length > 0) {
+    for (let i = 0; i < deletedIds.length; i++){
+      dispatch(removePlacement(deletedIds[i]));
+    }
+  }
+  return;
+}
+
 const initialState = { placements: {} };
 
 function reducer(state = initialState, action) {
