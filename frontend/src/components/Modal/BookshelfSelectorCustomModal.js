@@ -30,6 +30,10 @@ const BookshelfSelectorCustomModal = () => {
     dispatch(setCurrentModal(BookshelfSelectorStandardModal))
   }
 
+  const customShelfClickEvent = (e, id) => {
+    e.preventDefault()
+  }
+
   return (
     <div className={styles.modal_container}>
       <div className={styles.modal_title_container}>
@@ -43,7 +47,13 @@ const BookshelfSelectorCustomModal = () => {
       </div>
       <div className={styles.modal_shelf_container}>
         {customShelves.map(shelf => {
-          return (null)
+          return (
+            <div
+              className={styles.modal_custom_shelf}
+              key={`custom-shelf-${shelf.id}`}
+              onClick={(e) => customShelfClickEvent(e, shelf.id)}
+            >{shelf.name}</div>
+          )
         })}
         {/* logic for the custom shelves incoming */}
       </div>
