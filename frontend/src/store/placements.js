@@ -3,6 +3,7 @@ import { fetch } from './csrf.js';
 const GET_PLACEMENT = 'placements/getPlacement';
 const GET_ALL_PLACEMENTS = 'placements/getAllPlacements';
 const REMOVE_PLACEMENT = 'placements/removePlacement';
+const REMOVE_MULTIPLE_PLACEMENTS = 'placements/removeMultiplePlacements';
 
 export const getPlacement = (placement) => ({
   type: GET_PLACEMENT,
@@ -17,6 +18,11 @@ export const getAllPlacements = (placements) => ({
 export const removePlacement = (placementId) => ({
   type: REMOVE_PLACEMENT,
   payload: placementId
+});
+
+export const removeMultiplePlacements = (placementIds) => ({
+  type: REMOVE_MULTIPLE_PLACEMENTS,
+  payload: placementIds
 });
 
 export const fetchAllPlacements = () => async (dispatch) => {
@@ -42,19 +48,20 @@ export const addOrUpdatePlacement = (bookshelfId, storyId, userId) => async (dis
   return res.data.placement;
 }
 
-export default removeAllUserPlacements = (userId) => async (dispatch) => {
+export const removeAllUserPlacements = (userId) => async (dispatch) => {
   const res = await fetch(`/api/users/${userId}/placements`, {
     method: 'DELETE',
     headers: {
       'Content-Type': 'application/json'
     },
   })
-  const deletedIds = res.data.deletedIds
-  if (deletedIds.length > 0) {
-    for (let i = 0; i < deletedIds.length; i++){
-      dispatch(removePlacement(deletedIds[i]));
-    }
-  }
+  // const deletedIds = res.data.deletedIds
+  dispatch(removeMultiplePlacements(res.data.deletedIds))
+  // if (deletedIds.length > 0) {
+  //   for (let i = 0; i < deletedIds.length; i++){
+  //     dispatch(removePlacement(deletedIds[i]));
+  //   }
+  // }
   return;
 }
 
@@ -77,6 +84,12 @@ function reducer(state = initialState, action) {
     case REMOVE_PLACEMENT:
       newState = Object.assign({}, state);
       delete newState.placements[action.payload]
+      return newState;
+    case REMOVE_MULTIPLE_PLACEMENTS:
+      newState = Object.assign({}, state);
+      for (let i = 0; i < action.payload.length; i++) {
+        delete newState.placements[action.payload[i]]
+      }
       return newState;
     default:
       return state;
