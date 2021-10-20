@@ -48,12 +48,13 @@ export const addOrUpdatePlacement = (bookshelfId, storyId, userId) => async (dis
   return res.data.placement;
 }
 
-export const removeAllUserPlacements = (userId) => async (dispatch) => {
-  const res = await fetch(`/api/users/${userId}/placements`, {
+export const removeAllUserPlacements = (userId, storyId) => async (dispatch) => {
+  const res = await fetch(`/api/placements`, {
     method: 'DELETE',
     headers: {
       'Content-Type': 'application/json'
     },
+    body: JSON.stringify({ userId, storyId })
   })
   // const deletedIds = res.data.deletedIds
   dispatch(removeMultiplePlacements(res.data.deletedIds))
