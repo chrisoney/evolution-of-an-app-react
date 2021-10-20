@@ -34,7 +34,7 @@ const StoryBookshelfSelector = ({ storyId }) => {
     const shelfIds = sessionUser.Bookshelves.map(shelf => shelf.id);
     const storyPlacements = placements.filter(placement => placement.storyId === storyId);
     const currShelved = storyPlacements.filter(placement => (shelfIds.includes(placement.bookshelfId) && !bookshelves[placement.bookshelfId].deleteAllowed))[0]?.bookshelfId || null;
-    if (currShelved) setShelf(bookshelves[currShelved] || null);
+    setShelf(bookshelves[currShelved] || null);
     setLoaded(true)
   }, [placements, sessionUser, storyId, bookshelves])
 

@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
-import { fetchAllPlacements } from '../../store/placements';
+import { fetchAllPlacements, removeAllUserPlacements } from '../../store/placements';
 import { hideModal, setCurrentModal } from '../../store/ui';
 
 import BookshelfSelectorStandardModal from './BookshelfSelectorStandardModal';
@@ -10,7 +10,9 @@ import styles from './storyModal.module.css'
 
 const BookshelfSelectorRemoveModal = () => {
   const dispatch = useDispatch()
-  const placements = useSelector(state => state.placements.placements);
+  // const placements = useSelector(state => state.placements.placements);
+  const sessionUser = useSelector(state => state.session.user)
+  const props = useSelector(state => state.ui.modal.props);
 
   useEffect(() => {
     dispatch(fetchAllPlacements())
@@ -18,8 +20,13 @@ const BookshelfSelectorRemoveModal = () => {
 
   const handleModalSwitchStandard = (e) => {
     e.preventDefault();
-    e.stopPropagation();
     dispatch(setCurrentModal(BookshelfSelectorStandardModal))
+  }
+
+  const handleRemoveAllAction = (e) => {
+    e.preventDefault()
+    dispatch(removeAllUserPlacements(sessionUser.id, props.storyId))
+    dispatch(hideModal())
   }
 
   return (
@@ -44,7 +51,7 @@ const BookshelfSelectorRemoveModal = () => {
         >Cancel</button>
         <button
           className={styles.modal_submit}
-          onClick={null} // This will be an actual action to delete it from existing bookshelves
+          onClick={handleRemoveAllAction} // This will be an actual action to delete it from existing bookshelves
         >Remove</button>
       </div>
     </div>
