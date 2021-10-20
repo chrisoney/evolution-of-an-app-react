@@ -60,6 +60,7 @@ router.post('/', asyncHandler(async (req, res) => {
 
 router.delete('/', asyncHandler(async (req, res) => {
   const { storyId, userId } = req.body;
+  const deletedIds = [];
   const bookshelves = await Bookshelf.findAll({
     where: { userId },
     include: {
@@ -75,10 +76,13 @@ router.delete('/', asyncHandler(async (req, res) => {
         storyId
       }
     })
-    if (placement) await placement.destroy();
+    if (placement) {
+      deletedIds.push(placement.id)
+      await placement.destroy();
+    }
   }
 
-  res.json({ success: 'success' })
+  res.json({ deletedIds })
 }))
 
 module.exports = router;
