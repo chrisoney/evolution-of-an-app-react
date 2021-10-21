@@ -20,8 +20,10 @@ const StoryPage = () => {
   const [userReview, setUserReview] = useState(null)
   const [otherReviews, setOtherReviews] = useState([])
   const [revealTags, setRevealTags] = useState(false)
+  const [revealReviewForm, setRevealReviewForm] = useState(false)
   const [revealWarnings, setRevealWarnings] = useState(false)
   const [expandStory, setExpandStory] = useState(false)
+  const [content, setContent] = useState('')
 
   useEffect(() => {
     dispatch(fetchAllStories())
@@ -131,10 +133,11 @@ const StoryPage = () => {
             )}
           </div>
           <div className={styles.logged_in_user_review_content_section}>
-            <div className={styles.user_content_container}>
-              <div className={styles.user_review_content}>{userReview ? userReview.content : ''}</div>
-              <button className={styles.reveal_form_edit}>Edit review</button>
-            </div>
+            {userReview && userReview.content ? (
+              <div className={styles.user_content_container}>
+                <div className={styles.user_review_content}>{userReview.content || ''}</div>
+                <button className={styles.reveal_form_edit}>Edit review</button>
+              </div>) : null}
             <div className={styles.user_review_form_section}>
               <textarea className={styles.new_review_content_input} />
               <div className={styles.user_review_form_button_section}>
