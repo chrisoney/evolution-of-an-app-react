@@ -126,25 +126,39 @@ const StoryPage = () => {
               <div className={styles.new_review_prompt}>Your review</div>
               <Ratings rating={userReview ? userReview.rating : 0} userId={sessionUser.id} storyId={story.id} />
             </div>
-            {(!userReview || !userReview.content) && (
+            {(!userReview || !userReview.content) && !revealReviewForm && (
               <div className={styles.new_user_review_right}>
-                <button className={styles.reveal_form}>Write a Review</button>
+                <button
+                  className={styles.reveal_form}
+                  onClick={(e) => setRevealReviewForm(true)}
+                >Write a Review</button>
               </div>
             )}
           </div>
           <div className={styles.logged_in_user_review_content_section}>
-            {userReview && userReview.content ? (
+            {userReview && userReview.content && !revealReviewForm && (
               <div className={styles.user_content_container}>
                 <div className={styles.user_review_content}>{userReview.content || ''}</div>
-                <button className={styles.reveal_form_edit}>Edit review</button>
-              </div>) : null}
-            <div className={styles.user_review_form_section}>
-              <textarea className={styles.new_review_content_input} />
-              <div className={styles.user_review_form_button_section}>
-                <button className={styles.cancel_review_content_button}>Cancel</button>
-                <button className={styles.submit_review_content_button} data-story-id={story.id}>Submit</button>
-              </div>
-            </div>
+                <button
+                  className={styles.reveal_form_edit}
+                  onClick={(e) => setRevealReviewForm(true)}
+                >Edit review</button>
+              </div>)}
+            {revealReviewForm && (
+              <div className={styles.user_review_form_section}>
+                <textarea
+                  className={styles.new_review_content_input}
+                  value={userReview.content}
+                />
+                <div className={styles.user_review_form_button_section}>
+                  <button
+                    className={styles.cancel_review_content_button}
+                    onClick={(e) => setRevealReviewForm(false)}
+                  >Cancel</button>
+                  <button className={styles.submit_review_content_button} data-story-id={story.id}>Submit</button>
+                </div>
+              </div>)
+            }
             <div className={styles.other_reviews_section}>
               <div className={styles.other_reviews_title_section}>
                 <div className={styles.other_review_title}>Community Reviews</div>
