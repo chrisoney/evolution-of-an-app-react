@@ -5,6 +5,7 @@ import users from './users'
 import bookshelves from './bookshelves'
 import stories from './stories'
 import placements from './placements'
+import reviews from './reviews'
 import tags from './tags'
 import ui from './ui';
 
@@ -14,6 +15,7 @@ const rootReducer = combineReducers({
   bookshelves,
   stories,
   placements,
+  reviews,
   tags,
   ui
 });

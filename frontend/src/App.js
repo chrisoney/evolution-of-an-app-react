@@ -5,6 +5,7 @@ import SignupFormPage from "./components/SignupFormPage";
 import LoginFormPage from "./components/LoginFormPage";
 import * as sessionActions from "./store/session";
 import { getStage, setStage, setCurrentModal, showModal } from './store/ui';
+import { fetchAllReviews } from './store/reviews'
 
 import Navigation from "./components/Navigation";
 import PageNotMade from './components/AlternativePages/PageNotMade';
@@ -32,6 +33,7 @@ function App() {
   const stage = useSelector(state =>  state.ui.stage)
   useEffect(() => {
     dispatch(getStage())
+    dispatch(fetchAllReviews())
     dispatch(sessionActions.restoreUser()).then(() => setIsLoaded(true));
   }, [dispatch]);
 

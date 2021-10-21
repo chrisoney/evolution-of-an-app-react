@@ -12,6 +12,11 @@ const Ratings = ({ rating, userId, storyId }) => {
   const sessionUser = useSelector(state => state.session.user)
 
   useEffect(() => {
+    setShownRating(rating)
+    setHoldRating(rating)
+  }, [rating])
+
+  useEffect(() => {
     const temp = [];
     if (shownRating > 0) {
       for (let i = 0; i < shownRating; i++){

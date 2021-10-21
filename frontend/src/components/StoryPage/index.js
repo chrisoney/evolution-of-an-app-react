@@ -15,6 +15,7 @@ const StoryPage = () => {
   const stage = useSelector(state => state.ui.stage);
   const sessionUser = useSelector(state => state.session.user);
   const stories = useSelector(state => state.stories.stories);
+  const reviews = useSelector(state => state.reviews.reviews);
   const users = useSelector(state => state.users.users);
   const [story, setStory] = useState(null)
   const [userReview, setUserReview] = useState(null)
@@ -36,10 +37,11 @@ const StoryPage = () => {
 
   useEffect(() => {
     if (story && story.Reviews) {
-      setUserReview(story.Reviews.filter(review => review.userId === sessionUser.id)[0])
+      setUserReview(Object.values(reviews).filter(review => review.userId === sessionUser.id && review.storyId === story.id)[0])
+      console.log(Object.values(reviews).filter(review => review.userId === sessionUser.id && review.storyId === story.id))
       setOtherReviews([...story.Reviews.filter((review) => review.userId !== sessionUser.id)])
     }
-  }, [story, sessionUser])
+  }, [story, sessionUser, reviews])
 
   if (!story) return null;
   return (
@@ -120,7 +122,7 @@ const StoryPage = () => {
             </div>
           </div>
         </div>
-       {stage >= 4 &&  (<div className={styles.reviews_section}>
+       {stage >= 4 && (<div className={styles.reviews_section}>
           <div className={styles.logged_in_user_rating_section}>
             <div className={styles.new_user_review_left}>
               <div className={styles.new_review_prompt}>Your review</div>
