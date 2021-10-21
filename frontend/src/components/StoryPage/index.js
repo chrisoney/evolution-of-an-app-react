@@ -7,6 +7,7 @@ import StoryBookshelfSelector from '../BookshelfSelector/StoryBookshelfSelector'
 
 import { fetchAllStories } from '../../store/stories';
 import { fetchAllUsers } from '../../store/users';
+import { createOrUpdateReview } from '../../store/reviews';
 import styles from './storyPage.module.css';
 
 const StoryPage = () => {
@@ -36,12 +37,24 @@ const StoryPage = () => {
   }, [stories, id])
 
   useEffect(() => {
-    if (story && story.Reviews) {
+    if (story && Object.values(reviews).length > 0) {
+      console.log('TEST TEST TEST')
       setUserReview(Object.values(reviews).filter(review => review.userId === sessionUser.id && review.storyId === story.id)[0])
-      console.log(Object.values(reviews).filter(review => review.userId === sessionUser.id && review.storyId === story.id))
+      setContent(Object.values(reviews).filter(review => review.userId === sessionUser.id && review.storyId === story.id)[0]?.content || '')
       setOtherReviews([...story.Reviews.filter((review) => review.userId !== sessionUser.id)])
     }
   }, [story, sessionUser, reviews])
+
+  const submitReviewContent = (e) => {
+    dispatch(createOrUpdateReview({
+      userId: sessionUser.id,
+      storyId: id,
+      content
+    })).then(review => {
+      setUserReview(review);
+    })
+    setRevealReviewForm(false)
+  }
 
   if (!story) return null;
   return (
@@ -140,7 +153,7 @@ const StoryPage = () => {
           <div className={styles.logged_in_user_review_content_section}>
             {userReview && userReview.content && !revealReviewForm && (
               <div className={styles.user_content_container}>
-                <div className={styles.user_review_content}>{userReview.content || ''}</div>
+                <div className={styles.user_review_content}>{userReview.content}</div>
                 <button
                   className={styles.reveal_form_edit}
                   onClick={(e) => setRevealReviewForm(true)}
@@ -150,14 +163,19 @@ const StoryPage = () => {
               <div className={styles.user_review_form_section}>
                 <textarea
                   className={styles.new_review_content_input}
-                  value={userReview.content}
+                  value={content}
+                  onChange={(e) => setContent(e.target.value)}
                 />
                 <div className={styles.user_review_form_button_section}>
                   <button
                     className={styles.cancel_review_content_button}
                     onClick={(e) => setRevealReviewForm(false)}
                   >Cancel</button>
-                  <button className={styles.submit_review_content_button} data-story-id={story.id}>Submit</button>
+                  <button
+                    className={styles.submit_review_content_button}
+                    data-story-id={story.id}
+                    onClick={submitReviewContent}
+                  >Submit</button>
                 </div>
               </div>)
             }

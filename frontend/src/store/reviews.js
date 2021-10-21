@@ -33,6 +33,7 @@ export const createOrUpdateReview = (review) => async (dispatch) => {
     body: JSON.stringify(review)
   })
   dispatch(getReview(res.data.review));
+  return res.data.review;
 }
 
 const initialState = { reviews: {} };
