@@ -82,6 +82,7 @@ const BookshelfSelectorStandardModal = () => {
             className={`${styles.modal_bookshelf_button} ${selected === shelf.name ? styles.selected : ''}`}
             id={shelf.id}
             data-close={props.largeVersion}
+            key={`standard-shelf-${shelf.id}`}
             onClick={(e) => handleBookshelfSelect(e, props.largeVersion, shelf.name)}
           >
             {selected === shelf.name && <i className={`fas fa-check ${styles.fa_check}`} />}

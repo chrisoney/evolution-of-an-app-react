@@ -22,7 +22,7 @@ const BookshelfSelectorCustomModal = () => {
   }, [dispatch])
 
   useEffect(() => {
-    setCustomShelves([...sessionUser.Bookshelves.filter(shelf => shelf.deletedAllowed).map(shelf => bookshelves[shelf.id])])
+    setCustomShelves([...sessionUser.Bookshelves.filter(shelf => shelf.deleteAllowed).map(shelf => bookshelves[shelf.id])])
   }, [sessionUser, bookshelves])
 
   const handlePreviousModalClick = (e) => {
@@ -60,11 +60,11 @@ const BookshelfSelectorCustomModal = () => {
       <div className={styles.modal_bottom_button_container}>
         <button
           className={styles.modal_cancel}
-          onClick={handlePreviousModalClick} // Use to switch back to modal 1?
+          onClick={handlePreviousModalClick}
         >Back</button>
         <button
           className={styles.modal_submit}
-          onClick={(e) => dispatch(hideModal())} // This will be an actual action to finish using the modals
+          onClick={(e) => dispatch(hideModal())}
         >Done</button>
       </div>
     </div>
