@@ -26,6 +26,13 @@ const BookshelfSelectorCustomModal = () => {
     setCustomShelves([...sessionUser.Bookshelves.filter(shelf => shelf.deleteAllowed).map(shelf => bookshelves[shelf.id])])
   }, [sessionUser, bookshelves])
 
+
+  useEffect(() => {
+    const userShelves = customShelves.map(shelf => shelf.id);
+    const tempShelves = Object.values(placements).filter(placement => userShelves.indexOf(placement.bookshelfId) !== -1 && placement.storyId === props.storyId).map(placement => placement.bookshelfId);
+    setSelectedShelves(tempShelves);
+  }, [placements, sessionUser, customShelves])
+
   const handlePreviousModalClick = (e) => {
     e.preventDefault();
     dispatch(setCurrentModal(BookshelfSelectorStandardModal))
@@ -48,7 +55,7 @@ const BookshelfSelectorCustomModal = () => {
       </div>
       <div className={styles.modal_shelf_container}>
         {customShelves.map(shelf => {
-          const selected = 
+          const selected = selectedShelves.indexOf(shelf.id) !== -1;
           return (
             <div
               className={`${styles.modal_custom_shelf} ${selected ? styles.selected : ''}`}
