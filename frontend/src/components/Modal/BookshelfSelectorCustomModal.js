@@ -16,6 +16,7 @@ const BookshelfSelectorCustomModal = () => {
   const sessionUser = useSelector(state => state.session.user)
 
   const [customShelves, setCustomShelves] = useState([]);
+  const [selectedShelves, setSelectedShelves] = useState([])
 
   useEffect(() => {
     dispatch(fetchAllPlacements())
@@ -47,9 +48,10 @@ const BookshelfSelectorCustomModal = () => {
       </div>
       <div className={styles.modal_shelf_container}>
         {customShelves.map(shelf => {
+          const selected = 
           return (
             <div
-              className={styles.modal_custom_shelf}
+              className={`${styles.modal_custom_shelf} ${selected ? styles.selected : ''}`}
               key={`custom-shelf-${shelf.id}`}
               onClick={(e) => customShelfClickEvent(e, shelf.id)}
             >{shelf.name}</div>
