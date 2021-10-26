@@ -32,7 +32,7 @@ const BookshelfSelectorCustomModal = () => {
     const userShelves = customShelves.map(shelf => shelf.id);
     const tempShelves = Object.values(placements).filter(placement => userShelves.indexOf(placement.bookshelfId) !== -1 && placement.storyId === props.storyId).map(placement => placement.bookshelfId);
     setSelectedShelves(tempShelves);
-  }, [placements, sessionUser, customShelves])
+  }, [placements, sessionUser, customShelves, props])
 
   const handlePreviousModalClick = (e) => {
     e.preventDefault();
@@ -41,6 +41,13 @@ const BookshelfSelectorCustomModal = () => {
 
   const customShelfClickEvent = (e, id) => {
     e.preventDefault()
+    console.log(Array.isArray(selectedShelves));
+    const idx = selectedShelves.indexOf(id)
+    if (idx === -1) {
+      setSelectedShelves([...selectedShelves, id])
+    } else {
+      setSelectedShelves([...selectedShelves.slice(0, idx), ...selectedShelves.slice(idx + 1)]);
+    }
   }
 
   return (
