@@ -12,8 +12,9 @@ import styles from './storyModal.module.css'
 const BookshelfSelectorCustomModal = () => {
   const dispatch = useDispatch()
   const placements = useSelector(state => state.placements.placements);
-  const bookshelves = useSelector(state => state.bookshelves.bookshelves)
-  const sessionUser = useSelector(state => state.session.user)
+  const bookshelves = useSelector(state => state.bookshelves.bookshelves);
+  const sessionUser = useSelector(state => state.session.user);
+  const props = useSelector(state => state.ui.modal.props);
 
   const [customShelves, setCustomShelves] = useState([]);
   const [selectedShelves, setSelectedShelves] = useState([])
