@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
-import { fetchAllPlacements } from '../../store/placements';
+import { fetchAllPlacements, addOrUpdatePlacement } from '../../store/placements';
 
 import { hideModal, setCurrentModal } from '../../store/ui';
 
@@ -45,6 +45,7 @@ const BookshelfSelectorCustomModal = () => {
     const idx = selectedShelves.indexOf(id)
     if (idx === -1) {
       setSelectedShelves([...selectedShelves, id])
+      dispatch(addOrUpdatePlacement(id, props.storyId, sessionUser.id))
     } else {
       setSelectedShelves([...selectedShelves.slice(0, idx), ...selectedShelves.slice(idx + 1)]);
     }
@@ -72,7 +73,6 @@ const BookshelfSelectorCustomModal = () => {
             >{shelf.name}</div>
           )
         })}
-        {/* logic for the custom shelves incoming */}
       </div>
       <div className={styles.modal_bottom_button_container}>
         <button
