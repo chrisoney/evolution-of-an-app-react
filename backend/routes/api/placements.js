@@ -85,4 +85,12 @@ router.delete('/', asyncHandler(async (req, res) => {
   res.json({ deletedIds })
 }))
 
+
+router.delete('/:id(\\d+)', asyncHandler(async (req, res) => {
+  const id = parseInt(req.params.id, 10);
+  const placement = await Placement.findByPk(id);
+  await placement.destroy()
+  res.json({ placementId: id })
+}))
+
 module.exports = router;
