@@ -66,6 +66,14 @@ export const removeAllUserPlacements = (userId, storyId) => async (dispatch) => 
   return;
 }
 
+export const removeOnePlacement = (placementId) => async (dispatch) => {
+  const res = await fetch(`/api/placements/${placementId}`, {
+    method: 'DELETE'
+  })
+  dispatch(removePlacement(res.data.placementId))
+  return;
+}
+
 const initialState = { placements: {} };
 
 function reducer(state = initialState, action) {
