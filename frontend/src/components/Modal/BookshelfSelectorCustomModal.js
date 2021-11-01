@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
-import { fetchAllPlacements, addOrUpdatePlacement } from '../../store/placements';
+import { fetchAllPlacements, addOrUpdatePlacement, removeOnePlacement } from '../../store/placements';
 
 import { hideModal, setCurrentModal } from '../../store/ui';
 
@@ -48,6 +48,14 @@ const BookshelfSelectorCustomModal = () => {
       dispatch(addOrUpdatePlacement(id, props.storyId, sessionUser.id))
     } else {
       setSelectedShelves([...selectedShelves.slice(0, idx), ...selectedShelves.slice(idx + 1)]);
+      const placementId = Object.values(placements).filter(placement => {
+        return placement.bookshelfId === id && placement.storyId === props.storyId;
+      })[0]?.id || null;
+      if (placementId) {
+        dispatch(removeOnePlacement(placementId))
+      } else {
+        console.log('something went wrong');
+      }
     }
   }
 
