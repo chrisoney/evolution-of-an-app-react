@@ -31,6 +31,8 @@ router.post('/:id(\\d+)', asyncHandler(async (req, res) => {
   const review = await Review.findByPk(id);
   if (review) {
     await review.destroy()
+  } else {
+    res.status(404).json({ error: 'Review could not be found'})
   }
   res.json({ reviewId: id  })
 }))
