@@ -26,4 +26,13 @@ router.post('/', asyncHandler(async (req, res) => {
   res.json({ review })
 }))
 
+router.post('/:id(\\d+)', asyncHandler(async (req, res) => {
+  const { id } = req.params;
+  const review = await Review.findByPk(id);
+  if (review) {
+    await review.destroy()
+  }
+  res.json({ reviewId: id  })
+}))
+
 module.exports = router;
