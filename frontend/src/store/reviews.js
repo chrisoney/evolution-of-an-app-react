@@ -36,6 +36,17 @@ export const createOrUpdateReview = (review) => async (dispatch) => {
   return res.data.review;
 }
 
+export const deleteReview = (reviewId) => async (dispatch) => {
+  const res = await fetch(`/api/reviews/${reviewId}`, {
+    method: 'DELETE'
+  });
+  if (res.ok) {
+    dispatch(removeReview(reviewId));
+  } else {
+    console.log(res.data.error)
+  }
+}
+
 const initialState = { reviews: {} };
 
 function reducer(state = initialState, action) {
