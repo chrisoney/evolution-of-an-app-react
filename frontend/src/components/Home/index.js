@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 import { fetchAllBookshelves } from "../../store/bookshelves";
 import { fetchAllStories } from "../../store/stories";
 import { fetchAllPlacements } from "../../store/placements";
+import { fetchAllReviews } from "../../store/reviews";
 import * as sessionActions from '../../store/session';
 
 import styles from './home.module.css'
@@ -40,7 +41,9 @@ function Home() {
     dispatch(fetchAllBookshelves()).then(() => {
       dispatch(fetchAllStories()).then(() => {
         dispatch(fetchAllPlacements()).then(() => {
-          setLoaded(true)
+          dispatch(fetchAllReviews()).then(() => {
+            setLoaded(true)
+          })
         })
       })
     })
