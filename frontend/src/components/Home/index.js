@@ -61,6 +61,7 @@ function Home() {
     if (sessionUser && sessionUser.Bookshelves && Object.values(bookshelves).length > 0) {
       setCurrReadingStory(sessionUser.Bookshelves.filter(shelf => shelf.name === 'Currently Reading')[0].Stories[0])
       setWantReadStories(sessionUser.Bookshelves.filter(shelf => shelf.name === 'Want To Read')[0].Stories.slice(0, 3))
+      
       setFeed(Object.values(placements).filter(placement => {
         const names = ['Want To Read', 'Currently Reading', 'Read']
         return placement.userId !== sessionUser.id && names.includes(bookshelves[placement.bookshelfId].name)
