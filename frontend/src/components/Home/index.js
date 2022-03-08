@@ -43,7 +43,7 @@ function Home() {
       dispatch(fetchAllStories()).then(() => {
         dispatch(fetchAllPlacements()).then(() => {
           dispatch(fetchAllReviews()).then(() => {
-            setLoaded(false)
+            setLoaded(true)
           })
         })
       })
@@ -78,7 +78,6 @@ function Home() {
   
   if (stage === 0) return null;
   if (!loaded) {
-    console.log('here')
     return <Loading />
   }
   if (sessionUser) {
