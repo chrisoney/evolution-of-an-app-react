@@ -9,6 +9,7 @@ import * as sessionActions from '../../store/session';
 
 import styles from './home.module.css'
 import BookshelfSelector from '../BookshelfSelector';
+import Loading from '../Loading';
 
 function Home() {
   const dispatch = useDispatch()
@@ -42,7 +43,7 @@ function Home() {
       dispatch(fetchAllStories()).then(() => {
         dispatch(fetchAllPlacements()).then(() => {
           dispatch(fetchAllReviews()).then(() => {
-            setLoaded(true)
+            setLoaded(false)
           })
         })
       })
@@ -75,7 +76,11 @@ function Home() {
     await dispatch(sessionActions.demo())
   }
   
-  if (stage === 0 || !loaded) return null;
+  if (stage === 0) return null;
+  if (!loaded) {
+    console.log('here')
+    return <Loading />
+  }
   if (sessionUser) {
     if (stage < 3) return null;
     return (
