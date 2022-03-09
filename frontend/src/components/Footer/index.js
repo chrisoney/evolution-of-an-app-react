@@ -14,7 +14,7 @@ const Footer = () => {
           <a href="https://github.com/chrisoney" className={styles.button_container}>
             <i className={`${styles.o_link_button} fab fa-github`} />
           </a>
-          <a href="https://www.linkedin.com/in/christopher-oney-317b84132/" className={styles.button_container}>
+          <a href="https://www.linkedin.com/in/chrisoney/" className={styles.button_container}>
             <i className={`${styles.o_link_button} fab fa-linkedin`} />
           </a>
           <a href="https://angel.co/u/christopher-oney" className={styles.button_container}>
@@ -34,7 +34,7 @@ const Footer = () => {
 
   //       a(href="https://github.com/chrisoney" class='button-container')
   //         i(class='o-link-button fab fa-github')
-  //       a(href="https://www.linkedin.com/in/christopher-oney-317b84132/" class='button-container')
+  //       a(href="https://www.linkedin.com/in/chrisoney/" class='button-container')
   //         i(class='o-link-button fab fa-linkedin')
   //       a(href="https://angel.co/u/christopher-oney" class='button-container')
   //         i(class='o-link-button fab fa-angellist')
