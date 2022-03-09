@@ -7,6 +7,7 @@ import { fetchAllStories } from '../../store/stories';
 import styles from './bookshelves.module.css';
 
 import Ratings from '../Ratings';
+import Loading from '../Loading';
 
 const Bookshelves = (location) => {
   const { id } = useParams()
@@ -91,7 +92,7 @@ const Bookshelves = (location) => {
     })
   }
 
-  if (!loaded) return null;
+  if (!loaded) return <Loading />;
   return (
     <div className={styles.page_container}>
       <div className={styles.bookshelf_header}>

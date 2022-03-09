@@ -77,9 +77,7 @@ function Home() {
   }
   
   if (stage === 0) return null;
-  if (!loaded) {
-    return <Loading />
-  }
+  if (!loaded) return <Loading />
   if (sessionUser) {
     if (stage < 3) return null;
     return (

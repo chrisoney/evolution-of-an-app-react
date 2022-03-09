@@ -6,11 +6,12 @@ import { fetchAllStories } from '../../store/stories';
 
 import styles from './browseStories.module.css';
 
+import Loading from '../Loading';
+
 const BrowseStories = ({location}) => {
   const dispatch = useDispatch()
   const stage = useSelector(state => state.ui.stage);
   const preselected = location.state ? [location.state.selectedTag] : []
-  console.log(location.state, preselected)
   // const sessionUser = useSelector(state => state.session.user);
   const tags = useSelector(state => state.tags.tags);
   const stories = useSelector(state => state.stories.stories);
@@ -18,6 +19,7 @@ const BrowseStories = ({location}) => {
   const [revealTags, setRevealTags] = useState(preselected.length > 0);
   const [loadedStories, setLoadedStories] = useState([])
   const [recentStories, setRecentStories] = useState([])
+  const [loaded, setLoaded] = useState(false)
 
   // useEffect(() => {
   //   setSelected([...selected, preselected])
@@ -32,7 +34,6 @@ const BrowseStories = ({location}) => {
   }
 
   useEffect(() => {
-    console.log(selected)
     const storyArr = Object.values(stories)
     if (selected.length === 0 || stage < 5) setLoadedStories([...Object.values(stories)])
     else {
@@ -48,7 +49,9 @@ const BrowseStories = ({location}) => {
 
   useEffect(() => {
     dispatch(fetchAllTags()).then(() => {
-      dispatch(fetchAllStories())
+      dispatch(fetchAllStories()).then(() => {
+        setLoaded(true)
+      })
     })
   }, [dispatch])
 
@@ -63,7 +66,7 @@ const BrowseStories = ({location}) => {
       setSelected([...selected, tagId])
     }
   }
-
+  if (!loaded) return <Loading />
   return (
     <div className={styles.main_content}>
       <div className={styles.main_content_left}>
