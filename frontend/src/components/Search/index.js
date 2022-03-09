@@ -7,6 +7,7 @@ import { fetchAllBookshelves } from '../../store/bookshelves';
 import styles from './search.module.css';
 import Ratings from '../Ratings';
 import BookshelfSelector from '../BookshelfSelector';
+import Loading from '../Loading';
 
 const Search = (location) => {
   const dispatch = useDispatch();
@@ -14,10 +15,13 @@ const Search = (location) => {
   const term = location.state ? location.state.term ? location.state.term : '' : ''
   const [searchPageInput, setSearchPageInput] = useState(term);
   const [filter, setFilter] = useState('all')
-  const [loadedStories, setLoadedStories] = useState([])
+  const [loadedStories, setLoadedStories] = useState([]);
+  const [loaded, setLoaded] = useState(false);
 
   useEffect(() => {
-    dispatch(fetchAllBookshelves())
+    dispatch(fetchAllBookshelves()).then(() => {
+      setLoaded(true)
+    })
   }, [dispatch])
 
   useEffect(() => {
@@ -28,7 +32,7 @@ const Search = (location) => {
     e.preventDefault()
     dispatch(fetchSearchedStories(filter, searchPageInput))
   }
-
+  if (!loaded) return <Loading />
   return (
     <div className={styles.search_page_parent_container}>
       <div className={styles.search_page_container}>

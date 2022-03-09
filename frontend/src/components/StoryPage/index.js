@@ -3,7 +3,8 @@ import { useSelector, useDispatch } from 'react-redux';
 import { useParams, Link } from 'react-router-dom';
 
 import Ratings from '../Ratings';
-import StoryBookshelfSelector from '../BookshelfSelector/StoryBookshelfSelector'
+import StoryBookshelfSelector from '../BookshelfSelector/StoryBookshelfSelector';
+import Loading from '../Loading';
 
 import { fetchAllStories } from '../../store/stories';
 import { fetchAllUsers } from '../../store/users';
@@ -25,11 +26,15 @@ const StoryPage = () => {
   const [revealReviewForm, setRevealReviewForm] = useState(false)
   const [revealWarnings, setRevealWarnings] = useState(false)
   const [expandStory, setExpandStory] = useState(false)
-  const [content, setContent] = useState('')
+  const [content, setContent] = useState('');
+  const [loaded, setLoaded] = useState(false)
 
   useEffect(() => {
-    dispatch(fetchAllStories())
-    dispatch(fetchAllUsers())
+    dispatch(fetchAllStories()).then(() => {
+      dispatch(fetchAllUsers()).then(() => {
+        setLoaded(true)
+      })
+    })
   }, [dispatch])
 
   useEffect(() => {
@@ -57,6 +62,7 @@ const StoryPage = () => {
   }
 
   if (!story) return null;
+  if (!loaded) return <Loading />
   return (
     <div className={styles.page_container}>
       <div className={styles.story_page_left_side}>
